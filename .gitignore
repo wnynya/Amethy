@@ -2,3 +2,5 @@
 /dependency-reduced-pom.xml
 /.vscode
 /repository
+/packages-bot/node_modules
+/packages-bot/package-lock.json

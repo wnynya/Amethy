@@ -1,0 +1,23 @@
+{
+  "name": "Amethy",
+  "target": {
+    "path": "/home/wnynya/Amethy/packages/Amethy-1.0.0.jar",
+    "delay": 1000,
+    "minkb": 60
+  },
+  "api": {
+    "host": "https://api.wany.io/amethy/packages",
+    "port": "443",
+    "key": "4f14753e4c18fdcc04116221d78d9334"
+  },
+  "channels": {
+    "default": {
+      "name": "release",
+      "version": "{version}"
+    },
+    "dev": {
+      "name": "dev",
+      "version": "{version}-{timestamp:YYMMDD-hhmmss}"
+    }
+  }
+}

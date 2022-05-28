@@ -5,8 +5,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.wany.amethy</groupId>
-  <artifactId>amethy</artifactId>
-  <version>1.0</version>
+  <artifactId>Amethy</artifactId>
+  <version>1.0.0</version>
 
   <name>amethy</name>
   <url>https://amethy.wany.io</url>
@@ -156,8 +156,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.0</version>
                 <configuration>
-                    <outputDirectory>build</outputDirectory>
-                    <!--outputDirectory>C:\Users\Wany\Minecraft Servers\testserver\plugins</outputDirectory-->
+                    <outputDirectory>packages</outputDirectory>
                 </configuration>
             </plugin>
             <plugin>

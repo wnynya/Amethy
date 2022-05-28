@@ -1,0 +1,19 @@
+{
+  "name": "@wany/bukkit-plugin-packages-upload-bot",
+  "version": "1.0.0",
+  "description": "@wany/bukkit-plugin-packages-upload-bot",
+  "author": "Wany <sung@wany.io> (https://wany.io)",
+  "main": "src/app.mjs",
+  "scripts": {
+    "node": "node src/app.mjs",
+    "nodemon": "sudo nodemon"
+  },
+  "dependencies": {
+    "@wany/crypto": "^1.0.1",
+    "@wany/date": "^1.0.3",
+    "@wany/logger": "^1.0.8",
+    "@wany/request": "^1.0.6",
+    "jszip": "^3.9.1",
+    "yaml": "^2.0.1"
+  }
+}
