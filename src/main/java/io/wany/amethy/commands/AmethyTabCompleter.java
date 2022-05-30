@@ -62,7 +62,7 @@ public class AmethyTabCompleter implements TabCompleter {
 
     switch (name) {
 
-      case "cherry" -> {
+      case "amethy" -> {
 
         if (args.length == 1) {
           List<String> list = new ArrayList<>();

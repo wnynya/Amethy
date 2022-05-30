@@ -1,4 +1,4 @@
-package io.wany.amethy;
+package io.wany.amethy.modules;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -6,6 +6,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+
+import io.wany.amethy.Amethy;
 
 import java.io.File;
 import java.util.List;
@@ -22,8 +24,7 @@ public class Config {
     try {
       this.config = YamlConfiguration.loadConfiguration(file);
       this.config.save(this.file);
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
@@ -34,8 +35,7 @@ public class Config {
     try {
       this.config = YamlConfiguration.loadConfiguration(file);
       this.config.save(this.file);
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
@@ -58,8 +58,7 @@ public class Config {
         this.config = YamlConfiguration.loadConfiguration(file);
       }
       this.config.save(file);
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
 
@@ -102,12 +101,14 @@ public class Config {
     return this.config.getList(path);
   }
 
-  /*public Component getComponent(String path) {
-    if (!isString(path)) {
-      return null;
-    }
-    return Message.parse(this.getString(path));
-  }*/
+  /*
+   * public Component getComponent(String path) {
+   * if (!isString(path)) {
+   * return null;
+   * }
+   * return Message.parse(this.getString(path));
+   * }
+   */
 
   public Location getLocation(String path) {
     return this.config.getLocation(path);

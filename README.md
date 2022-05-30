@@ -1,2 +1,1 @@
 # Amethy
-# Amethy

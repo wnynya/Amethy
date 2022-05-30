@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 import com.google.gson.JsonObject;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.Config;
+import io.wany.amethy.modules.Config;
 import io.wany.amethy.modules.Request;
 import io.wany.amethy.modules.WebSocketClient;
 

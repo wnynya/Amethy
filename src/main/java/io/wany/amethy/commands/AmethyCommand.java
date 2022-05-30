@@ -1,8 +1,8 @@
 package io.wany.amethy.commands;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.Console;
-import io.wany.amethy.Message;
+import io.wany.amethy.modules.Console;
+import io.wany.amethy.modules.Message;
 import io.wany.amethy.modules.Promise;
 import io.wany.amethy.modules.Request;
 import io.wany.amethy.modules.Request.Options;

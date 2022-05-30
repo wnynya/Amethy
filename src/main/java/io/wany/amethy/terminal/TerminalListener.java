@@ -2,7 +2,7 @@ package io.wany.amethy.terminal;
 
 import com.google.gson.JsonObject;
 
-import io.wany.amethy.Console;
+import io.wany.amethy.modules.Console;
 
 public class TerminalListener {
 

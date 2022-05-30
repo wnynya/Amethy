@@ -1,7 +1,7 @@
 package io.wany.amethy.supports.vault;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.Console;
+import io.wany.amethy.modules.Console;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -65,7 +65,6 @@ public class VaultSupport implements Listener {
     }
   }
 
-
   public static boolean exist() {
     if (!ENABLE) {
       return false;
@@ -80,8 +79,7 @@ public class VaultSupport implements Listener {
         LOADED = true;
       }
       return true;
-    }
-    else {
+    } else {
       EXIST = false;
       LOADED = false;
       Console.debug(PREFIX + "ERROR: " + NAME + " plugin not exist");
@@ -100,8 +98,7 @@ public class VaultSupport implements Listener {
     Console.debug(PREFIX + NAME + " v" + plugin.getDescription().getVersion() + " Enabled");
     if (LOADED) {
       Console.debug(PREFIX + "Re-Enabling " + NAME + "-Support");
-    }
-    else {
+    } else {
       Console.debug(PREFIX + "Enabling " + NAME + "-Support");
     }
     if (!exist()) {
@@ -148,7 +145,7 @@ public class VaultSupport implements Listener {
   public static void onSupportEnable() {
     Amethy.PLUGIN.registerEvent(new VaultSupport());
 
-    //VaultEconomySync.onEnable();
+    // VaultEconomySync.onEnable();
 
     if (Amethy.CONFIG.getBoolean("vault-support.chat.enable")) {
       loadChat();
@@ -162,7 +159,7 @@ public class VaultSupport implements Listener {
   }
 
   public static void onSupportDisable() {
-    //VaultEconomySync.onDisable();
+    // VaultEconomySync.onDisable();
   }
 
 }

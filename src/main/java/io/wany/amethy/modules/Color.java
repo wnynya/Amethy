@@ -1,4 +1,4 @@
-package io.wany.amethy;
+package io.wany.amethy.modules;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,29 +31,24 @@ public class Color {
           green = Integer.parseInt(m8.group(3) + m8.group(4) + "", 16);
           blue = Integer.parseInt(m8.group(5) + m8.group(6) + "", 16);
           alpha = Integer.parseInt(m8.group(7) + m8.group(8) + "", 16);
-        }
-        else if (m6.find()) {
+        } else if (m6.find()) {
           red = Integer.parseInt(m6.group(1) + m6.group(2) + "", 16);
           green = Integer.parseInt(m6.group(3) + m6.group(4) + "", 16);
           blue = Integer.parseInt(m6.group(5) + m6.group(6) + "", 16);
-        }
-        else if (m4.find()) {
+        } else if (m4.find()) {
           red = Integer.parseInt(m4.group(1) + m4.group(1) + "", 16);
           green = Integer.parseInt(m4.group(2) + m4.group(2) + "", 16);
           blue = Integer.parseInt(m4.group(3) + m4.group(3) + "", 16);
           alpha = Integer.parseInt(m4.group(4) + m4.group(4) + "", 16);
-        }
-        else if (m3.find()) {
+        } else if (m3.find()) {
           red = Integer.parseInt(m3.group(1) + m3.group(1) + "", 16);
           green = Integer.parseInt(m3.group(2) + m3.group(2) + "", 16);
           blue = Integer.parseInt(m3.group(3) + m3.group(3) + "", 16);
-        }
-        else if (m2.find()) {
+        } else if (m2.find()) {
           red = Integer.parseInt(m2.group(1) + m2.group(2) + "", 16);
           green = Integer.parseInt(m2.group(1) + m2.group(2) + "", 16);
           blue = Integer.parseInt(m2.group(1) + m2.group(2) + "", 16);
-        }
-        else if (m1.find()) {
+        } else if (m1.find()) {
           red = Integer.parseInt(m1.group(1) + m1.group(1) + "", 16);
           green = Integer.parseInt(m1.group(1) + m1.group(1) + "", 16);
           blue = Integer.parseInt(m1.group(1) + m1.group(1) + "", 16);
@@ -74,14 +69,12 @@ public class Color {
               case 'a' -> alpha = Integer.parseInt(m3.group((n + 1) * 3) + "");
             }
           }
-        }
-        else if (m2.find()) {
+        } else if (m2.find()) {
           red = Integer.parseInt(m2.group(1) + "");
           green = Integer.parseInt(m2.group(4) + "");
           blue = Integer.parseInt(m2.group(7) + "");
           alpha = Integer.parseInt(m2.group(10) + "");
-        }
-        else if (m1.find()) {
+        } else if (m1.find()) {
           red = Integer.parseInt(m1.group(1) + "");
           green = Integer.parseInt(m1.group(4) + "");
           blue = Integer.parseInt(m1.group(7) + "");
@@ -105,14 +98,12 @@ public class Color {
               case 'l' -> lightness = Integer.parseInt(m3.group((n + 1) * 3) + "") / 100.0;
             }
           }
-        }
-        else if (m2.find()) {
+        } else if (m2.find()) {
           hue = Integer.parseInt(m2.group(1) + "") / 360.0;
           saturation = Integer.parseInt(m2.group(4) + "") / 100.0;
           lightness = Integer.parseInt(m2.group(7) + "") / 100.0;
           alpha = Integer.parseInt(m2.group(10) + "");
-        }
-        else if (m1.find()) {
+        } else if (m1.find()) {
           hue = Integer.parseInt(m1.group(1) + "") / 360.0;
           saturation = Integer.parseInt(m1.group(4) + "") / 100.0;
           lightness = Integer.parseInt(m1.group(7) + "") / 100.0;
@@ -127,8 +118,7 @@ public class Color {
           r = lightness;
           g = lightness;
           b = lightness;
-        }
-        else {
+        } else {
           double q = lightness < 0.5 ? lightness * (1 + saturation) : lightness + saturation - lightness * saturation;
           double p = 2 * lightness - q;
           r = hue2rgb(p, q, hue + 1 / 3.0);
@@ -159,8 +149,7 @@ public class Color {
               case 'k' -> key = Integer.parseInt(m2.group((n + 1) * 3) + "") / 100.0;
             }
           }
-        }
-        else if (m1.find()) {
+        } else if (m1.find()) {
           cyan = Integer.parseInt(m1.group(1) + "") / 100.0;
           magenta = Integer.parseInt(m1.group(4) + "") / 100.0;
           yellow = Integer.parseInt(m1.group(7) + "") / 100.0;
@@ -435,16 +424,13 @@ public class Color {
     double hue = (max + min) / 2;
     if (max == min) {
       hue = 0;
-    }
-    else {
+    } else {
       var d = max - min;
       if (max == r) {
         hue = (g - b) / d + (g < b ? 6 : 0);
-      }
-      else if (max == g) {
+      } else if (max == g) {
         hue = (b - r) / d + 2;
-      }
-      else if (max == b) {
+      } else if (max == b) {
         hue = (r - g) / d + 4;
       }
       hue /= 6;
@@ -462,8 +448,7 @@ public class Color {
     double lightness = (max + min) / 2;
     if (max == min) {
       saturation = 0;
-    }
-    else {
+    } else {
       var d = max - min;
       saturation = lightness > 0.5 ? d / (2 - max - min) : d / (max + min);
     }
@@ -497,31 +482,31 @@ public class Color {
   }
 
   public int[] getRGB() {
-    return new int[]{getRed(), getGreen(), getBlue()};
+    return new int[] { getRed(), getGreen(), getBlue() };
   }
 
   public int[] getRGBA() {
-    return new int[]{getRed(), getGreen(), getBlue(), getAlpha()};
+    return new int[] { getRed(), getGreen(), getBlue(), getAlpha() };
   }
 
   public String[] getHEX() {
-    return new String[]{getRedAsHex(), getGreenAsHex(), getBlueAsHex()};
+    return new String[] { getRedAsHex(), getGreenAsHex(), getBlueAsHex() };
   }
 
   public String[] getHEXWithAlpha() {
-    return new String[]{getRedAsHex(), getGreenAsHex(), getBlueAsHex(), getAlphaAsHex()};
+    return new String[] { getRedAsHex(), getGreenAsHex(), getBlueAsHex(), getAlphaAsHex() };
   }
 
   public int[] getHSL() {
-    return new int[]{getHue(), getSaturation(), getLightness()};
+    return new int[] { getHue(), getSaturation(), getLightness() };
   }
 
   public int[] getHSLA() {
-    return new int[]{getHue(), getSaturation(), getLightness(), getAlpha()};
+    return new int[] { getHue(), getSaturation(), getLightness(), getAlpha() };
   }
 
   public int[] getCMYK() {
-    return new int[]{getCyan(), getMagenta(), getYellow(), getKey()};
+    return new int[] { getCyan(), getMagenta(), getYellow(), getKey() };
   }
 
   public String getRGBString() {
@@ -605,7 +590,8 @@ public class Color {
       default -> {
         String[] hex = getHEX();
         String h = hex[0] + hex[1] + hex[2];
-        return h.replaceAll("([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])", "§x§$1§$2§$3§$4§$5§$6");
+        return h.replaceAll("([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])",
+            "§x§$1§$2§$3§$4§$5§$6");
       }
     }
   }
@@ -625,32 +611,45 @@ public class Color {
 
   private static class ColorPattern {
 
-    public static Pattern HEX_6 = Pattern.compile("([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])");
+    public static Pattern HEX_6 = Pattern
+        .compile("([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])");
     public static Pattern HEX_3 = Pattern.compile("([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])");
     public static Pattern HEX_2 = Pattern.compile("([0-9a-fA-F])([0-9a-fA-F])");
     public static Pattern HEX_1 = Pattern.compile("([0-9a-fA-F])");
-    public static Pattern HEXA_8 = Pattern.compile("([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])");
+    public static Pattern HEXA_8 = Pattern.compile(
+        "([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])");
     public static Pattern HEXA_4 = Pattern.compile("([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])");
 
     public static Pattern RGB = Pattern.compile("(([0-9]){1,3})([.,:;|! ]+(([0-9]){1,3}))([.,:;|! ]+(([0-9]){1,3}))");
-    public static Pattern RGBA = Pattern.compile("(([0-9]){1,3})([.,:;|! ]+(([0-9]){1,3}))([.,:;|! ]+(([0-9]){1,3}))([.,:;|! ]+(([0-9]){1,3}))");
-    public static Pattern RGBA_S = Pattern.compile("(([rgbaRGBA]){1,4})[(.,:;|! ]+?(([0-9]){1,3})([.,:;|! ]+(([0-9]){1,3}))?([.,:;|! ]+(([0-9]){1,3}))?([.,:;|! ]+(([0-9]){1,3}))?");
+    public static Pattern RGBA = Pattern
+        .compile("(([0-9]){1,3})([.,:;|! ]+(([0-9]){1,3}))([.,:;|! ]+(([0-9]){1,3}))([.,:;|! ]+(([0-9]){1,3}))");
+    public static Pattern RGBA_S = Pattern.compile(
+        "(([rgbaRGBA]){1,4})[(.,:;|! ]+?(([0-9]){1,3})([.,:;|! ]+(([0-9]){1,3}))?([.,:;|! ]+(([0-9]){1,3}))?([.,:;|! ]+(([0-9]){1,3}))?");
 
     public static Pattern HSL = Pattern.compile("(([0-9]){1,3})([.,:;|! ]+(([0-9]){1,3}))([.,:;|! ]+(([0-9]){1,3}))");
-    public static Pattern HSLA = Pattern.compile("(([0-9]){1,3})([.,:;|! ]+(([0-9]){1,3}))([.,:;|! ]+(([0-9]){1,3}))([.,:;|! ]+(([0-9]){1,3}))");
-    public static Pattern HSLA_S = Pattern.compile("(([hslaHSLA]){1,4})[(.,:;|! ]+?(([0-9]){1,3})([.,:;|! ]+(([0-9]){1,3}))?([.,:;|! ]+(([0-9]){1,3}))?([.,:;|! ]+(([0-9]){1,3}))?");
+    public static Pattern HSLA = Pattern
+        .compile("(([0-9]){1,3})([.,:;|! ]+(([0-9]){1,3}))([.,:;|! ]+(([0-9]){1,3}))([.,:;|! ]+(([0-9]){1,3}))");
+    public static Pattern HSLA_S = Pattern.compile(
+        "(([hslaHSLA]){1,4})[(.,:;|! ]+?(([0-9]){1,3})([.,:;|! ]+(([0-9]){1,3}))?([.,:;|! ]+(([0-9]){1,3}))?([.,:;|! ]+(([0-9]){1,3}))?");
 
-    public static Pattern CYMK = Pattern.compile("(([0-9]){1,3})([.,:;|! ]+(([0-9]){1,3}))([.,:;|! ]+(([0-9]){1,3}))([.,:;|! ]+(([0-9]){1,3}))");
-    public static Pattern CYMK_S = Pattern.compile("(([cmykCMYK]){1,4})[(.,:;|! ]+?(([0-9]){1,3})([.,:;|! ]+(([0-9]){1,3}))?([.,:;|! ]+(([0-9]){1,3}))?([.,:;|! ]+(([0-9]){1,3}))?");
+    public static Pattern CYMK = Pattern
+        .compile("(([0-9]){1,3})([.,:;|! ]+(([0-9]){1,3}))([.,:;|! ]+(([0-9]){1,3}))([.,:;|! ]+(([0-9]){1,3}))");
+    public static Pattern CYMK_S = Pattern.compile(
+        "(([cmykCMYK]){1,4})[(.,:;|! ]+?(([0-9]){1,3})([.,:;|! ]+(([0-9]){1,3}))?([.,:;|! ]+(([0-9]){1,3}))?([.,:;|! ]+(([0-9]){1,3}))?");
 
-    public static Pattern MFC = Pattern.compile("([§&]x)?([§&])?([0-9a-fA-F])([§&])?([0-9a-fA-F])([§&])?([0-9a-fA-F])([§&])?([0-9a-fA-F])([§&])?([0-9a-fA-F])([§&])?([0-9a-fA-F])");
+    public static Pattern MFC = Pattern.compile(
+        "([§&]x)?([§&])?([0-9a-fA-F])([§&])?([0-9a-fA-F])([§&])?([0-9a-fA-F])([§&])?([0-9a-fA-F])([§&])?([0-9a-fA-F])([§&])?([0-9a-fA-F])");
     public static Pattern MFC_AND = Pattern.compile("&([0-9a-fA-Frlmnokx])");
     public static Pattern CHAT_HEX = Pattern.compile("#([a-fA-F0-9]|[a-fA-F0-9]{2}|[a-fA-F0-9]{3}|[a-fA-F0-9]{6});");
-    public static Pattern CHAT_RGB = Pattern.compile("([rgbRGB]{1,3})\\(?([0-9]{1,3})(?:,([0-9]{1,3}))?(?:,([0-9]{1,3}))?\\)?;");
-    public static Pattern CHAT_HSL = Pattern.compile("(([hslHSL]){1,3})\\(?(([0-9]){1,3})([,.;:_](([0-9]){1,3}))?([,.;:_](([0-9]){1,3}))?\\)?;");
-    public static Pattern CHAT_CYMK = Pattern.compile("(([cmykCMYK]){1,4})\\(?(([0-9]){1,3})(,(([0-9]){1,3}))?(,(([0-9]){1,3}))?(,(([0-9]){1,3}))?\\)?;");
+    public static Pattern CHAT_RGB = Pattern
+        .compile("([rgbRGB]{1,3})\\(?([0-9]{1,3})(?:,([0-9]{1,3}))?(?:,([0-9]{1,3}))?\\)?;");
+    public static Pattern CHAT_HSL = Pattern
+        .compile("(([hslHSL]){1,3})\\(?(([0-9]){1,3})([,.;:_](([0-9]){1,3}))?([,.;:_](([0-9]){1,3}))?\\)?;");
+    public static Pattern CHAT_CYMK = Pattern
+        .compile("(([cmykCMYK]){1,4})\\(?(([0-9]){1,3})(,(([0-9]){1,3}))?(,(([0-9]){1,3}))?(,(([0-9]){1,3}))?\\)?;");
 
-    public static Pattern ANSI_RGB = Pattern.compile("(([0-9]){1,3})([.,:;|! ](([0-9]){1,3}))([.,:;|! ](([0-9]){1,3}))");
+    public static Pattern ANSI_RGB = Pattern
+        .compile("(([0-9]){1,3})([.,:;|! ](([0-9]){1,3}))([.,:;|! ](([0-9]){1,3}))");
 
     public class HEXA_8 {
     }
@@ -658,69 +657,85 @@ public class Color {
   }
 
   private static double hue2rgb(double p, double q, double t) {
-    if (t < 0) t += 1;
-    if (t > 1) t -= 1;
-    if (t < 1 / 6.0) return p + (q - p) * 6 * t;
-    if (t < 1 / 2.0) return q;
-    if (t < 2 / 3.0) return p + (q - p) * (2 / 3.0 - t) * 6;
+    if (t < 0)
+      t += 1;
+    if (t > 1)
+      t -= 1;
+    if (t < 1 / 6.0)
+      return p + (q - p) * 6 * t;
+    if (t < 1 / 2.0)
+      return q;
+    if (t < 2 / 3.0)
+      return p + (q - p) * (2 / 3.0 - t) * 6;
     return p;
   }
-
-
 
   // Direct conversion
   // HEX => ?
   public static String hex2hex(String hex) {
     return new Color(Type.HEX, hex).getHexString();
   }
+
   public static String hex2hexa(String hex) {
     return new Color(Type.HEX, hex).getHexStringWithAlpha();
   }
+
   public static String hex2rgb(String hex) {
     return new Color(Type.HEX, hex).getRGBString();
   }
+
   public static String hex2rgba(String hex) {
     return new Color(Type.HEX, hex).getRGBAString();
   }
+
   public static String hex2hsl(String hex) {
     return new Color(Type.HEX, hex).getHSLString();
   }
+
   public static String hex2hsla(String hex) {
     return new Color(Type.HEX, hex).getHSLAString();
   }
+
   public static String hex2ansi(String hex) {
     return new Color(Type.HEX, hex).getANSIEscape();
   }
+
   public static String hex2mfc(String hex) {
     return new Color(Type.HEX, hex).getMFC();
   }
+
   // RGB => ?
   public static String rgb2rgb(String rgb) {
     return new Color(Type.RGB, rgb).getRGBString();
   }
+
   public static String rgb2rgba(String rgb) {
     return new Color(Type.RGB, rgb).getRGBAString();
   }
+
   public static String rgb2hex(String rgb) {
     return new Color(Type.RGB, rgb).getHexString();
   }
+
   public static String rgb2hexa(String rgb) {
     return new Color(Type.RGB, rgb).getHexStringWithAlpha();
   }
+
   public static String rgb2hsl(String rgb) {
     return new Color(Type.RGB, rgb).getHSLString();
   }
+
   public static String rgb2hsla(String rgb) {
     return new Color(Type.RGB, rgb).getHSLAString();
   }
+
   public static String rgb2ansi(String rgb) {
     return new Color(Type.RGB, rgb).getANSIEscape();
   }
+
   public static String rgb2mfc(String rgb) {
     return new Color(Type.RGB, rgb).getMFC();
   }
-
-
 
   public static String getGradientString(String s) {
     Pattern p = Pattern.compile("gradient\\[([#&§0-9a-fA-FrgbRGB,;]+)](.*);");
@@ -733,11 +748,9 @@ public class Color {
       for (String colorString : colorStrings) {
         if (colorString.startsWith("#")) {
           colors.add(new Color(Type.HEX, colorString));
-        }
-        else if (colorString.startsWith("&") || colorString.startsWith("§")) {
+        } else if (colorString.startsWith("&") || colorString.startsWith("§")) {
           colors.add(new Color(Type.MFC, colorString));
-        }
-        else if (colorString.contains(",")) {
+        } else if (colorString.contains(",")) {
           colors.add(new Color(Type.RGB, colorString));
         }
       }
@@ -754,15 +767,13 @@ public class Color {
     int left = 0;
     if (colors.size() == 0) {
       return string;
-    }
-    else if (colors.size() == 1) {
+    } else if (colors.size() == 1) {
       colors.add(colors.get(0));
     }
     if (colors.size() <= cleanString.length()) {
       blockSize = length / (colors.size() - 1);
       left = length % (colors.size() - 1);
-    }
-    else {
+    } else {
       return string;
     }
     int pos = 0;
@@ -776,8 +787,7 @@ public class Color {
       if (n == colors.size() - 2) {
         gradientLength = blockSize + left;
         blockSize = gradientLength;
-      }
-      else {
+      } else {
         gradientLength = blockSize;
       }
       List<Color> gradient = getGradient(colors.get(n), colors.get(n + 1), gradientLength + 1);
@@ -812,8 +822,7 @@ public class Color {
             }
             string = string.replaceFirst("§" + string.charAt(pos + 1), "");
             s = string.charAt(pos);
-          }
-          else {
+          } else {
             s = c;
           }
         }

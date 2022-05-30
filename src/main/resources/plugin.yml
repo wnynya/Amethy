@@ -27,38 +27,38 @@ loadbefore:
 commands:
   amethy:
     permission: amethy.command.amethy
-    aliases: [a, cherry, c]
+    aliases: [a, amethy, c]
 
   wandedit:
-    permission: cherry.command.wand.edit
+    permission: amethy.command.wand.edit
     aliases: [cwand, we, wand, ww, //]
 
   wandbrush:
-    permission: cherry.command.wand.brush
+    permission: amethy.command.wand.brush
     aliases: [cbrush, wb, brush]
 
   portal:
-    permission: cherry.command.portal
+    permission: amethy.command.portal
     aliases: [cportal]
 
   menu:
-    permission: cherry.command.menu
+    permission: amethy.command.menu
     aliases: [cmenu, apsb, 메뉴, ㅡ두ㅕ]
 
   throw:
-    permission: cherry.command.throw
+    permission: amethy.command.throw
 
   troll:
-    permission: cherry.command.troll
+    permission: amethy.command.troll
 
   bungeeteleport:
-    permission: cherry.command.bungeeteleport
+    permission: amethy.command.bungeeteleport
     aliases: [btp, gtp, tpb]
 
   list:
     description: "Close player's opened inventory"
     usage: '/<command> [group|world]'
-    permission: cherry.command.list
+    permission: amethy.command.list
     aliases: [clist]
 
   exit:

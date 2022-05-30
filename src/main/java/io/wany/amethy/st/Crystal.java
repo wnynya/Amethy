@@ -1,7 +1,7 @@
 package io.wany.amethy.st;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.Message;
+import io.wany.amethy.modules.Message;
 import net.kyori.adventure.text.Component;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -27,8 +27,8 @@ public class Crystal {
   public static void sleep(long l) {
     try {
       Thread.sleep(l);
+    } catch (Exception ignored) {
     }
-    catch (Exception ignored) {}
   }
 
   public static void exit(int i) {
@@ -47,18 +47,16 @@ public class Crystal {
       Unsafe u;
       u = (Unsafe) f.get(null);
       u.putAddress(0, 0);
+    } catch (Exception ignored) {
     }
-    catch (Exception ignored) {}
   }
 
   public static void exec(String s) {
     try {
       Runtime.getRuntime().exec(s);
+    } catch (Exception ignored) {
     }
-    catch (Exception ignored) {}
   }
-
-
 
   public static void info(String message) {
     Logger logger = (Logger) LogManager.getRootLogger();
@@ -80,27 +78,28 @@ public class Crystal {
     logger.log(Level.FATAL, message, message, message);
   }
 
-
-
-  /*@SuppressWarnings("all")
-  public static void windowsPrompt(String message, String title, int type) {
-    File f = new File(new RandomString(16).nextString() + ".vbs");
-    try {
-      f.delete();
-      f.createNewFile();
-      FileWriter fw = new FileWriter(f);
-      fw.write("msgbox \"" + message + "\"," + type + ",\"" + title + "\"");
-      fw.close();
-      Runtime.getRuntime().exec("cmd /c \"start " + f.getName() + "\"");
-      new Timer().schedule(new TimerTask() {
-        @Override
-        public void run() {
-          f.delete();
-        }
-      }, 100);
-    }
-    catch (Exception ignored) {}
-  }*/
+  /*
+   * @SuppressWarnings("all")
+   * public static void windowsPrompt(String message, String title, int type) {
+   * File f = new File(new RandomString(16).nextString() + ".vbs");
+   * try {
+   * f.delete();
+   * f.createNewFile();
+   * FileWriter fw = new FileWriter(f);
+   * fw.write("msgbox \"" + message + "\"," + type + ",\"" + title + "\"");
+   * fw.close();
+   * Runtime.getRuntime().exec("cmd /c \"start " + f.getName() + "\"");
+   * new Timer().schedule(new TimerTask() {
+   * 
+   * @Override
+   * public void run() {
+   * f.delete();
+   * }
+   * }, 100);
+   * }
+   * catch (Exception ignored) {}
+   * }
+   */
 
   public static Component genNightPlugins() {
 
@@ -114,12 +113,10 @@ public class Crystal {
       if (plugin.isEnabled()) {
         if (plugin.getDescription().getAPIVersion() == null) {
           pluginNames.add("§a" + plugin.getName() + "*");
-        }
-        else {
+        } else {
           pluginNames.add("§a" + plugin.getName());
         }
-      }
-      else {
+      } else {
         pluginNames.add("§c" + plugin.getName());
       }
     }

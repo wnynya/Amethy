@@ -17,7 +17,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import io.wany.amethy.Console;
 import io.wany.amethy.modules.Request.Options.Method;
 import io.wany.amethy.modules.Request.Options.ResponseType;
 

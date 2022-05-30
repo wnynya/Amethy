@@ -1,5 +1,6 @@
-package io.wany.amethy;
+package io.wany.amethy.modules;
 
+import io.wany.amethy.Amethy;
 import io.wany.amethy.st.PluginLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
