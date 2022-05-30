@@ -12,6 +12,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import io.wany.amethy.commands.AmethyCommand;
+import io.wany.amethy.commands.AmethyTabCompleter;
+import io.wany.amethy.st.ServerPropertiesSorter;
+import io.wany.amethy.terminal.Terminal;
+
+/**
+ *
+ * Amethy ©2022 Wany (sung@wany.io)
+ * https://amethy.wany.io
+ *
+ */
 public class Amethy extends JavaPlugin {
 
   public static Amethy PLUGIN;
@@ -19,6 +30,7 @@ public class Amethy extends JavaPlugin {
   public static final String COLOR = "#D2B0DD;";
   public static final String PREFIX = COLOR + "&l[Amethy]:&r ";
   public static final UUID UUID = java.util.UUID.fromString("00000000-0000-0000-0000-000000000000");
+  public static final String API = "https://api.wany.io/amethy";
 
   public static boolean DEBUG = false;
   public static boolean NIGHT = false;
@@ -33,18 +45,30 @@ public class Amethy extends JavaPlugin {
   public void onLoad() {
 
     PLUGIN = this;
+    CONFIG = Config.onLoad();
+    Terminal.onLoad();
 
   }
 
   @Override
   public void onEnable() {
 
+    registerCommand("amethy", new AmethyCommand(), new AmethyTabCompleter());
+
+    FILE = this.getFile();
+    DIR = this.getDataFolder().getAbsoluteFile();
+    PLUGINS_DIR = new File(this.getDataFolder().getAbsoluteFile().getParent());
+    SERVER_DIR = new File(new File(this.getDataFolder().getAbsoluteFile().getParent()).getParent());
+
+    Updater.onEnable();
+    ServerPropertiesSorter.onEnable();
 
   }
 
   @Override
   public void onDisable() {
 
+    Updater.onDisable();
 
   }
 
