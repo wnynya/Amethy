@@ -11,7 +11,7 @@ public class TerminalListener {
     Console.log("ws: " + event);
     String client = "";
     try {
-      data.get("client").getAsString();
+      client = data.get("client").getAsString();
     } catch (Exception ignored) {
     }
 
@@ -26,7 +26,7 @@ public class TerminalListener {
       case "fs-dir-info": {
         String path = "";
         try {
-          data.get("path").getAsString();
+          path = data.get("data").getAsString();
         } catch (Exception ignored) {
         }
         TerminalFilesystem.sendDirectoryInfo(client, path);

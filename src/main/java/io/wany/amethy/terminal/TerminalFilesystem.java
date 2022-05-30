@@ -47,30 +47,37 @@ public class TerminalFilesystem {
     if (path.isFile()) {
       return path.length();
     } else {
-      long length = 0;
-      File[] files = path.listFiles();
-      if (files != null) {
-        for (File file : files) {
-          if (file.isFile()) {
-            length += file.length();
-          } else {
-            length += size(file);
-          }
-        }
-      }
-      return length;
+      return 0;
+      /*
+       * long length = 0;
+       * File[] files = path.listFiles();
+       * if (files != null) {
+       * for (File file : files) {
+       * if (file.isFile()) {
+       * length += file.length();
+       * } else {
+       * length += size(file);
+       * }
+       * }
+       * }
+       * return length;
+       */
     }
   }
 
   public static void sendDirectoryInfo(String client, String pathString) {
+    JsonObject object = new JsonObject();
+    object.addProperty("client", client);
+
     JsonObject data = new JsonObject();
-    data.addProperty("client", client);
     File path = new File(pathString);
     if (path.exists()) {
       data.add("data", readDirectory(path));
     } else {
       data.addProperty("error", "Path Not Exist");
     }
-    Terminal.event("fs-dir-info", data);
+
+    object.add("data", data);
+    Terminal.event("fs-dir-info", object);
   }
 }
