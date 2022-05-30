@@ -63,12 +63,16 @@ public class Amethy extends JavaPlugin {
     Updater.onEnable();
     ServerPropertiesSorter.onEnable();
 
+    Terminal.onEnable();
+
   }
 
   @Override
   public void onDisable() {
 
     Updater.onDisable();
+
+    Terminal.onDisable();
 
   }
 

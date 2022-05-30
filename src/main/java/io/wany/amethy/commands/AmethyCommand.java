@@ -7,12 +7,15 @@ import io.wany.amethy.modules.Promise;
 import io.wany.amethy.modules.Request;
 import io.wany.amethy.modules.Request.Options;
 import io.wany.amethy.st.PluginLoader;
+import io.wany.amethy.terminal.Terminal;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
 import org.bukkit.command.Command;
@@ -50,18 +53,50 @@ public class AmethyCommand implements CommandExecutor {
         Message.info(sender, Amethy.PREFIX + "Reload complete &7(" + (e - s) + "ms)");
         return true;
       }
+
       case "terminal" -> {
         if (!sender.hasPermission("amethy.terminal")) {
           return true;
         }
-        long s = System.currentTimeMillis();
-        // Terminal.STATUS = Terminal.Status.RELOAD;
-        PluginLoader.unload();
-        PluginLoader.load(Amethy.FILE);
-        long e = System.currentTimeMillis();
-        Message.info(sender, Amethy.PREFIX + "Reload complete &7(" + (e - s) + "ms)");
+
+        if (args.length > 1) {
+          switch (args[1].toLowerCase()) {
+            case "grant": {
+              if (!sender.hasPermission("amethy.terminal.grant")) {
+                return true;
+              }
+
+              if (args.length <= 2) {
+                return true;
+              }
+
+              String id = args[2];
+
+              try {
+                JsonObject aci = Terminal.grant(id);
+                Console.log(aci.toString());
+                JsonObject data = aci.get("data").getAsJsonObject();
+                String gmsg = "";
+                JsonObject from = null;
+                if (data.has("from")) {
+                  from = data.get("from").getAsJsonObject();
+                  gmsg += from.get("eid").getAsString() + " -> ";
+                }
+                JsonObject to = data.get("to").getAsJsonObject();
+                gmsg += to.get("eid").getAsString();
+                Message.send(sender, Message.parse("Grant success: " + gmsg));
+              } catch (FileNotFoundException e) {
+                Message.send(sender, Message.parse("Fail to grant: Account not found"));
+              } catch (Exception e) {
+                Message.send(sender, Message.parse("Fail to grant: Unknown"));
+              }
+            }
+          }
+        }
+
         return true;
       }
+
       /*
        * case "update", "u" -> {
        * if (!sender.hasPermission("amethy.update")) {
@@ -218,11 +253,6 @@ public class AmethyCommand implements CommandExecutor {
           return true;
         }
 
-        try {
-          Console.log(Request.JSONGet("https://api.wany.io/accounts").get("message").getAsString());
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
         return true;
       }
 

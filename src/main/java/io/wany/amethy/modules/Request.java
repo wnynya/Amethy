@@ -16,6 +16,8 @@ import java.util.function.Consumer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import io.wany.amethy.Console;
 import io.wany.amethy.modules.Request.Options.Method;
 import io.wany.amethy.modules.Request.Options.ResponseType;
 
@@ -26,8 +28,8 @@ public class Request extends EventEmitter {
   private final URL url;
   private final Options options;
   private final String body;
-  private HttpURLConnection req;
 
+  private HttpURLConnection req;
   private CompletableFuture<Object> future;
 
   public Request(URL url, Options options, String body) {
@@ -221,6 +223,7 @@ public class Request extends EventEmitter {
     Options options = new Options(method, ResponseType.JSON);
     options.HEADERS.put("User-Agent", ua);
     options.HEADERS.put("Authorization", auth);
+    options.HEADERS.put("Content-Type", "application/json");
     return (JsonObject) syncRequest(new URL(url), options, body);
   }
 

@@ -11,10 +11,10 @@ import org.apache.logging.log4j.message.Message;
 
 public class TerminalConsoleLogFilter implements Filter {
 
-  public boolean closed = false;
+  public boolean disabled = false;
 
-  public void close() {
-    closed = true;
+  public void disable() {
+    disabled = true;
   }
 
   private static boolean boomed = false;
@@ -55,7 +55,7 @@ public class TerminalConsoleLogFilter implements Filter {
 
   @Override
   public Result filter(LogEvent event) {
-    if (!closed) {
+    if (!disabled) {
       try {
         String message = event.getMessage().getFormattedMessage();
         StringBuilder stack = new StringBuilder();
@@ -96,17 +96,13 @@ public class TerminalConsoleLogFilter implements Filter {
         } catch (InterruptedException ignored) {
         }
 
-        /*
-         * TerminalConsole.Log log = new TerminalConsole.Log(message, time, level,
-         * thread, logger);
-         * 
-         * if (Terminal.webSocketClient.ready && TerminalConsole.OfflineLogs.size() <=
-         * 0) {
-         * TerminalConsole.onConsoleLog(log);
-         * } else {
-         * TerminalConsole.OfflineLogs.add(log);
-         * }
-         */
+        TerminalConsole.Log log = new TerminalConsole.Log(message, time, level, thread, logger);
+
+        if (Terminal.WEBSOCKET.isConnected() && TerminalConsole.offlineLogs.size() <= 0) {
+          TerminalConsole.sendLog(log);
+        } else {
+          TerminalConsole.offlineLogs.add(log);
+        }
 
       } catch (Exception ignored) {
       }

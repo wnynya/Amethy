@@ -92,7 +92,6 @@ public class Updater {
       connection.disconnect();
       throw new InternalServerErrorException();
     }
-    System.out.println(responseCode);
     connection.disconnect();
     throw new UnknownException();
 
