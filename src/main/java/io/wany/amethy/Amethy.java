@@ -18,8 +18,8 @@ import io.wany.amethy.itemonworld.ItemOnWorld;
 import io.wany.amethy.listeners.ItemSpawn;
 import io.wany.amethy.listeners.PlayerInteract;
 import io.wany.amethy.modules.Config;
+import io.wany.amethy.modules.ServerPropertiesSorter;
 import io.wany.amethy.modules.Updater;
-import io.wany.amethy.st.ServerPropertiesSorter;
 import io.wany.amethy.supports.coreprotect.CoreProtectSupport;
 import io.wany.amethy.supports.cucumbery.CucumberySupport;
 import io.wany.amethy.supports.vault.VaultSupport;
@@ -74,6 +74,7 @@ public class Amethy extends JavaPlugin {
     registerCommand("lid", new LidCommand(), new AmethyTabCompleter());
     registerCommand("toggledownfall", new ToggledownfallCommand(), new AmethyTabCompleter());
     registerCommand("closeinvenrory", new CloseinventoryCommand(), new AmethyTabCompleter());
+    registerCommand("list", new ListCommand(), new AmethyTabCompleter());
 
     /*
      * registerEvent(new PlayerJoin());

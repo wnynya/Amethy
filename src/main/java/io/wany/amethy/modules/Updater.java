@@ -1,7 +1,7 @@
 package io.wany.amethy.modules;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.st.PluginLoader;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,6 +13,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -21,8 +22,11 @@ import java.nio.file.Path;
 import java.security.SecureRandom;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import com.google.gson.JsonObject;
 
 @SuppressWarnings("all")
 public class Updater {
@@ -34,6 +38,7 @@ public class Updater {
 
   private static final Amethy plugin = Amethy.PLUGIN;
   private static final String pluginAPI = plugin.getDescription().getAPIVersion();
+  private static final String pluginVersion = plugin.getDescription().getVersion();
   private static final String userAgent = NAME;
   public static Updater defaultUpdater;
 
@@ -48,53 +53,50 @@ public class Updater {
 
   private static final String API = Amethy.API + "/packages";
   private static final String API_KEY = "060d6031511498fd3879b21aa5d55437";
+  private static String CHANNEL = "release";
 
+  private final String api;
+  private final String key;
   private final Channel channel;
   private final ExecutorService executorService = Executors.newFixedThreadPool(1);
   private static final Timer timer = new Timer();
 
-  public Updater(@NotNull Channel channel) {
+  public Updater(String api, String key, Channel channel) {
+    this.api = api;
+    this.key = key;
     this.channel = channel;
   }
 
-  public Version getLatestVersion()
-      throws IOException, ParseException, NotFoundException, InternalServerErrorException, UnknownException {
-
-    URL url = new URL(API + "/latest?channel=" + this.channel.name + "&apiVersion=" + pluginAPI);
-
-    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-    connection.setRequestMethod("GET");
-    connection.setRequestProperty("User-Agent", userAgent);
-    connection.setRequestProperty("o", API_KEY);
-    connection.setConnectTimeout(2000);
-    connection.setReadTimeout(2000);
-
-    int responseCode = connection.getResponseCode();
-    if (responseCode == 200) { // OK
-      Reader inputReader = new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8);
-      BufferedReader streamReader = new BufferedReader(inputReader);
-      String streamLine;
-      StringBuilder content = new StringBuilder();
-      while ((streamLine = streamReader.readLine()) != null) {
-        content.append(streamLine);
+  public static Boolean isLatest() {
+    Boolean latest = null;
+    try {
+      String url = API + "/latest?channel=" + CHANNEL + "&apiVersion=" + pluginAPI;
+      JsonObject res = Request.JSONGet(url, API_KEY);
+      JsonObject data = res.get("data").getAsJsonObject();
+      String version = data.get("version").getAsString();
+      if (pluginVersion.equals(version)) {
+        latest = true;
+      } else {
+        latest = false;
       }
-      streamReader.close();
-      connection.disconnect();
-      JSONParser parser = new JSONParser();
-      JSONObject object = (JSONObject) parser.parse(content.toString());
-      JSONObject data = (JSONObject) object.get("data");
-      String versionID = data.get("id").toString();
-      String versionName = data.get("version").toString();
-      return new Version(versionID, versionName);
-    } else if (responseCode == 404) { // Not Found
-      connection.disconnect();
-      throw new NotFoundException();
-    } else if (responseCode == 500) { // Internal Server Error
-      connection.disconnect();
-      throw new InternalServerErrorException();
+    } catch (Exception ignored) {
     }
-    connection.disconnect();
-    throw new UnknownException();
+    return latest;
+  }
+
+  public Version getLatestVersion()
+      throws MalformedURLException, InterruptedException, ExecutionException, IOException {
+
+    String url = this.api + "/latest?channel=" + this.channel.name + "&apiVersion=" + pluginAPI;
+    JsonObject res = Request.JSONGet(url, this.key);
+
+    JsonObject data = res.get("data").getAsJsonObject();
+    String versionID = data.get("id").getAsString();
+    String versionName = data.get("version").getAsString();
+
+    Version version = new Version(versionID, versionName);
+
+    return version;
 
   }
 
@@ -224,12 +226,13 @@ public class Updater {
     if (channelName == null) {
       channelName = "release";
     }
+    CHANNEL = channelName;
     long checkInterval = 1000;
     if (channelName.equals("release")) {
       checkInterval = 1000 * 60 * 60;
     }
     Channel channel = new Channel(channelName, checkInterval);
-    defaultUpdater = new Updater(channel);
+    defaultUpdater = new Updater(API, API_KEY, channel);
     if (!Amethy.CONFIG.getBoolean("updater.auto")) {
       return;
     }

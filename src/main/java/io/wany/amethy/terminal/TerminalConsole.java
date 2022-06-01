@@ -7,6 +7,11 @@ import com.google.gson.JsonObject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
+import org.bukkit.Bukkit;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.command.TabCompleter;
+
+import io.wany.amethy.Amethy;
 
 public class TerminalConsole {
 
@@ -48,6 +53,32 @@ public class TerminalConsole {
       sendLog(log);
       offlineLogs.remove(0);
     }
+  }
+
+  public static void command(String client, String input) {
+    sendLog(new Log("> " + input, System.currentTimeMillis(), "INFO", "ConsoleCommand", "ConsoleCommand"));
+    Bukkit.getScheduler().runTask(Amethy.PLUGIN,
+        () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), input));
+  }
+
+  public static void tabComplete(String input, String source) {
+
+    String[] inputArgs = input.split(" ");
+    String[] inputs = new String[inputArgs.length + 1];
+    System.arraycopy(inputArgs, 0, inputs, 0, inputArgs.length);
+    inputs[inputArgs.length] = "";
+    String command = inputs[0];
+    PluginCommand pluginCommand = Bukkit.getServer().getPluginCommand(command);
+    String[] args = new String[inputs.length - 1];
+    System.arraycopy(inputs, 1, args, 0, inputs.length - 1);
+    List<String> comp = new ArrayList<>();
+    if (pluginCommand != null) {
+      TabCompleter completer = pluginCommand.getTabCompleter();
+      if (completer != null) {
+        comp = completer.onTabComplete(Bukkit.getConsoleSender(), pluginCommand, pluginCommand.getLabel(), args);
+      }
+    }
+
   }
 
   public static void onLoad() {

@@ -2,13 +2,13 @@ package io.wany.amethy.terminal;
 
 import com.google.gson.JsonObject;
 
-import io.wany.amethy.modules.Console;
+import io.wany.amethy.Amethy;
+import io.wany.amethy.terminal.TerminalConsole.Log;
 
 public class TerminalListener {
 
   public static void on(String event, String message, JsonObject data) {
 
-    Console.log("ws: " + event);
     String client = "";
     try {
       client = data.get("client").getAsString();
@@ -20,6 +20,22 @@ public class TerminalListener {
       case "init": {
         TerminalDashboard.sendSystemInfo();
         TerminalConsole.sendOfflineLogs();
+        if (Terminal.ISRELOAD) {
+          Terminal.ISRELOAD = false;
+          TerminalConsole.sendLog(new Log(
+              "Enabling Amethy v" + Amethy.PLUGIN.getDescription().getVersion(), System.currentTimeMillis(), "INFO",
+              "Server thread", "Amethy"));
+        }
+        break;
+      }
+
+      case "console-command": {
+        String command = "";
+        try {
+          command = data.get("data").getAsString();
+        } catch (Exception ignored) {
+        }
+        TerminalConsole.command(client, command);
         break;
       }
 

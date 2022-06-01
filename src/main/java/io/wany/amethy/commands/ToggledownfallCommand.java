@@ -10,17 +10,13 @@ import org.bukkit.entity.Player;
 public class ToggledownfallCommand implements CommandExecutor {
 
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-
     World world = Bukkit.getWorlds().get(0);
-
     if (sender instanceof Player player) {
       world = player.getWorld();
     }
-
     world.setStorm(!world.hasStorm());
-
+    sender.sendMessage("Toggled downfall");
     return true;
-
   }
 
 }

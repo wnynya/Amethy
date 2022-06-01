@@ -1,4 +1,4 @@
-package io.wany.amethy.st;
+package io.wany.amethy.modules;
 
 import io.wany.amethy.Amethy;
 import org.bukkit.Bukkit;
@@ -40,8 +40,7 @@ public class PluginLoader {
         Field listenersField = Bukkit.getPluginManager().getClass().getDeclaredField("listeners");
         listenersField.setAccessible(true);
         listeners = (Map<Event, SortedSet<RegisteredListener>>) listenersField.get(pluginManager);
-      }
-      catch (Exception ignored) {
+      } catch (Exception ignored) {
       }
       Field commandMapField = Bukkit.getPluginManager().getClass().getDeclaredField("commandMap");
       commandMapField.setAccessible(true);
@@ -49,8 +48,7 @@ public class PluginLoader {
       Field knownCommandsField = SimpleCommandMap.class.getDeclaredField("knownCommands");
       knownCommandsField.setAccessible(true);
       commands = (Map<String, Command>) knownCommandsField.get(commandMap);
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
     pluginManager.disablePlugin(plugin);
@@ -66,7 +64,7 @@ public class PluginLoader {
       }
     }
     if (commandMap != null) {
-      for (Iterator<Map.Entry<String, Command>> it = commands.entrySet().iterator(); it.hasNext(); ) {
+      for (Iterator<Map.Entry<String, Command>> it = commands.entrySet().iterator(); it.hasNext();) {
         Map.Entry<String, Command> entry = it.next();
         if (entry.getValue() instanceof PluginCommand) {
           PluginCommand c = (PluginCommand) entry.getValue();
@@ -86,18 +84,16 @@ public class PluginLoader {
         Field pluginInitField = cl.getClass().getDeclaredField("pluginInit");
         pluginInitField.setAccessible(true);
         pluginInitField.set(cl, null);
-      }
-      catch (Exception e) {
+      } catch (Exception e) {
         e.printStackTrace();
       }
       try {
         ((URLClassLoader) cl).close();
-      }
-      catch (Exception e) {
+      } catch (Exception e) {
         e.printStackTrace();
       }
     }
-    //System.gc();
+    // System.gc();
   }
 
   public static void load(File file) {
@@ -107,8 +103,7 @@ public class PluginLoader {
     }
     try {
       plugin = Bukkit.getPluginManager().loadPlugin(file);
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
     if (plugin == null) {

@@ -10,16 +10,21 @@ import java.util.concurrent.TimeUnit;
 
 import com.google.gson.JsonObject;
 
+import org.bukkit.Bukkit;
+
 import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.Config;
+import io.wany.amethy.modules.Console;
 import io.wany.amethy.modules.Request;
 import io.wany.amethy.modules.WebSocketClient;
 
 public class Terminal {
 
   public static String ID;
+  private static String PKEY;
   private static String KEY = "401790cf28f159d50950333f0856e482";
   protected static WebSocketClient WEBSOCKET;
+  protected static boolean ISRELOAD = Bukkit.getWorlds().size() != 0;
 
   public static boolean ping() {
     try {
@@ -35,33 +40,36 @@ public class Terminal {
     }
   }
 
-  public static String newID() throws MalformedURLException, InterruptedException, ExecutionException, IOException {
+  public static String[] newID() throws MalformedURLException, InterruptedException, ExecutionException, IOException {
     JsonObject res = Request.JSONPost(Amethy.API + "/terminal/nodes", new JsonObject(), KEY);
-    String id = res.get("data").getAsString();
-    return id;
+    JsonObject data = res.get("data").getAsJsonObject();
+    String id = data.get("id").getAsString();
+    String key = data.get("key").getAsString();
+    return new String[] { id, key };
   }
 
-  public static boolean checkID(String id) {
+  public static boolean checkID(String id, String key) {
     try {
-      Request.JSONGet(Amethy.API + "/terminal/nodes/" + id + "/check", KEY);
+      Request.JSONGet(Amethy.API + "/terminal/nodes/" + id + "/check?p=" + key, KEY);
       return true;
     } catch (Exception e) {
       return false;
     }
   }
 
-  public static String getID() {
+  public static String[] getID() {
     Config a = new Config(".amethy");
     String id = a.getString("id");
-    if (id == null) {
+    String key = a.getString("key");
+    if (id == null || key == null) {
       try {
-        id = newID();
-        a.set("id", id);
+        String[] d = newID();
+        a.set("id", d[0]);
+        a.set("key", d[1]);
       } catch (Exception e) {
-        e.printStackTrace();
       }
     }
-    return id;
+    return new String[] { id, key };
   }
 
   private static void loadWebSocket() {
@@ -73,16 +81,22 @@ public class Terminal {
       loadWebSocket();
       return;
     }
-    ID = getID();
-    if (!checkID(ID)) {
+    String[] d = getID();
+    ID = d[0];
+    PKEY = d[1];
+    if (!checkID(ID, PKEY)) {
       Config a = new Config(".amethy");
       a.set("id", null);
-      ID = getID();
+      a.set("key", null);
+      String[] d2 = getID();
+      ID = d2[0];
+      PKEY = d2[1];
     }
     WebSocketClient.Options options = new WebSocketClient.Options();
     options.AUTO_RECONNECT = true;
     options.HEADERS.put("Authorization", KEY);
     options.HEADERS.put("n", ID);
+    options.HEADERS.put("p", PKEY);
     try {
       WEBSOCKET = new WebSocketClient(new URI("wss://api.wany.io/amethy/terminal/node"), options);
     } catch (Exception e) {

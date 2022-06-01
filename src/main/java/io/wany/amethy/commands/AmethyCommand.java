@@ -3,30 +3,26 @@ package io.wany.amethy.commands;
 import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.Console;
 import io.wany.amethy.modules.Message;
+import io.wany.amethy.modules.PluginLoader;
 import io.wany.amethy.modules.Promise;
-import io.wany.amethy.modules.Request;
-import io.wany.amethy.modules.Request.Options;
-import io.wany.amethy.st.PluginLoader;
+import io.wany.amethy.modules.Updater;
 import io.wany.amethy.terminal.Terminal;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.concurrent.ExecutionException;
-
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 
 public class AmethyCommand implements CommandExecutor {
 
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
     if (args.length == 0) {
+      sender.sendMessage(Message.commandErrorTranslatable("command.unknown.command"));
+      sender.sendMessage(Message.commandErrorArgsComponent(label, args, -1));
       return true;
     }
 
@@ -36,7 +32,13 @@ public class AmethyCommand implements CommandExecutor {
         if (!sender.hasPermission("amethy.version")) {
           return true;
         }
-        Message.info(sender, Amethy.PREFIX + Amethy.PLUGIN.getDescription().getVersion());
+        String tail = "";
+        if (Updater.isLatest() != null && Updater.isLatest() == true) {
+          tail = "[Latest]";
+        } else if (Updater.isLatest() != null && Updater.isLatest() == false) {
+          tail = "[Outdated]";
+        }
+        sender.sendMessage(Message.of("Amethy v" + Amethy.PLUGIN.getDescription().getVersion() + " " + tail));
         return true;
       }
 
@@ -44,13 +46,12 @@ public class AmethyCommand implements CommandExecutor {
         if (!sender.hasPermission("amethy.reload")) {
           return true;
         }
-        Message.info(sender, Amethy.PREFIX + "Reloading Amethy v." + Amethy.PLUGIN.getDescription().getVersion());
+        sender.sendMessage(Message.of("Reloading Amethy v" + Amethy.PLUGIN.getDescription().getVersion()));
         long s = System.currentTimeMillis();
-        // Terminal.STATUS = Terminal.Status.RELOAD;
         PluginLoader.unload();
         PluginLoader.load(Amethy.FILE);
         long e = System.currentTimeMillis();
-        Message.info(sender, Amethy.PREFIX + "Reload complete &7(" + (e - s) + "ms)");
+        sender.sendMessage(Message.of("Reload complete &7(" + (e - s) + "ms)"));
         return true;
       }
 
@@ -61,7 +62,7 @@ public class AmethyCommand implements CommandExecutor {
 
         if (args.length > 1) {
           switch (args[1].toLowerCase()) {
-            case "grant": {
+            case "grant" -> {
               if (!sender.hasPermission("amethy.terminal.grant")) {
                 return true;
               }
@@ -91,8 +92,31 @@ public class AmethyCommand implements CommandExecutor {
                 Message.send(sender, Message.parse("Fail to grant: Unknown"));
               }
             }
+
+            default -> {
+              sender.sendMessage(Message.commandErrorTranslatable("command.unknown.argument"));
+              sender.sendMessage(Message.commandErrorArgsComponent(label, args, 1));
+              return true;
+            }
           }
+
+          return true;
+        } else {
+          sender.sendMessage(Message.commandErrorTranslatable("command.unknown.command"));
+          sender.sendMessage(Message.commandErrorArgsComponent(label, args, 1));
+          return true;
         }
+      }
+
+      case "explosion" -> {
+        if (!sender.hasPermission("amethy.explosion")) {
+          return true;
+        }
+
+        float power = 0f;
+        boolean setFire = false;
+        boolean breakBlocks = true;
+        Entity source = sender instanceof Entity ? (Entity) sender : null;
 
         return true;
       }
@@ -248,15 +272,31 @@ public class AmethyCommand implements CommandExecutor {
        * return true;
        * }
        */
-      case "test" -> {
+
+      case "test", "t" -> {
         if (!sender.hasPermission("amethy.test")) {
           return true;
         }
 
+        sender.sendMessage(Message.of("#52ee52;Cucumbery"));
+        return true;
+      }
+
+      case "colortest" -> {
+        if (!sender.hasPermission("amethy.test")) {
+          return true;
+        }
+
+        sender.sendMessage(Message.of("&00000&11111&22222&33333&44444&55555&66666&77777"));
+        sender.sendMessage(Message.of("&88888&99999&AAAAA&BBBBB&CCCCC&DDDDD&EEEEE&FFFFF"));
+        sender.sendMessage(Message.of("&lllll&r&mmmmm&r&nnnnn&r&ooooo&r&kkkkk&r&rrrrr"));
+        sender.sendMessage(Message.of("#FF0000;#####00FF00;#####0000FF;####"));
         return true;
       }
 
       default -> {
+        sender.sendMessage(Message.commandErrorTranslatable("command.unknown.argument"));
+        sender.sendMessage(Message.commandErrorArgsComponent(label, args, 0));
         return true;
       }
 

@@ -84,6 +84,8 @@ public class Request extends EventEmitter {
       }
     }
 
+    this.req.disconnect();
+
     future.completeAsync(() -> response);
 
     this.emit("response", response);

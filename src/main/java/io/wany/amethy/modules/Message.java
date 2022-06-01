@@ -2,7 +2,6 @@ package io.wany.amethy.modules;
 
 import io.papermc.paper.inventory.ItemRarity;
 import io.wany.amethy.Amethy;
-import io.wany.amethy.modules.Color;
 import io.wany.amethy.supports.vault.VaultChat;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
@@ -29,6 +28,26 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Message {
+
+  public static Component of(Object... objects) {
+    Component component = Component.empty();
+    for (Object object : objects) {
+      if (object instanceof Component) {
+        component = component.append((Component) object);
+      } else if (object instanceof String) {
+        component = component.append(parse(effect((String) object)));
+      } else if (object instanceof Number) {
+        component = component.append(parse(effect("§c" + object)));
+      } else if (object instanceof Boolean) {
+        component = component.append(parse(effect("§6" + object)));
+      } else if (object instanceof Entity) {
+        component = component.append(parse((Entity) object));
+      } else if (object instanceof ItemStack) {
+        component = component.append(parse((ItemStack) object));
+      }
+    }
+    return component;
+  }
 
   public static void send(Player player, Component message) {
     player.sendMessage(message);
@@ -753,6 +772,9 @@ public class Message {
   }
 
   public static String commandErrorArgs(String[] args, int i) {
+    if (i == -1) {
+      return "";
+    }
     StringBuilder stringBuilder = new StringBuilder();
     for (; i < args.length; i++) {
       stringBuilder.append(args[i]);
@@ -765,16 +787,16 @@ public class Message {
 
   public static Component commandErrorArgsComponent(String label, String[] args, int i) {
     StringBuilder stringBuilder = new StringBuilder();
-    if (i == -1) {
-      stringBuilder.append("&c&n");
-    } else {
-      stringBuilder.append("&7");
-    }
+    stringBuilder.append("&7");
     stringBuilder.append(label);
-    stringBuilder.append(" ");
+    if (i != -1) {
+      stringBuilder.append(" ");
+    }
     for (int j = 0; j < i; j++) {
       stringBuilder.append(args[j]);
-      stringBuilder.append(" ");
+      if (args.length >= i || j != i - 1) {
+        stringBuilder.append(" ");
+      }
     }
     if (i >= 0) {
       if (stringBuilder.length() > 10) {
@@ -783,8 +805,10 @@ public class Message {
     }
     stringBuilder.append("&c&n");
     stringBuilder.append(commandErrorArgs(args, i));
+    String string = stringBuilder.toString();
+    string = string.replaceAll("\s+$", "");
     return Message.parse(
-        Message.effect(stringBuilder.toString()),
+        Message.effect(string),
         Component.translatable("command.context.here")
             .color(TextColor.fromHexString("#FF5555"))
             .decoration(TextDecoration.ITALIC, TextDecoration.State.TRUE));

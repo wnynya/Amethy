@@ -2,6 +2,7 @@ package io.wany.amethy.itemonworld;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
+import com.jho5245.cucumbery.util.no_groups.Method;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -24,6 +25,7 @@ import io.wany.amethy.modules.Console;
 import io.wany.amethy.modules.Message;
 import io.wany.amethy.modules.minecraft.Skull;
 import io.wany.amethy.supports.coreprotect.CoreProtectSupport;
+import io.wany.amethy.supports.cucumbery.CucumberySupport;
 
 import java.util.*;
 
@@ -170,10 +172,13 @@ public class ItemOnWorld {
     if (!textures.contains(texture)) {
       return;
     }
-    event.setCancelled(true);
     ItemStack drop = new ItemStack(this.itemStack.getType());
-    drop.setAmount(this.itemStack.getAmount());
-    event.getLocation().getWorld().dropItem(event.getLocation(), drop);
+    drop.setAmount(this.itemStack.getAmount() * itemStack.getAmount());
+    item.setItemStack(drop);
+    if (CucumberySupport.LOADED) {
+      Method.updateItem(item);
+    }
+    // event.getLocation().getWorld().dropItem(event.getLocation(), drop);
   }
 
   public static void onPlayerInteract(PlayerInteractEvent event) {

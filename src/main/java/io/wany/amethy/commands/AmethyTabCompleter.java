@@ -1,14 +1,12 @@
 package io.wany.amethy.commands;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,7 +55,8 @@ public class AmethyTabCompleter implements TabCompleter {
   }
 
   @Override
-  public List<String> onTabComplete(@NotNull CommandSender sender, Command command, @NotNull String alias, String[] args) {
+  public List<String> onTabComplete(CommandSender sender, Command command, String alias,
+      String[] args) {
     String name = command.getName().toLowerCase();
 
     switch (name) {
@@ -78,8 +77,8 @@ public class AmethyTabCompleter implements TabCompleter {
           if (sender.hasPermission("amethy.menu")) {
             list.add("menu");
           }
-          if (sender.hasPermission("amethy.system")) {
-            list.add("system");
+          if (sender.hasPermission("amethy.terminal")) {
+            list.add("terminal");
           }
           if (sender.hasPermission("amethy.explosion")) {
             list.add("explosion");
@@ -98,7 +97,7 @@ public class AmethyTabCompleter implements TabCompleter {
             }
             int commandArgsLength = 1;
             // flags
-            List <String> flags = List.of("-silent", "-force");
+            List<String> flags = List.of("-silent", "-force");
             if (args.length <= commandArgsLength + flags.size()) {
               List<String> list = new ArrayList<>(flags);
               usedFlags(args, commandArgsLength, list);
@@ -144,7 +143,7 @@ public class AmethyTabCompleter implements TabCompleter {
               case "gc" -> {
                 int commandArgsLength = 2;
                 // flags
-                List <String> flags = List.of("-silent");
+                List<String> flags = List.of("-silent");
                 if (args.length <= commandArgsLength + flags.size()) {
                   List<String> list = new ArrayList<>(flags);
                   usedFlags(args, commandArgsLength, list);
@@ -184,7 +183,9 @@ public class AmethyTabCompleter implements TabCompleter {
 
           if (args.length == 2) {
             if (sender.hasPermission("amethy.command.reload")) {
-              List<String> list = Arrays.asList("UnhandledException", "NullPointerException", "StackOverflowError", "ArrayIndexOutOfBoundsException", "ClassCastException", "IllegalArgumentException", "ArithmeticException", "UnsupportedOperationException");
+              List<String> list = Arrays.asList("UnhandledException", "NullPointerException", "StackOverflowError",
+                  "ArrayIndexOutOfBoundsException", "ClassCastException", "IllegalArgumentException",
+                  "ArithmeticException", "UnsupportedOperationException");
               return autoComplete(list, args[args.length - 1]);
             }
           }
@@ -217,19 +218,17 @@ public class AmethyTabCompleter implements TabCompleter {
             if (block != null) {
               if (!args[args.length - 1].equals("")) {
                 list = new ArrayList<>(List.of(
-                  args[args.length - 1] + "",
-                  args[args.length - 1] + " " + block.getY(),
-                  args[args.length - 1] + " " + block.getY() + " " + block.getZ(),
-                  args[args.length - 1] + " " + block.getY() + " " + block.getZ() + " " + block.getWorld().getName()
-                ));
-              }
-              else {
+                    args[args.length - 1] + "",
+                    args[args.length - 1] + " " + block.getY(),
+                    args[args.length - 1] + " " + block.getY() + " " + block.getZ(),
+                    args[args.length - 1] + " " + block.getY() + " " + block.getZ() + " "
+                        + block.getWorld().getName()));
+              } else {
                 list = new ArrayList<>(List.of(
-                  block.getX() + "",
-                  block.getX() + " " + block.getY(),
-                  block.getX() + " " + block.getY() + " " + block.getZ(),
-                  block.getX() + " " + block.getY() + " " + block.getZ() + " " + block.getWorld().getName()
-                ));
+                    block.getX() + "",
+                    block.getX() + " " + block.getY(),
+                    block.getX() + " " + block.getY() + " " + block.getZ(),
+                    block.getX() + " " + block.getY() + " " + block.getZ() + " " + block.getWorld().getName()));
               }
             }
           }
@@ -242,17 +241,14 @@ public class AmethyTabCompleter implements TabCompleter {
             if (block != null) {
               if (!args[args.length - 1].equals("")) {
                 list = new ArrayList<>(List.of(
-                  args[args.length - 1] + "",
-                  args[args.length - 1] + " " + block.getZ(),
-                  args[args.length - 1] + " " + block.getZ() + " " + block.getWorld().getName()
-                ));
-              }
-              else {
+                    args[args.length - 1] + "",
+                    args[args.length - 1] + " " + block.getZ(),
+                    args[args.length - 1] + " " + block.getZ() + " " + block.getWorld().getName()));
+              } else {
                 list = new ArrayList<>(List.of(
-                  block.getY() + "",
-                  block.getY() + " " + block.getZ(),
-                  block.getY() + " " + block.getZ() + " " + block.getWorld().getName()
-                ));
+                    block.getY() + "",
+                    block.getY() + " " + block.getZ(),
+                    block.getY() + " " + block.getZ() + " " + block.getWorld().getName()));
               }
             }
           }
@@ -265,15 +261,12 @@ public class AmethyTabCompleter implements TabCompleter {
             if (block != null) {
               if (!args[args.length - 1].equals("")) {
                 list = new ArrayList<>(List.of(
-                  args[args.length - 1] + "",
-                  args[args.length - 1] + " " + block.getWorld().getName()
-                ));
-              }
-              else {
+                    args[args.length - 1] + "",
+                    args[args.length - 1] + " " + block.getWorld().getName()));
+              } else {
                 list = new ArrayList<>(List.of(
-                  block.getZ() + "",
-                  block.getZ() + " " + block.getWorld().getName()
-                ));
+                    block.getZ() + "",
+                    block.getZ() + " " + block.getWorld().getName()));
               }
             }
           }
@@ -307,4 +300,3 @@ public class AmethyTabCompleter implements TabCompleter {
   }
 
 }
-

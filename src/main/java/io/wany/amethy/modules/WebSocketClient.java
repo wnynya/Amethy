@@ -68,7 +68,7 @@ public class WebSocketClient extends EventEmitter {
           open();
         } catch (Exception e) {
           openFailed++;
-          if (openFailed > 5) {
+          if (openFailed >= 3) {
             emit("failed", "");
             openFailed = 0;
             close();

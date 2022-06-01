@@ -1,4 +1,4 @@
-package io.wany.amethy.st;
+package io.wany.amethy.modules;
 
 import io.wany.amethy.Amethy;
 
@@ -24,8 +24,7 @@ public class ServerPropertiesSorter {
       }
       properties.clear();
       properties.store(new FileOutputStream(file), "Minecraft server properties");
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
@@ -40,8 +39,7 @@ public class ServerPropertiesSorter {
         writer.append(key).append("=").append(value).append("\n");
       }
       writer.close();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
