@@ -3,6 +3,7 @@ package io.wany.amethy.terminal;
 import com.google.gson.JsonObject;
 
 import io.wany.amethy.Amethy;
+import io.wany.amethy.modules.Console;
 import io.wany.amethy.terminal.TerminalConsole.Log;
 
 public class TerminalListener {
@@ -46,6 +47,16 @@ public class TerminalListener {
         } catch (Exception ignored) {
         }
         TerminalFilesystem.sendDirectoryInfo(client, path);
+        break;
+      }
+
+      case "players-target": {
+        String uuid = "";
+        try {
+          uuid = data.get("data").getAsString();
+        } catch (Exception ignored) {
+        }
+        TerminalPlayers.sendPlayer(client, uuid);
         break;
       }
 

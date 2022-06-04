@@ -15,8 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import io.wany.amethy.commands.*;
 import io.wany.amethy.itemonworld.ItemOnWorld;
-import io.wany.amethy.listeners.ItemSpawn;
-import io.wany.amethy.listeners.PlayerInteract;
+import io.wany.amethy.listeners.*;
 import io.wany.amethy.modules.Config;
 import io.wany.amethy.modules.ServerPropertiesSorter;
 import io.wany.amethy.modules.Updater;
@@ -24,6 +23,9 @@ import io.wany.amethy.supports.coreprotect.CoreProtectSupport;
 import io.wany.amethy.supports.cucumbery.CucumberySupport;
 import io.wany.amethy.supports.vault.VaultSupport;
 import io.wany.amethy.terminal.Terminal;
+import io.wany.amethy.wand.Wand;
+import io.wany.amethy.wand.command.WandEditCommand;
+import io.wany.amethy.wand.command.WandEditTabCompleter;
 
 /**
  *
@@ -65,9 +67,12 @@ public class Amethy extends JavaPlugin {
 
     Terminal.onEnable();
 
+    Wand.onEnable();
     ItemOnWorld.onEnable();
 
     registerCommand("amethy", new AmethyCommand(), new AmethyTabCompleter());
+
+    registerCommand("wandedit", new WandEditCommand(), new WandEditTabCompleter());
 
     registerCommand("exit", new ExitCommand(), new AmethyTabCompleter());
     registerCommand("drop", new DropCommand(), new AmethyTabCompleter());
@@ -76,33 +81,25 @@ public class Amethy extends JavaPlugin {
     registerCommand("closeinvenrory", new CloseinventoryCommand(), new AmethyTabCompleter());
     registerCommand("list", new ListCommand(), new AmethyTabCompleter());
 
-    /*
-     * registerEvent(new PlayerJoin());
-     * registerEvent(new PlayerQuit());
-     * registerEvent(new PlayerChat());
-     * registerEvent(new PlayerDeath());
-     */
+    registerEvent(new PlayerJoin());
+    registerEvent(new PlayerQuit());
+    registerEvent(new PlayerChat());
+    registerEvent(new PlayerDeath());
     registerEvent(new PlayerInteract());
-    /*
-     * registerEvent(new PlayerMove());
-     * registerEvent(new PlayerCommandPreprocess());
-     * registerEvent(new BlockBreak());
-     * registerEvent(new BlockPhysics());
-     * registerEvent(new BlockPistonExtend());
-     * registerEvent(new BlockDestroy());
-     * registerEvent(new BlockDropItem());
-     * registerEvent(new BlockExplode());
-     * registerEvent(new EntityAddToWorld());
-     */
+    registerEvent(new PlayerMove());
+    registerEvent(new BlockBreak());
+    registerEvent(new BlockPhysics());
+    registerEvent(new BlockPistonExtend());
+    registerEvent(new BlockDestroy());
+    registerEvent(new BlockDropItem());
+    registerEvent(new BlockExplode());
+    registerEvent(new EntityAddToWorld());
     registerEvent(new ItemSpawn());
-    /*
-     * registerEvent(new EntityDeath());
-     * registerEvent(new ServerCommand());
-     * registerEvent(new RemoteServerCommand());
-     * registerEvent(new InventoryClick());
-     * registerEvent(new PluginEnable());
-     * registerEvent(new PluginDisable());
-     */
+    registerEvent(new InventoryClick());
+    registerEvent(new EntityDeath());
+    registerEvent(new InventoryClick());
+    registerEvent(new PluginEnable());
+    registerEvent(new PluginDisable());
 
     VaultSupport.onEnable();
     CucumberySupport.onEnable();
@@ -120,6 +117,8 @@ public class Amethy extends JavaPlugin {
 
   @Override
   public void onDisable() {
+
+    Wand.onDisable();
 
     VaultSupport.onDisable();
     CucumberySupport.onDisable();

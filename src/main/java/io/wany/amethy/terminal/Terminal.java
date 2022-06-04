@@ -4,10 +4,14 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import org.bukkit.Bukkit;
@@ -127,14 +131,14 @@ public class Terminal {
     WEBSOCKET.disable();
   }
 
-  public static void event(String event, JsonObject data, String message) {
+  public static void event(String event, JsonElement data, String message) {
     if (WEBSOCKET == null) {
       return;
     }
     WEBSOCKET.event(event, data, message);
   }
 
-  public static void event(String event, JsonObject data) {
+  public static void event(String event, JsonElement data) {
     if (WEBSOCKET == null) {
       return;
     }
@@ -169,6 +173,7 @@ public class Terminal {
   public static void onEnable() {
     Executors.newFixedThreadPool(1).submit(() -> {
       TerminalDashboard.onEnable();
+      TerminalPlayers.onEnable();
     });
   }
 
@@ -176,6 +181,7 @@ public class Terminal {
     Executors.newFixedThreadPool(1).submit(() -> {
       TerminalDashboard.onDisable();
       TerminalConsole.onDisable();
+      TerminalPlayers.onDisable();
 
       disableWebSocket();
     });

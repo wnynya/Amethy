@@ -21,8 +21,8 @@
     <repositories>
         <!-- Local Repo -->
         <repository>
-            <id>localrepository</id>
-            <url>file:///home/wnynya/Amethy/repository</url>
+            <id>cucumbery-repo</id>
+            <url>https://cucumbery.com/repository/</url>
         </repository>
         <!-- Paper Repo -->
         <repository>
@@ -63,6 +63,11 @@
         <repository>
             <id>codemc-repo</id>
             <url>https://repo.codemc.org/repository/maven-public/</url>
+            <layout>default</layout>
+        </repository>
+        	<repository>
+            <id>typesafe</id>
+            <url>https://repo.typesafe.com/typesafe/maven-releases/</url>
             <layout>default</layout>
         </repository>
     </repositories>
@@ -114,7 +119,7 @@
         <dependency>
             <groupId>com.jho5245.cucumbery</groupId>
             <artifactId>Cucumbery</artifactId>
-            <version>1.1.1-dev-22128-161139</version>
+            <version>1.1.1-dev-22155-153113</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -146,6 +151,13 @@
             <version>2.2.1</version>
             <scope>provided</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.hyperic/sigar -->
+        <!--dependency>
+            <groupId>org.hyperic</groupId>
+            <artifactId>sigar</artifactId>
+            <version>1.6.4</version>
+        </dependency-->
+
 
     </dependencies>
 

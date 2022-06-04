@@ -13,6 +13,7 @@ import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -181,7 +182,7 @@ public class WebSocketClient extends EventEmitter {
     }
   }
 
-  public void event(String event, JsonObject data, String message) {
+  public void event(String event, JsonElement data, String message) {
     JsonObject object = new JsonObject();
     object.addProperty("event", event);
     object.add("data", data);
@@ -189,7 +190,7 @@ public class WebSocketClient extends EventEmitter {
     this.send(object);
   }
 
-  public void event(String event, JsonObject data) {
+  public void event(String event, JsonElement data) {
     event(event, data, "");
   }
 

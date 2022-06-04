@@ -3,19 +3,24 @@ package io.wany.amethy.terminal;
 import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.sun.management.OperatingSystemMXBean;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.scheduler.BukkitTask;
 
 import io.wany.amethy.Amethy;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 public class TerminalDashboard {
@@ -104,6 +109,23 @@ public class TerminalDashboard {
       }
       network.addProperty("ip", ip);
       network.addProperty("hostname", hostname);
+      JsonArray netInterfaces = new JsonArray();
+      try {
+        Enumeration<NetworkInterface> nics = NetworkInterface.getNetworkInterfaces();
+        while (nics.hasMoreElements()) {
+          NetworkInterface nic = nics.nextElement();
+          Enumeration<InetAddress> addrs = nic.getInetAddresses();
+          while (addrs.hasMoreElements()) {
+            InetAddress addr = addrs.nextElement();
+            JsonObject netInterface = new JsonObject();
+            netInterface.addProperty("name", nic.getName());
+            netInterface.addProperty("address", addr.getHostAddress());
+            netInterfaces.add(netInterface);
+          }
+        }
+      } catch (Exception ignored) {
+      }
+      network.add("interfaces", netInterfaces);
       object.add("network", network);
     } catch (Exception ignored) {
     }
@@ -115,14 +137,37 @@ public class TerminalDashboard {
   public static JsonObject getSystemStatus() {
     JsonObject object = new JsonObject();
 
-    Runtime r = Runtime.getRuntime();
-    object.addProperty("memory-free", r.freeMemory());
-    object.addProperty("memory-max", r.maxMemory());
-    object.addProperty("memory-total", r.totalMemory());
-    OperatingSystemMXBean osb = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
-    object.addProperty("cpu-system-load", osb.getCpuLoad());
-    object.addProperty("cpu-process-load", osb.getProcessCpuLoad());
-    object.addProperty("tps", serverLastTPS);
+    try {
+      Runtime r = Runtime.getRuntime();
+      object.addProperty("memory-free", r.freeMemory());
+      object.addProperty("memory-max", r.maxMemory());
+      object.addProperty("memory-total", r.totalMemory());
+      OperatingSystemMXBean osb = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+      object.addProperty("cpu-system-load", osb.getCpuLoad());
+      object.addProperty("cpu-process-load", osb.getProcessCpuLoad());
+      object.addProperty("tps", serverLastTPS);
+    } catch (Exception ignored) {
+    }
+
+    try {
+      object.addProperty("players-count", Bukkit.getOnlinePlayers().size());
+    } catch (Exception ignored) {
+    }
+
+    try {
+      int entitiesCount = Bukkit.getScheduler().callSyncMethod(Amethy.PLUGIN, new Callable<Integer>() {
+        @Override
+        public Integer call() {
+          int entitiesCount = 0;
+          for (World world : Bukkit.getWorlds()) {
+            entitiesCount += world.getEntityCount();
+          }
+          return entitiesCount;
+        }
+      }).get();
+      object.addProperty("entities-count", entitiesCount);
+    } catch (Exception ignored) {
+    }
 
     return object;
   }

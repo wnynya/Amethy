@@ -1,6 +1,7 @@
 package io.wany.amethy.commands;
 
 import io.wany.amethy.Amethy;
+import io.wany.amethy.gui.Menu;
 import io.wany.amethy.modules.Console;
 import io.wany.amethy.modules.Message;
 import io.wany.amethy.modules.PluginLoader;
@@ -9,12 +10,20 @@ import io.wany.amethy.modules.Updater;
 import io.wany.amethy.terminal.Terminal;
 
 import java.io.FileNotFoundException;
-import com.google.gson.JsonObject;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 
+import com.google.gson.JsonObject;
+import com.jho5245.cucumbery.custom.customeffect.CustomEffectType;
+import com.jho5245.cucumbery.custom.customeffect.TypeBuilder;
+
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 public class AmethyCommand implements CommandExecutor {
 
@@ -118,6 +127,18 @@ public class AmethyCommand implements CommandExecutor {
         boolean breakBlocks = true;
         Entity source = sender instanceof Entity ? (Entity) sender : null;
 
+        return true;
+      }
+
+      case "menu", "m" -> {
+        if (!sender.hasPermission("amethy.menu")) {
+          return true;
+        }
+        if (!(sender instanceof Player player)) {
+          return true;
+        }
+
+        Menu.show(player, Menu.Main.inventory(player));
         return true;
       }
 
@@ -278,7 +299,15 @@ public class AmethyCommand implements CommandExecutor {
           return true;
         }
 
-        sender.sendMessage(Message.of("#52ee52;Cucumbery"));
+        try {
+          TypeBuilder tb = new TypeBuilder();
+          tb.defaultDuration(20 * 60);
+          CustomEffectType type = new CustomEffectType(new NamespacedKey(Amethy.PLUGIN, "ppap"), "PPAP", tb);
+          CustomEffectType.register(type);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+
         return true;
       }
 
