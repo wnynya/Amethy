@@ -36,7 +36,8 @@ public class PlayerDeath implements Listener {
     }
     Player player = event.getEntity();
     Sound sound = Sound.valueOf(Amethy.CONFIG.getString("event.playerDeath.target.sound.sound"));
-    SoundCategory soundCategory = SoundCategory.valueOf(Amethy.CONFIG.getString("event.playerDeath.target.sound.soundCategory"));
+    SoundCategory soundCategory = SoundCategory
+        .valueOf(Amethy.CONFIG.getString("event.playerDeath.target.sound.soundCategory"));
     float volume = (float) Amethy.CONFIG.getDouble("event.playerDeath.target.sound.volume");
     float pitch = (float) Amethy.CONFIG.getDouble("event.playerDeath.target.sound.pitch");
     player.playSound(player.getLocation(), sound, soundCategory, volume, pitch);
@@ -55,7 +56,8 @@ public class PlayerDeath implements Listener {
       return;
     }
     Sound sound = Sound.valueOf(Amethy.CONFIG.getString("event.playerDeath.killer.sound.sound"));
-    SoundCategory soundCategory = SoundCategory.valueOf(Amethy.CONFIG.getString("event.playerDeath.killer.sound.soundCategory"));
+    SoundCategory soundCategory = SoundCategory
+        .valueOf(Amethy.CONFIG.getString("event.playerDeath.killer.sound.soundCategory"));
     float volume = (float) Amethy.CONFIG.getDouble("event.playerDeath.killer.sound.volume");
     float pitch = (float) Amethy.CONFIG.getDouble("event.playerDeath.killer.sound.pitch");
     killer.playSound(killer.getLocation(), sound, soundCategory, volume, pitch);
@@ -67,6 +69,7 @@ public class PlayerDeath implements Listener {
     public UUID uuid;
     public long time;
     public GameMode gamemode;
+
     DeathPlayerData(UUID uuid, long time, GameMode gamemode) {
       this.uuid = uuid;
       this.time = time;
@@ -77,7 +80,8 @@ public class PlayerDeath implements Listener {
   private static void playerDeath(PlayerDeathEvent event) {
     event.setCancelled(true);
     Player player = event.getEntity();
-    deathPlayers.put(player.getUniqueId(), new DeathPlayerData(player.getUniqueId(), System.currentTimeMillis(), player.getGameMode()));
+    deathPlayers.put(player.getUniqueId(),
+        new DeathPlayerData(player.getUniqueId(), System.currentTimeMillis(), player.getGameMode()));
     // item drop
     List<ItemStack> drops = event.getDrops();
     if (drops.size() <= 0) {
@@ -88,10 +92,12 @@ public class PlayerDeath implements Listener {
     }
     // exp drop
     if (event.getDroppedExp() != 0) {
-      ExperienceOrb exp = (ExperienceOrb) player.getWorld().spawnEntity(player.getLocation(), EntityType.EXPERIENCE_ORB);
+      ExperienceOrb exp = (ExperienceOrb) player.getWorld().spawnEntity(player.getLocation(),
+          EntityType.EXPERIENCE_ORB);
       exp.setExperience(event.getDroppedExp());
     }
-    Console.log(event.getDroppedExp() + " " + event.getNewExp() + " " + event.getNewLevel() + " " + event.getNewTotalExp());
+    Console.log(
+        event.getDroppedExp() + " " + event.getNewExp() + " " + event.getNewLevel() + " " + event.getNewTotalExp());
     Component deathMessage = event.deathMessage();
     Bukkit.broadcast(deathMessage != null ? deathMessage : Component.text("뭐"));
     player.setGameMode(GameMode.SPECTATOR);
@@ -102,8 +108,7 @@ public class PlayerDeath implements Listener {
     Player player = event.getPlayer();
     if (deathPlayers.containsKey(player.getUniqueId())) {
       if (event instanceof PlayerMoveEvent playerMoveEvent) {
-      }
-      else if (event instanceof Cancellable cancellable) {
+      } else if (event instanceof Cancellable cancellable) {
         cancellable.setCancelled(true);
         if (event instanceof PlayerInteractEvent playerInteractEvent) {
           onDeathPlayerInteract(playerInteractEvent);
@@ -121,7 +126,6 @@ public class PlayerDeath implements Listener {
       deathPlayers.remove(player.getUniqueId());
     }
   }
-
 
   public static void onEnable() {
 

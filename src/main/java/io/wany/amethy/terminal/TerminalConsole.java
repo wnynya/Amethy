@@ -3,15 +3,21 @@ package io.wany.amethy.terminal;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent.Completion;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.jho5245.cucumbery.util.no_groups.AsyncTabCompleter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 
 import io.wany.amethy.Amethy;
+import io.wany.amethy.modules.Console;
 
 public class TerminalConsole {
 
@@ -61,24 +67,58 @@ public class TerminalConsole {
         () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), input));
   }
 
-  public static void tabComplete(String input, String source) {
+  public static void tabComplete(String client, String input) {
+    JsonObject data = new JsonObject();
+    data.addProperty("client", client);
 
-    String[] inputArgs = input.split(" ");
-    String[] inputs = new String[inputArgs.length + 1];
-    System.arraycopy(inputArgs, 0, inputs, 0, inputArgs.length);
-    inputs[inputArgs.length] = "";
-    String command = inputs[0];
-    PluginCommand pluginCommand = Bukkit.getServer().getPluginCommand(command);
-    String[] args = new String[inputs.length - 1];
-    System.arraycopy(inputs, 1, args, 0, inputs.length - 1);
-    List<String> comp = new ArrayList<>();
-    if (pluginCommand != null) {
-      TabCompleter completer = pluginCommand.getTabCompleter();
-      if (completer != null) {
-        comp = completer.onTabComplete(Bukkit.getConsoleSender(), pluginCommand, pluginCommand.getLabel(), args);
+    JsonArray object = new JsonArray();
+
+    String command;
+    String[] args;
+    try {
+      List<String> argsList = new ArrayList<>();
+      argsList.addAll(List.of(input.split(" ")));
+      command = argsList.get(0);
+      argsList.remove(0);
+      if (input.endsWith(" ")) {
+        argsList.add(" ");
+      }
+      args = new String[argsList.size()];
+      args = argsList.toArray(args);
+    } catch (Exception e) {
+      return;
+    }
+
+    List<String> comp = getCompletes(command, args);
+    if (comp != null) {
+      for (String s : comp) {
+        object.add(s);
       }
     }
 
+    data.add("data", object);
+    Terminal.event("console-tabcompleter", data);
+  }
+
+  public static List<String> getCompletes(String command, String[] args) {
+    List<String> completes = new ArrayList<>();
+    PluginCommand pluginCommand = Bukkit.getServer().getPluginCommand(command);
+    if (pluginCommand == null) {
+      return null;
+    }
+    CommandExecutor commandExecutor = pluginCommand.getExecutor();
+    if (commandExecutor instanceof AsyncTabCompleter tabCompleter) {
+      List<Completion> completions = tabCompleter.completion(Bukkit.getConsoleSender(), pluginCommand, command, args,
+          new Location(Bukkit.getWorlds().get(0), 0, 0, 0));
+      for (Completion completion : completions) {
+        completes.add(completion.suggestion());
+      }
+    } else {
+      TabCompleter tabCompleter = pluginCommand.getTabCompleter();
+      completes = tabCompleter.onTabComplete(Bukkit.getConsoleSender(), pluginCommand, pluginCommand.getLabel(), args);
+    }
+
+    return completes;
   }
 
   public static void onLoad() {

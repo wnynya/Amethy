@@ -655,7 +655,8 @@ public class Message {
   public static Component formatPlayerChat(Player player, Component message, String format) {
     Component component = Component.empty();
     StringBuilder stringBuilder = new StringBuilder();
-    String processFormat = format;
+    format = effect(Color.and2mfc(format));
+    String processFormat = new String(format);
     int length = format.length();
     for (int i = 0; i < length; i++) {
       if (format.charAt(i) == '{') {

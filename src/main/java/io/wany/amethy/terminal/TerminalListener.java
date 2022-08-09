@@ -40,6 +40,16 @@ public class TerminalListener {
         break;
       }
 
+      case "console-tabcompleter": {
+        String command = "";
+        try {
+          command = data.get("data").getAsString();
+        } catch (Exception ignored) {
+        }
+        TerminalConsole.tabComplete(client, command);
+        break;
+      }
+
       case "fs-dir-info": {
         String path = "";
         try {

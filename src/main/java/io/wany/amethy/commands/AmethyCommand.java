@@ -7,12 +7,15 @@ import io.wany.amethy.modules.Message;
 import io.wany.amethy.modules.PluginLoader;
 import io.wany.amethy.modules.Promise;
 import io.wany.amethy.modules.Updater;
+import io.wany.amethy.modules.Updater.Version;
 import io.wany.amethy.terminal.Terminal;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
+import java.util.concurrent.ExecutionException;
 
 import com.google.gson.JsonObject;
 import com.jho5245.cucumbery.custom.customeffect.CustomEffectType;
@@ -139,6 +142,18 @@ public class AmethyCommand implements CommandExecutor {
         }
 
         Menu.show(player, Menu.Main.inventory(player));
+        return true;
+      }
+
+      case "update" -> {
+        try {
+          Version version = Updater.defaultUpdater.getLatestVersion();
+          Updater.defaultUpdater.updateVersion(version);
+          sender.sendMessage(Message.of("업데이트 완료"));
+        } catch (Exception e) {
+          sender.sendMessage(Message.of("업데이트 중 오류 발생 망함 펑 (콘솔에 프린트스택트레이스 함)"));
+          e.printStackTrace();
+        }
         return true;
       }
 

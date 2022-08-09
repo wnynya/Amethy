@@ -15,6 +15,7 @@ import com.sun.management.OperatingSystemMXBean;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.help.HelpTopic;
 import org.bukkit.scheduler.BukkitTask;
 
 import io.wany.amethy.Amethy;
@@ -127,6 +128,18 @@ public class TerminalDashboard {
       }
       network.add("interfaces", netInterfaces);
       object.add("network", network);
+    } catch (Exception ignored) {
+    }
+
+    try {
+      JsonArray commands = new JsonArray();
+      for (HelpTopic topic : Bukkit.getHelpMap().getHelpTopics()) {
+        if (!topic.getName().startsWith("/")) {
+          continue;
+        }
+        commands.add(topic.getName().substring(1));
+      }
+      object.add("commands", commands);
     } catch (Exception ignored) {
     }
 

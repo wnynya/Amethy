@@ -59,7 +59,6 @@ public class Amethy extends JavaPlugin {
     PLUGIN = this;
     CONFIG = Config.onLoad();
     Terminal.onLoad();
-
   }
 
   @Override
@@ -97,7 +96,6 @@ public class Amethy extends JavaPlugin {
     registerEvent(new ItemSpawn());
     registerEvent(new InventoryClick());
     registerEvent(new EntityDeath());
-    registerEvent(new InventoryClick());
     registerEvent(new PluginEnable());
     registerEvent(new PluginDisable());
 
