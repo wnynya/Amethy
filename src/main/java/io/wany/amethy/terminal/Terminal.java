@@ -18,7 +18,6 @@ import org.bukkit.Bukkit;
 
 import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.Config;
-import io.wany.amethy.modules.Console;
 import io.wany.amethy.modules.Request;
 import io.wany.amethy.modules.WebSocketClient;
 
@@ -26,7 +25,7 @@ public class Terminal {
 
   public static String ID;
   private static String PKEY;
-  private static String KEY = "401790cf28f159d50950333f0856e482";
+  protected static String KEY = "401790cf28f159d50950333f0856e482";
   protected static WebSocketClient WEBSOCKET;
   protected static boolean ISRELOAD = Bukkit.getWorlds().size() != 0;
 

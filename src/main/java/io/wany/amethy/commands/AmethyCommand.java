@@ -4,10 +4,12 @@ import io.wany.amethy.Amethy;
 import io.wany.amethy.gui.Menu;
 import io.wany.amethy.modules.Console;
 import io.wany.amethy.modules.Message;
+import io.wany.amethy.modules.PlayerSync;
 import io.wany.amethy.modules.PluginLoader;
 import io.wany.amethy.modules.Promise;
 import io.wany.amethy.modules.Updater;
 import io.wany.amethy.modules.Updater.Version;
+import io.wany.amethy.playersync.JsonPlayer;
 import io.wany.amethy.terminal.Terminal;
 
 import java.io.FileNotFoundException;
@@ -18,7 +20,6 @@ import java.util.Enumeration;
 import java.util.concurrent.ExecutionException;
 
 import com.google.gson.JsonObject;
-import com.jho5245.cucumbery.custom.customeffect.CustomEffectType;
 import com.jho5245.cucumbery.custom.customeffect.TypeBuilder;
 
 import org.bukkit.NamespacedKey;
@@ -308,23 +309,6 @@ public class AmethyCommand implements CommandExecutor {
        * return true;
        * }
        */
-
-      case "test", "t" -> {
-        if (!sender.hasPermission("amethy.test")) {
-          return true;
-        }
-
-        try {
-          TypeBuilder tb = new TypeBuilder();
-          tb.defaultDuration(20 * 60);
-          CustomEffectType type = new CustomEffectType(new NamespacedKey(Amethy.PLUGIN, "ppap"), "PPAP", tb);
-          CustomEffectType.register(type);
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-
-        return true;
-      }
 
       case "colortest" -> {
         if (!sender.hasPermission("amethy.test")) {

@@ -3,7 +3,6 @@ package io.wany.amethy.terminal;
 import com.google.gson.JsonObject;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.modules.Console;
 import io.wany.amethy.terminal.TerminalConsole.Log;
 
 public class TerminalListener {
@@ -57,6 +56,40 @@ public class TerminalListener {
         } catch (Exception ignored) {
         }
         TerminalFilesystem.sendDirectoryInfo(client, path);
+        break;
+      }
+
+      case "fs-file-download": {
+        String path = "";
+        try {
+          path = data.get("data").getAsString();
+        } catch (Exception ignored) {
+        }
+        TerminalFilesystem.uploadFile(client, path);
+        break;
+      }
+
+      case "fs-file-upload": {
+        String id = "";
+        String path = "";
+        try {
+          JsonObject obj = data.get("data").getAsJsonObject();
+          id = obj.get("id").getAsString();
+          path = obj.get("path").getAsString();
+        } catch (Exception ignored) {
+          ignored.printStackTrace();
+        }
+        TerminalFilesystem.downloadFile(client, id, path);
+        break;
+      }
+
+      case "fs-file-delete": {
+        String path = "";
+        try {
+          path = data.get("data").getAsString();
+        } catch (Exception ignored) {
+        }
+        TerminalFilesystem.deleteFile(client, path);
         break;
       }
 

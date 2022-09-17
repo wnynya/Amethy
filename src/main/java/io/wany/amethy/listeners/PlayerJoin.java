@@ -12,9 +12,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.Console;
 import io.wany.amethy.modules.Message;
+import io.wany.amethy.modules.PlayerSync;
 import io.wany.amethy.supports.cucumbery.CucumberySupport;
 import io.wany.amethy.supports.vault.VaultEconomySync;
-import io.wany.amethy.terminal.TerminalPlayers;
 import io.wany.amethy.wand.Wand;
 
 import java.util.HashMap;
@@ -32,6 +32,7 @@ public class PlayerJoin implements Listener {
     updatePlayerJoin(event);
     Wand.onPlayerJoin(event);
     VaultEconomySync.onPlayerJoin(event);
+    PlayerSync.onPlayerJoin(event);
   }
 
   private void chatPlayerJoinMessage(PlayerJoinEvent event) {

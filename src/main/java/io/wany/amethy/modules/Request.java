@@ -271,4 +271,19 @@ public class Request extends EventEmitter {
     return syncJSONRequest(Method.POST, url, body.toString(), auth, null);
   }
 
+  public static JsonObject JSONDelete(String url, String body)
+      throws MalformedURLException, InterruptedException, ExecutionException, IOException {
+    return syncJSONRequest(Method.DELETE, url, body, null, null);
+  }
+
+  public static JsonObject JSONDelete(String url, JsonObject body)
+      throws MalformedURLException, InterruptedException, ExecutionException, IOException {
+    return syncJSONRequest(Method.DELETE, url, body.toString(), null, null);
+  }
+
+  public static JsonObject JSONDelete(String url, JsonObject body, String auth)
+      throws MalformedURLException, InterruptedException, ExecutionException, IOException {
+    return syncJSONRequest(Method.DELETE, url, body.toString(), auth, null);
+  }
+
 }

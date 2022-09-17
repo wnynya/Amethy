@@ -2,8 +2,8 @@ package io.wany.amethy.gui;
 
 import com.jho5245.cucumbery.custom.customeffect.CustomEffectGUI;
 import com.jho5245.cucumbery.custom.customrecipe.recipeinventory.RecipeInventoryMainMenu;
-import com.jho5245.cucumbery.util.gui.GUI;
-import com.jho5245.cucumbery.util.storage.data.Variable;
+import com.jho5245.cucumbery.util.gui.GUIManager;
+import com.jho5245.cucumbery.util.gui.GUIManager.GUIType;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -110,7 +110,7 @@ public class CucumberySupportMenu {
           CustomEffectGUI.openGUI(player, true);
         }
         case 35 -> {
-          GUI.openGUI(player, GUI.GUIType.SERVER_SETTINGS);
+          GUIManager.openGUI(player, GUIType.MAIN_MENU);
         }
 
         case 29 -> {

@@ -17,6 +17,7 @@ import io.wany.amethy.commands.*;
 import io.wany.amethy.itemonworld.ItemOnWorld;
 import io.wany.amethy.listeners.*;
 import io.wany.amethy.modules.Config;
+import io.wany.amethy.modules.PlayerSync;
 import io.wany.amethy.modules.ServerPropertiesSorter;
 import io.wany.amethy.modules.Updater;
 import io.wany.amethy.supports.coreprotect.CoreProtectSupport;
@@ -65,6 +66,7 @@ public class Amethy extends JavaPlugin {
   public void onEnable() {
 
     Terminal.onEnable();
+    PlayerSync.onEnable();
 
     Wand.onEnable();
     ItemOnWorld.onEnable();

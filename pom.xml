@@ -111,7 +111,7 @@
         <dependency>
             <groupId>com.jho5245.cucumbery</groupId>
             <artifactId>Cucumbery</artifactId>
-            <version>1.1.1-dev-22155-153113</version>
+            <version>1.1.1-dev-22260-183214</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -150,6 +150,17 @@
       <version>1.6.4</version>
     </dependency-->
 
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.13</version>
+        </dependency>
+        <!-- mvnrepository.com/artifact/org.apache.httpcomponents/httpmime -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>4.5.13</version>
+        </dependency>
 
     </dependencies>
 
