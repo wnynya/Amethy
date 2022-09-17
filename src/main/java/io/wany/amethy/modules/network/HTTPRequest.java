@@ -1,4 +1,4 @@
-package io.wany.amethy.modules;
+package io.wany.amethy.modules.network;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -17,29 +16,30 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import io.wany.amethy.modules.Request.Options.Method;
-import io.wany.amethy.modules.Request.Options.ResponseType;
+import io.wany.amethy.modules.EventEmitter;
+import io.wany.amethy.modules.network.HTTPRequestOptions.Method;
+import io.wany.amethy.modules.network.HTTPRequestOptions.ResponseType;;
 
-public class Request extends EventEmitter {
+public class HTTPRequest extends EventEmitter {
 
-  public static String USER_AGENT = "Amethy";
+  public static String USER_AGENT = System.getProperty("java.runtime.name");
 
   private final URL url;
-  private final Options options;
+  private final HTTPRequestOptions opts;
   private final String body;
 
   private HttpURLConnection req;
   private CompletableFuture<Object> future;
 
-  public Request(URL url, Options options, String body) {
+  public HTTPRequest(URL url, HTTPRequestOptions opts, String body) {
     super();
 
     this.url = url;
-    this.options = options;
+    this.opts = opts;
     this.body = body;
 
-    if (!this.options.HEADERS.containsKey("User-Agent")) {
-      this.options.HEADERS.replace("User-Agent", USER_AGENT);
+    if (!this.opts.HEADERS.containsKey("User-Agent")) {
+      this.opts.HEADERS.replace("User-Agent", USER_AGENT);
     }
   }
 
@@ -50,15 +50,15 @@ public class Request extends EventEmitter {
 
   public void send() throws IOException {
     this.req = (HttpURLConnection) this.url.openConnection();
-    this.req.setRequestMethod(this.options.METHOD.toString());
-    this.options.HEADERS.forEach((key, value) -> {
+    this.req.setRequestMethod(this.opts.METHOD.toString());
+    this.opts.HEADERS.forEach((key, value) -> {
       if (value != null) {
         this.req.setRequestProperty(key, value);
       }
     });
-    this.req.setConnectTimeout(this.options.TIMEOUT);
+    this.req.setConnectTimeout(this.opts.TIMEOUT);
 
-    if (List.of(Method.POST, Method.PUT, Method.PATCH, Method.DELETE).contains(this.options.METHOD)
+    if (List.of(Method.POST, Method.PUT, Method.PATCH, Method.DELETE).contains(this.opts.METHOD)
         && this.body != null && !this.body.isBlank()) {
       this.req.setDoOutput(true);
       DataOutputStream outputStream = new DataOutputStream(this.req.getOutputStream());
@@ -68,7 +68,7 @@ public class Request extends EventEmitter {
     }
 
     Object response;
-    switch (this.options.RESPONSETYPE) {
+    switch (this.opts.RESPONSETYPE) {
       case JSON: {
         response = this.JSONResponse();
         break;
@@ -153,67 +153,31 @@ public class Request extends EventEmitter {
     return new InputStreamReader(this.req.getInputStream());
   }
 
-  public static class Options {
-    public Method METHOD;
-    public ResponseType RESPONSETYPE;
-    public HashMap<String, String> HEADERS;
-    public int TIMEOUT;
-
-    public Options() {
-      this.METHOD = Method.GET;
-      this.HEADERS = new HashMap<>();
-      this.TIMEOUT = 2000;
-      this.RESPONSETYPE = ResponseType.STRING;
-    }
-
-    public Options(Method method, ResponseType responseType) {
-      this.METHOD = method;
-      this.HEADERS = new HashMap<>();
-      this.TIMEOUT = 2000;
-      this.RESPONSETYPE = responseType;
-    }
-
-    public enum Method {
-      HEAD,
-      OPTIONS,
-      GET,
-      POST,
-      PUT,
-      PATCH,
-      DELETE
-    }
-
-    public enum ResponseType {
-      STRING,
-      JSON,
-      STREAM
-    }
-  }
-
-  public static void consumerRequest(URL url, Options options, String body, Consumer<Object[]> callback)
+  public static void consumerRequest(URL url, HTTPRequestOptions options, String body, Consumer<Object[]> callback)
       throws IOException {
-    Request req = new Request(url, options, body);
+    HTTPRequest req = new HTTPRequest(url, options, body);
     req.on("response", (res) -> {
       callback.accept(res);
     });
     req.send();
   }
 
-  public static CompletableFuture<Object> futureRequest(URL url, Options options, String body) throws IOException {
-    Request req = new Request(url, options, body);
+  public static CompletableFuture<Object> futureRequest(URL url, HTTPRequestOptions options, String body)
+      throws IOException {
+    HTTPRequest req = new HTTPRequest(url, options, body);
     CompletableFuture<Object> future = req.future();
     req.send();
     return future;
   }
 
-  public static Object syncRequest(URL url, Options options, String body)
+  public static Object syncRequest(URL url, HTTPRequestOptions options, String body)
       throws MalformedURLException, InterruptedException, ExecutionException, IOException {
     return futureRequest(url, options, body).get();
   }
 
   public static String syncStringRequest(Method method, String url, String body, String auth, String ua)
       throws MalformedURLException, InterruptedException, ExecutionException, IOException {
-    Options options = new Options(method, ResponseType.STRING);
+    HTTPRequestOptions options = new HTTPRequestOptions(method, ResponseType.STRING);
     options.HEADERS.put("User-Agent", ua);
     options.HEADERS.put("Authorization", auth);
     return (String) syncRequest(new URL(url), options, body);
@@ -221,7 +185,7 @@ public class Request extends EventEmitter {
 
   public static JsonObject syncJSONRequest(Method method, String url, String body, String auth, String ua)
       throws MalformedURLException, InterruptedException, ExecutionException, IOException {
-    Options options = new Options(method, ResponseType.JSON);
+    HTTPRequestOptions options = new HTTPRequestOptions(method, ResponseType.JSON);
     options.HEADERS.put("User-Agent", ua);
     options.HEADERS.put("Authorization", auth);
     options.HEADERS.put("Content-Type", "application/json");
@@ -230,7 +194,7 @@ public class Request extends EventEmitter {
 
   public static InputStreamReader syncStreamRequest(Method method, String url, String body, String auth, String ua)
       throws MalformedURLException, InterruptedException, ExecutionException, IOException {
-    Options options = new Options(method, ResponseType.STREAM);
+    HTTPRequestOptions options = new HTTPRequestOptions(method, ResponseType.STREAM);
     options.HEADERS.put("User-Agent", ua);
     options.HEADERS.put("Authorization", auth);
     return (InputStreamReader) syncRequest(new URL(url), options, body);
@@ -269,6 +233,36 @@ public class Request extends EventEmitter {
   public static JsonObject JSONPost(String url, JsonObject body, String auth)
       throws MalformedURLException, InterruptedException, ExecutionException, IOException {
     return syncJSONRequest(Method.POST, url, body.toString(), auth, null);
+  }
+
+  public static JsonObject JSONPatch(String url, String body)
+      throws MalformedURLException, InterruptedException, ExecutionException, IOException {
+    return syncJSONRequest(Method.PATCH, url, body, null, null);
+  }
+
+  public static JsonObject JSONPatch(String url, JsonObject body)
+      throws MalformedURLException, InterruptedException, ExecutionException, IOException {
+    return syncJSONRequest(Method.PATCH, url, body.toString(), null, null);
+  }
+
+  public static JsonObject JSONPatch(String url, JsonObject body, String auth)
+      throws MalformedURLException, InterruptedException, ExecutionException, IOException {
+    return syncJSONRequest(Method.PATCH, url, body.toString(), auth, null);
+  }
+
+  public static JsonObject JSONPut(String url, String body)
+      throws MalformedURLException, InterruptedException, ExecutionException, IOException {
+    return syncJSONRequest(Method.PUT, url, body, null, null);
+  }
+
+  public static JsonObject JSONPut(String url, JsonObject body)
+      throws MalformedURLException, InterruptedException, ExecutionException, IOException {
+    return syncJSONRequest(Method.PUT, url, body.toString(), null, null);
+  }
+
+  public static JsonObject JSONPut(String url, JsonObject body, String auth)
+      throws MalformedURLException, InterruptedException, ExecutionException, IOException {
+    return syncJSONRequest(Method.PUT, url, body.toString(), auth, null);
   }
 
   public static JsonObject JSONDelete(String url, String body)

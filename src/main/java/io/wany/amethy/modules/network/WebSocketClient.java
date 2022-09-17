@@ -1,4 +1,4 @@
-package io.wany.amethy.modules;
+package io.wany.amethy.modules.network;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -6,7 +6,6 @@ import java.net.http.WebSocket;
 import java.net.http.WebSocket.Builder;
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CompletionStage;
@@ -17,52 +16,54 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import io.wany.amethy.modules.EventEmitter;
+
 public class WebSocketClient extends EventEmitter {
 
-  public static String USER_AGENT = "Amethy";
+  public static String USER_AGENT = System.getProperty("java.runtime.name");
 
   private final URI uri;
-  private final Options options;
+  private final WebSocketClientOptions opts;
 
-  private WebSocket connection = null;
+  private WebSocket conn = null;
   private boolean connected = false;
   private boolean closed = true;
 
-  private final ExecutorService pingExecutorService = Executors.newFixedThreadPool(1);
-  private final Timer pingTimer = new Timer();
+  private final ExecutorService pingES = Executors.newFixedThreadPool(1);
+  private final Timer pingT = new Timer();
 
-  private final ExecutorService reconnectExecutorService = Executors.newFixedThreadPool(1);
-  private final Timer reconnectTimer = new Timer();
+  private final ExecutorService reconES = Executors.newFixedThreadPool(1);
+  private final Timer reconT = new Timer();
 
   public int openFailed = 0;
 
-  public WebSocketClient(URI uri, Options options) {
+  public WebSocketClient(URI uri, WebSocketClientOptions opts) {
     super();
 
     this.uri = uri;
-    this.options = options;
+    this.opts = opts;
 
-    if (!this.options.HEADERS.containsKey("User-Agent")) {
-      this.options.HEADERS.replace("User-Agent", USER_AGENT);
+    if (!this.opts.HEADERS.containsKey("User-Agent")) {
+      this.opts.HEADERS.replace("User-Agent", USER_AGENT);
     }
 
-    pingExecutorService.submit(() -> pingTimer.schedule(new TimerTask() {
+    pingES.submit(() -> pingT.schedule(new TimerTask() {
       @Override
       public void run() {
-        if (closed || connected || connection != null) {
+        if (closed || connected || conn != null) {
           return;
         }
         try {
-          connection.sendPing(ByteBuffer.allocate(0));
+          conn.sendPing(ByteBuffer.allocate(0));
         } catch (Exception ignored) {
         }
       }
     }, 3000, 1000 * 30));
 
-    reconnectExecutorService.submit(() -> reconnectTimer.schedule(new TimerTask() {
+    reconES.submit(() -> reconT.schedule(new TimerTask() {
       @Override
       public void run() {
-        if (!options.AUTO_RECONNECT || closed || connected || connection != null) {
+        if (!opts.AUTO_RECONNECT || closed || connected || conn != null) {
           return;
         }
         try {
@@ -80,17 +81,17 @@ public class WebSocketClient extends EventEmitter {
   }
 
   public void open() {
-    if (this.connection != null || this.connected) {
+    if (this.conn != null || this.connected) {
       return;
     }
     this.closed = false;
 
     Builder builder = HttpClient.newHttpClient().newWebSocketBuilder();
-    this.options.HEADERS.forEach((key, value) -> {
+    this.opts.HEADERS.forEach((key, value) -> {
       builder.header(key, value);
     });
     builder.connectTimeout(Duration.ofMillis(1000));
-    this.connection = builder.buildAsync(this.uri, new WebSocketListener(this)).join();
+    this.conn = builder.buildAsync(this.uri, new WebSocketListener(this)).join();
   }
 
   private class WebSocketListener implements WebSocket.Listener {
@@ -105,7 +106,7 @@ public class WebSocketClient extends EventEmitter {
     @Override
     public void onOpen(WebSocket webSocket) {
       client.connected = true;
-      client.connection = webSocket;
+      client.conn = webSocket;
       openFailed = 0;
       client.emit("open", client);
       WebSocket.Listener.super.onOpen(webSocket);
@@ -137,9 +138,9 @@ public class WebSocketClient extends EventEmitter {
     @Override
     public CompletionStage<?> onClose(WebSocket webSocket, int statusCode, String reason) {
       client.connected = false;
-      client.connection.sendClose(0, "");
-      client.connection.abort();
-      client.connection = null;
+      client.conn.sendClose(0, "");
+      client.conn.abort();
+      client.conn = null;
       client.emit("close", client, statusCode, reason);
       return WebSocket.Listener.super.onClose(webSocket, statusCode, reason);
     }
@@ -147,9 +148,9 @@ public class WebSocketClient extends EventEmitter {
     @Override
     public void onError(WebSocket webSocket, Throwable error) {
       client.connected = false;
-      client.connection.sendClose(0, "");
-      client.connection.abort();
-      client.connection = null;
+      client.conn.sendClose(0, "");
+      client.conn.abort();
+      client.conn = null;
       client.emit("close", client, error);
       WebSocket.Listener.super.onError(webSocket, error);
     }
@@ -158,12 +159,12 @@ public class WebSocketClient extends EventEmitter {
 
   public void close() {
     this.closed = true;
-    if (this.connection == null) {
+    if (this.conn == null) {
       return;
     }
-    this.connection.sendClose(0, "");
-    this.connection.abort();
-    this.connection = null;
+    this.conn.sendClose(0, "");
+    this.conn.abort();
+    this.conn = null;
   }
 
   public void send(Object object) {
@@ -177,7 +178,7 @@ public class WebSocketClient extends EventEmitter {
       string = object.toString();
     }
     try {
-      this.connection.sendText(string, true);
+      this.conn.sendText(string, true);
     } catch (Exception ignored) {
     }
   }
@@ -207,17 +208,7 @@ public class WebSocketClient extends EventEmitter {
   }
 
   public void disable() {
-    this.reconnectTimer.cancel();
-    this.reconnectExecutorService.shutdown();
-  }
-
-  public static class Options {
-    public boolean AUTO_RECONNECT;
-    public HashMap<String, String> HEADERS;
-
-    public Options() {
-      this.AUTO_RECONNECT = false;
-      this.HEADERS = new HashMap<>();
-    }
+    this.reconT.cancel();
+    this.reconES.shutdown();
   }
 }

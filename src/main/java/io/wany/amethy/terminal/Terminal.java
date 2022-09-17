@@ -4,12 +4,9 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -18,8 +15,9 @@ import org.bukkit.Bukkit;
 
 import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.Config;
-import io.wany.amethy.modules.Request;
-import io.wany.amethy.modules.WebSocketClient;
+import io.wany.amethy.modules.network.HTTPRequest;
+import io.wany.amethy.modules.network.WebSocketClient;
+import io.wany.amethy.modules.network.WebSocketClientOptions;
 
 public class Terminal {
 
@@ -31,7 +29,7 @@ public class Terminal {
 
   public static boolean ping() {
     try {
-      JsonObject res = Request.JSONGet(Amethy.API + "/ping", KEY);
+      JsonObject res = HTTPRequest.JSONGet(Amethy.API + "/ping", KEY);
       String pong = res.get("message").getAsString();
       if (pong.equals("pong!")) {
         return true;
@@ -44,7 +42,7 @@ public class Terminal {
   }
 
   public static String[] newID() throws MalformedURLException, InterruptedException, ExecutionException, IOException {
-    JsonObject res = Request.JSONPost(Amethy.API + "/terminal/nodes", new JsonObject(), KEY);
+    JsonObject res = HTTPRequest.JSONPost(Amethy.API + "/terminal/nodes", new JsonObject(), KEY);
     JsonObject data = res.get("data").getAsJsonObject();
     String id = data.get("id").getAsString();
     String key = data.get("key").getAsString();
@@ -53,7 +51,7 @@ public class Terminal {
 
   public static boolean checkID(String id, String key) {
     try {
-      Request.JSONGet(Amethy.API + "/terminal/nodes/" + id + "/check?p=" + key, KEY);
+      HTTPRequest.JSONGet(Amethy.API + "/terminal/nodes/" + id + "/check?p=" + key, KEY);
       return true;
     } catch (Exception e) {
       return false;
@@ -95,7 +93,7 @@ public class Terminal {
       ID = d2[0];
       PKEY = d2[1];
     }
-    WebSocketClient.Options options = new WebSocketClient.Options();
+    WebSocketClientOptions options = new WebSocketClientOptions();
     options.AUTO_RECONNECT = true;
     options.HEADERS.put("Authorization", KEY);
     options.HEADERS.put("n", ID);
@@ -158,7 +156,7 @@ public class Terminal {
     }
     JsonObject data = new JsonObject();
     data.addProperty("account", id);
-    return Request.JSONPost(Amethy.API + "/terminal/nodes/" + ID + "/grant", data, KEY);
+    return HTTPRequest.JSONPost(Amethy.API + "/terminal/nodes/" + ID + "/grant", data, KEY);
   }
 
   public static void onLoad() {

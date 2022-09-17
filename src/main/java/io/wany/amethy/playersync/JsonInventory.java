@@ -39,4 +39,5 @@ public class JsonInventory {
     });
     inventory.setContents(itemStacks.toArray(new ItemStack[itemStacks.size()]));
   }
+
 }

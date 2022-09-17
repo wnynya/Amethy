@@ -1,6 +1,7 @@
 package io.wany.amethy.modules;
 
 import io.wany.amethy.Amethy;
+import io.wany.amethy.modules.network.HTTPRequest;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -71,7 +72,7 @@ public class Updater {
     Boolean latest = null;
     try {
       String url = API + "/latest?channel=" + CHANNEL + "&apiVersion=" + pluginAPI;
-      JsonObject res = Request.JSONGet(url, API_KEY);
+      JsonObject res = HTTPRequest.JSONGet(url, API_KEY);
       JsonObject data = res.get("data").getAsJsonObject();
       String version = data.get("version").getAsString();
       if (pluginVersion.equals(version)) {
@@ -88,7 +89,7 @@ public class Updater {
       throws MalformedURLException, InterruptedException, ExecutionException, IOException {
 
     String url = this.api + "/latest?channel=" + this.channel.name + "&apiVersion=" + pluginAPI;
-    JsonObject res = Request.JSONGet(url, this.key);
+    JsonObject res = HTTPRequest.JSONGet(url, this.key);
 
     JsonObject data = res.get("data").getAsJsonObject();
     String versionID = data.get("id").getAsString();

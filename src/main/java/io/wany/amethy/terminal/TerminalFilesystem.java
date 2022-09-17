@@ -23,7 +23,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import io.wany.amethy.modules.Console;
-import io.wany.amethy.modules.Request;
+import io.wany.amethy.modules.network.HTTPRequest;
 
 public class TerminalFilesystem {
 
@@ -186,7 +186,7 @@ public class TerminalFilesystem {
       }
       fis.close();
       bis.close();
-      Request.JSONDelete("https://api.wany.io/amethy/terminal/files/" + id, new JsonObject(), Terminal.KEY);
+      HTTPRequest.JSONDelete("https://api.wany.io/amethy/terminal/files/" + id, new JsonObject(), Terminal.KEY);
     } catch (Exception e) {
       data.addProperty("error", "File Download Error");
       return;

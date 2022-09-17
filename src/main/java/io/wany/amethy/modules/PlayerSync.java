@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import com.google.gson.JsonObject;
 
 import io.wany.amethy.Amethy;
+import io.wany.amethy.modules.network.HTTPRequest;
 import io.wany.amethy.playersync.JsonPlayer;
 
 public class PlayerSync {
@@ -25,6 +26,7 @@ public class PlayerSync {
       return;
     }
     Player player = event.getPlayer();
+    JsonObject obj = JsonPlayer.jsonify(player, true);
     JsonPlayer.clear(player);
 
     Bukkit.getScheduler().runTaskLater(Amethy.PLUGIN, () -> {
@@ -39,7 +41,7 @@ public class PlayerSync {
           PlayerSync.set(player.getUniqueId(), JsonPlayer.jsonify(player, true));
         }
       } catch (Exception e) {
-
+        JsonPlayer.apply(obj, player);
       }
     }, 20L);
   }
@@ -58,7 +60,7 @@ public class PlayerSync {
 
   public static JsonObject get(UUID uuid) {
     try {
-      return Request.JSONGet("https://api.wany.io/amethy/playersync/" + channel + "/" + uuid.toString()).get("data")
+      return HTTPRequest.JSONGet("https://api.wany.io/amethy/playersync/" + channel + "/" + uuid.toString()).get("data")
           .getAsJsonObject();
     } catch (Exception e) {
       e.printStackTrace();
@@ -70,7 +72,7 @@ public class PlayerSync {
     JsonObject body = new JsonObject();
     body.add("data", data);
     try {
-      Request.JSONPost("https://api.wany.io/amethy/playersync/" + channel + "/" + uuid.toString(), body.toString());
+      HTTPRequest.JSONPost("https://api.wany.io/amethy/playersync/" + channel + "/" + uuid.toString(), body.toString());
     } catch (Exception e) {
       e.printStackTrace();
     }

@@ -17,7 +17,6 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.modules.Console;
 
 public class TerminalConsole {
 

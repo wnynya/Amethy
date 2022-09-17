@@ -13,8 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import sun.misc.Unsafe;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.util.*;
 

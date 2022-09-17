@@ -9,6 +9,9 @@ import io.wany.amethy.modules.PluginLoader;
 import io.wany.amethy.modules.Promise;
 import io.wany.amethy.modules.Updater;
 import io.wany.amethy.modules.Updater.Version;
+import io.wany.amethy.modules.network.MySQLClient;
+import io.wany.amethy.modules.network.MySQLConfig;
+import io.wany.amethy.modules.network.MySQLResult;
 import io.wany.amethy.playersync.JsonPlayer;
 import io.wany.amethy.terminal.Terminal;
 
@@ -153,6 +156,20 @@ public class AmethyCommand implements CommandExecutor {
           sender.sendMessage(Message.of("업데이트 완료"));
         } catch (Exception e) {
           sender.sendMessage(Message.of("업데이트 중 오류 발생 망함 펑 (콘솔에 프린트스택트레이스 함)"));
+          e.printStackTrace();
+        }
+        return true;
+      }
+
+      case "test" -> {
+        try {
+          MySQLClient client = new MySQLClient("test", new MySQLConfig(
+              "server-pingo.wnynya.com", 24036,
+              "tester", "OrangeCakeWithCherry@snow", "w"));
+          MySQLResult result = client.query("SELECT * FROM test");
+          Console.log(result.toJsonArray().toString());
+          sender.sendMessage(Message.of("ok"));
+        } catch (Exception e) {
           e.printStackTrace();
         }
         return true;

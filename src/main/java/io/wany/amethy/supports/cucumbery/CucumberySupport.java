@@ -1,6 +1,5 @@
 package io.wany.amethy.supports.cucumbery;
 
-import com.jho5245.cucumbery.util.no_groups.AsyncTabCompleter;
 import com.jho5245.cucumbery.util.storage.no_groups.CustomConfig;
 
 import org.bukkit.Bukkit;
