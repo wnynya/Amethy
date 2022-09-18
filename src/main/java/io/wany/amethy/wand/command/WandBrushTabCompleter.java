@@ -115,14 +115,12 @@ public class WandBrushTabCompleter implements TabCompleter {
               Block block = player.getTargetBlock(10);
               if (block != null && !block.getType().isAir()) {
                 return Collections.singletonList(block.getLocation().getBlockX() + "");
-              }
-              else {
+              } else {
                 return Collections.singletonList(player.getLocation().getBlockX() + "");
               }
             }
             return Collections.singletonList("<X>");
-          }
-          else {
+          } else {
             int v = 0;
             if (player != null) {
               v = (int) player.getLocation().getX();
@@ -137,14 +135,12 @@ public class WandBrushTabCompleter implements TabCompleter {
               Block block = player.getTargetBlock(10);
               if (block != null && !block.getType().isAir()) {
                 return Collections.singletonList(block.getLocation().getBlockY() + "");
-              }
-              else {
+              } else {
                 return Collections.singletonList(player.getLocation().getBlockY() + "");
               }
             }
             return Collections.singletonList("<Y>");
-          }
-          else {
+          } else {
             int v = 0;
             if (player != null) {
               v = (int) player.getLocation().getY();
@@ -159,14 +155,12 @@ public class WandBrushTabCompleter implements TabCompleter {
               Block block = player.getTargetBlock(10);
               if (block != null && !block.getType().isAir()) {
                 return Collections.singletonList(block.getLocation().getBlockZ() + "");
-              }
-              else {
+              } else {
                 return Collections.singletonList(player.getLocation().getBlockZ() + "");
               }
             }
             return Collections.singletonList("<Z>");
-          }
-          else {
+          } else {
             int v = 0;
             if (player != null) {
               v = (int) player.getLocation().getZ();
@@ -201,7 +195,8 @@ public class WandBrushTabCompleter implements TabCompleter {
 
       if (args[0].equals("undo") || args[0].equals("redo")) {
 
-        if ((!sender.hasPermission("cherry.wand.undo") && args[0].equals("undo")) || (!sender.hasPermission("cherry.wand.redo") && args[0].equals("redo"))) {
+        if ((!sender.hasPermission("cherry.wand.undo") && args[0].equals("undo"))
+            || (!sender.hasPermission("cherry.wand.redo") && args[0].equals("redo"))) {
           return Collections.emptyList();
         }
 
@@ -250,14 +245,12 @@ public class WandBrushTabCompleter implements TabCompleter {
               Block block = player.getTargetBlock(10);
               if (block != null && !block.getType().isAir()) {
                 return Collections.singletonList(block.getLocation().getBlockX() + "");
-              }
-              else {
+              } else {
                 return Collections.singletonList(player.getLocation().getBlockX() + "");
               }
             }
             return Collections.singletonList("<X>");
-          }
-          else {
+          } else {
             return onIntegerTabComplete("X", 30000000, -30000000, args[args.length - 1]);
           }
         }
@@ -268,14 +261,12 @@ public class WandBrushTabCompleter implements TabCompleter {
               Block block = player.getTargetBlock(10);
               if (block != null && !block.getType().isAir()) {
                 return Collections.singletonList(block.getLocation().getBlockY() + "");
-              }
-              else {
+              } else {
                 return Collections.singletonList(player.getLocation().getBlockY() + "");
               }
             }
             return Collections.singletonList("<Y>");
-          }
-          else {
+          } else {
             return onIntegerTabComplete("X", 256, 0, args[args.length - 1]);
           }
         }
@@ -286,14 +277,12 @@ public class WandBrushTabCompleter implements TabCompleter {
               Block block = player.getTargetBlock(10);
               if (block != null && !block.getType().isAir()) {
                 return Collections.singletonList(block.getLocation().getBlockZ() + "");
-              }
-              else {
+              } else {
                 return Collections.singletonList(player.getLocation().getBlockZ() + "");
               }
             }
             return Collections.singletonList("<Z>");
-          }
-          else {
+          } else {
             return onIntegerTabComplete("Z", 30000000, -30000000, args[args.length - 1]);
           }
         }
@@ -332,14 +321,12 @@ public class WandBrushTabCompleter implements TabCompleter {
               Block block = player.getTargetBlock(10);
               if (block != null && !block.getType().isAir()) {
                 return Collections.singletonList(block.getLocation().getBlockX() + "");
-              }
-              else {
+              } else {
                 return Collections.singletonList(player.getLocation().getBlockX() + "");
               }
             }
             return Collections.singletonList("<X>");
-          }
-          else {
+          } else {
             return onIntegerTabComplete("X", 30000000, -30000000, args[args.length - 1]);
           }
         }
@@ -350,14 +337,12 @@ public class WandBrushTabCompleter implements TabCompleter {
               Block block = player.getTargetBlock(10);
               if (block != null && !block.getType().isAir()) {
                 return Collections.singletonList(block.getLocation().getBlockY() + "");
-              }
-              else {
+              } else {
                 return Collections.singletonList(player.getLocation().getBlockY() + "");
               }
             }
             return Collections.singletonList("<Y>");
-          }
-          else {
+          } else {
             return onIntegerTabComplete("X", 256, 0, args[args.length - 1]);
           }
         }
@@ -368,14 +353,12 @@ public class WandBrushTabCompleter implements TabCompleter {
               Block block = player.getTargetBlock(10);
               if (block != null && !block.getType().isAir()) {
                 return Collections.singletonList(block.getLocation().getBlockZ() + "");
-              }
-              else {
+              } else {
                 return Collections.singletonList(player.getLocation().getBlockZ() + "");
               }
             }
             return Collections.singletonList("<Z>");
-          }
-          else {
+          } else {
             return onIntegerTabComplete("Z", 30000000, -30000000, args[args.length - 1]);
           }
         }
@@ -387,7 +370,8 @@ public class WandBrushTabCompleter implements TabCompleter {
 
         int commandArgsLength = 5;
         if (args.length <= commandArgsLength + 4) {
-          List<String> list = new ArrayList<>(Arrays.asList("-silent", "-s", "-remove-air", "-remove-water", "-remove-lava"));
+          List<String> list = new ArrayList<>(
+              Arrays.asList("-silent", "-s", "-remove-air", "-remove-water", "-remove-lava"));
           int n = 0;
           for (String arg : args) {
             if (n >= commandArgsLength) {
@@ -605,7 +589,8 @@ public class WandBrushTabCompleter implements TabCompleter {
         return Collections.emptyList();
       }
 
-      if (args[0].equals("cube") || args[0].equals("emptycube") || args[0].equals("walledcube") || args[0].equals("ecube") || args[0].equals("wcube")) {
+      if (args[0].equals("cube") || args[0].equals("emptycube") || args[0].equals("walledcube")
+          || args[0].equals("ecube") || args[0].equals("wcube")) {
         if (!sender.hasPermission("cherry.wand.edit.cube")) {
           return Collections.emptyList();
         }
@@ -636,7 +621,10 @@ public class WandBrushTabCompleter implements TabCompleter {
         return Collections.emptyList();
       }
 
-      if (args[0].equals("cyl") || args[0].equals("emptycyl") || args[0].equals("walledcyl") || args[0].equals("ecyl") || args[0].equals("wcyl") || args[0].equals("pointcyl") || args[0].equals("emptypointcyl") || args[0].equals("walledpointcyl") || args[0].equals("pcyl") || args[0].equals("epcyl") || args[0].equals("wpcyl")) {
+      if (args[0].equals("cyl") || args[0].equals("emptycyl") || args[0].equals("walledcyl") || args[0].equals("ecyl")
+          || args[0].equals("wcyl") || args[0].equals("pointcyl") || args[0].equals("emptypointcyl")
+          || args[0].equals("walledpointcyl") || args[0].equals("pcyl") || args[0].equals("epcyl")
+          || args[0].equals("wpcyl")) {
         if (!sender.hasPermission("cherry.wand.edit.cyl")) {
           return Collections.emptyList();
         }
@@ -678,7 +666,9 @@ public class WandBrushTabCompleter implements TabCompleter {
         return Collections.emptyList();
       }
 
-      if (args[0].equals("sphere") || args[0].equals("emptysphere") || args[0].equals("esphere") || args[0].equals("pointsphere") || args[0].equals("emptypointsphere") || args[0].equals("psphere") || args[0].equals("epsphere")) {
+      if (args[0].equals("sphere") || args[0].equals("emptysphere") || args[0].equals("esphere")
+          || args[0].equals("pointsphere") || args[0].equals("emptypointsphere") || args[0].equals("psphere")
+          || args[0].equals("epsphere")) {
         if (sender.hasPermission("cherry.wand.edit.sphere")) {
           return Collections.emptyList();
         }
@@ -794,14 +784,12 @@ public class WandBrushTabCompleter implements TabCompleter {
                 Block block = player.getTargetBlock(10);
                 if (block != null && !block.getType().isAir()) {
                   return Collections.singletonList(block.getLocation().getBlockX() + "");
-                }
-                else {
+                } else {
                   return Collections.singletonList(player.getLocation().getBlockX() + "");
                 }
               }
               return Collections.singletonList("<X>");
-            }
-            else {
+            } else {
               int v = 0;
               if (player != null) {
                 v = (int) player.getLocation().getX();
@@ -816,14 +804,12 @@ public class WandBrushTabCompleter implements TabCompleter {
                 Block block = player.getTargetBlock(10);
                 if (block != null && !block.getType().isAir()) {
                   return Collections.singletonList(block.getLocation().getBlockY() + "");
-                }
-                else {
+                } else {
                   return Collections.singletonList(player.getLocation().getBlockY() + "");
                 }
               }
               return Collections.singletonList("<Y>");
-            }
-            else {
+            } else {
               int v = 0;
               if (player != null) {
                 v = (int) player.getLocation().getY();
@@ -838,14 +824,12 @@ public class WandBrushTabCompleter implements TabCompleter {
                 Block block = player.getTargetBlock(10);
                 if (block != null && !block.getType().isAir()) {
                   return Collections.singletonList(block.getLocation().getBlockZ() + "");
-                }
-                else {
+                } else {
                   return Collections.singletonList(player.getLocation().getBlockZ() + "");
                 }
               }
               return Collections.singletonList("<Z>");
-            }
-            else {
+            } else {
               int v = 0;
               if (player != null) {
                 v = (int) player.getLocation().getZ();
@@ -979,44 +963,46 @@ public class WandBrushTabCompleter implements TabCompleter {
     return Collections.emptyList();
   }
 
-  /*private List<String> onBlock(String str) {
-    Pattern p = Pattern.compile("([\\w_]+)(\\[([\\w=_,]+)\\])?");
-    Matcher m = p.matcher(str);
-
-    List<String> returnValue = new ArrayList<>();
-
-    if (m.find()) {
-
-      String name = m.group(1);
-      Material material = Material.valueOf(name);
-      List<String> AvailableBlockDataKeys = Arrays.asList(BlockDataInfo.getBlockDataKeys(material));
-
-      String blockData = m.group(2);
-
-      if (blockData == null) {
-        for(String key : AvailableBlockDataKeys) {
-          returnValue.add(name + "[" + key + "=");
-        }
-        return returnValue;
-      }
-      else {
-        String[] blockDataArray = blockData.split(",");
-        for(String data : blockDataArray) {
-          String[] kv = data.split("=");
-          String key = kv[0];
-          String val = kv[1];
-          AvailableBlockDataKeys.remove(key);
-        }
-      }
-    }
-
-  }*/
+  /*
+   * private List<String> onBlock(String str) {
+   * Pattern p = Pattern.compile("([\\w_]+)(\\[([\\w=_,]+)\\])?");
+   * Matcher m = p.matcher(str);
+   * 
+   * List<String> returnValue = new ArrayList<>();
+   * 
+   * if (m.find()) {
+   * 
+   * String name = m.group(1);
+   * Material material = Material.valueOf(name);
+   * List<String> AvailableBlockDataKeys =
+   * Arrays.asList(BlockDataInfo.getBlockDataKeys(material));
+   * 
+   * String blockData = m.group(2);
+   * 
+   * if (blockData == null) {
+   * for(String key : AvailableBlockDataKeys) {
+   * returnValue.add(name + "[" + key + "=");
+   * }
+   * return returnValue;
+   * }
+   * else {
+   * String[] blockDataArray = blockData.split(",");
+   * for(String data : blockDataArray) {
+   * String[] kv = data.split("=");
+   * String key = kv[0];
+   * String val = kv[1];
+   * AvailableBlockDataKeys.remove(key);
+   * }
+   * }
+   * }
+   * 
+   * }
+   */
 
   private List<String> onIntegerTabComplete(String name, int max, int min, String input) {
     if (input.isEmpty()) {
       return Collections.singletonList("<" + name.replaceAll(" ", "_") + ">");
-    }
-    else {
+    } else {
       try {
         int i = Integer.parseInt(input);
         if (i > max) {
@@ -1025,12 +1011,10 @@ public class WandBrushTabCompleter implements TabCompleter {
         if (i < min) {
           return Collections.singletonList("최소 " + name + " 값은 " + min + "입니다.");
         }
-      }
-      catch (Exception e) {
+      } catch (Exception e) {
         if (DataTypeChecker.isInteger(input)) {
           return Collections.singletonList("프로그램 상 사용할 수 없는 범위의 수입니다.");
-        }
-        else {
+        } else {
           return Collections.singletonList(name + " 값은 정수만 입력할 수 있습니다.");
         }
       }
@@ -1041,8 +1025,7 @@ public class WandBrushTabCompleter implements TabCompleter {
   private List<String> onIntegerTabCompleteWave(String name, int max, int min, String input, int v) {
     if (input.isEmpty()) {
       return Collections.singletonList("<" + name.replaceAll(" ", "_") + ">");
-    }
-    else {
+    } else {
       try {
         int i = Integer.parseInt(input);
         if (i > max) {
@@ -1051,8 +1034,7 @@ public class WandBrushTabCompleter implements TabCompleter {
         if (i < min) {
           return Collections.singletonList("최소 " + name + " 값은 " + min + "입니다.");
         }
-      }
-      catch (Exception e) {
+      } catch (Exception e) {
         if (input.startsWith("~")) {
           if (input.equals("~")) {
             return Collections.singletonList(input);
@@ -1069,8 +1051,7 @@ public class WandBrushTabCompleter implements TabCompleter {
               return Collections.singletonList("최소 ~" + name + " 값은 ~" + (min + v) + "입니다.");
             }
             return Collections.singletonList(input);
-          }
-          catch (Exception ex) {
+          } catch (Exception ex) {
             if (DataTypeChecker.isInteger(input.substring(1))) {
               return Collections.singletonList("프로그램 상 사용할 수 없는 범위의 수입니다.");
             }
@@ -1079,8 +1060,7 @@ public class WandBrushTabCompleter implements TabCompleter {
 
         if (DataTypeChecker.isInteger(input)) {
           return Collections.singletonList("프로그램 상 사용할 수 없는 범위의 수입니다.");
-        }
-        else {
+        } else {
           return Collections.singletonList(name + " 값은 정수만 입력할 수 있습니다.");
         }
       }

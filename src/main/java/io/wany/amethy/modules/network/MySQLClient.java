@@ -43,6 +43,13 @@ public class MySQLClient {
     return r;
   }
 
+  public void close() throws SQLException {
+    if (this.conn == null) {
+      return;
+    }
+    this.conn.close();
+  }
+
   public static Collection<MySQLClient> getDatabases() {
     return databases.values();
   }

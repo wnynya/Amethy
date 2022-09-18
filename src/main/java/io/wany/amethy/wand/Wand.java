@@ -33,7 +33,7 @@ public class Wand {
 
   public static String COLORHEX = "#FF782D";
   public static String COLOR = COLORHEX + ";";
-  public static String PREFIX = COLOR + "&l[Wand]:&r ";
+  public static String PREFIX = COLOR + "&l[완드]:&r ";
   public static boolean ENABLED = false;
 
   public static Config config = null;
@@ -808,7 +808,7 @@ public class Wand {
 
     if (Amethy.CONFIG.isInt("wand.undo-limit")) {
       undoLimit = Amethy.CONFIG.getInt("wand.undo-limit");
-      Console.debug(PREFIX + "Set undo-limit to " + undoLimit);
+      Console.debug(PREFIX + "작업 기록 횟수: " + undoLimit + "회");
     }
 
   }
@@ -816,10 +816,10 @@ public class Wand {
   public static void onEnable() {
 
     if (!Amethy.CONFIG.getBoolean("wand.enable")) {
-      Console.debug(Message.effect(PREFIX + "Wand Disabled"));
+      Console.debug(Message.effect(PREFIX + "완드 &c비활성화됨"));
       return;
     }
-    Console.debug(Message.effect(PREFIX + "Enabling Wand"));
+    Console.debug(Message.effect(PREFIX + "완드 &a활성화됨"));
     Wand.ENABLED = true;
 
     Amethy.PLUGIN.registerCommand("wandedit", new WandEditCommand(), new WandEditTabCompleter());

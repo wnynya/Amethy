@@ -1,6 +1,5 @@
 package io.wany.amethy.wand.brush.touch;
 
-
 import org.bukkit.Location;
 
 import io.wany.amethy.wand.Wand;

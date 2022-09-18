@@ -23,8 +23,7 @@ public class WandBrushCommand implements CommandExecutor {
     double x = 0;
     try {
       x = Double.parseDouble(s);
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       if (s.startsWith("~")) {
         try {
           double i = Double.parseDouble(s.substring(1));
@@ -32,8 +31,7 @@ public class WandBrushCommand implements CommandExecutor {
             d--;
           }
           x = d + i;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
           throw new Exception("시발");
         }
       }
@@ -57,8 +55,7 @@ public class WandBrushCommand implements CommandExecutor {
       player = (Player) sender;
       wand = Wand.getWand(player);
       wandBrush = wand.getBrush();
-    }
-    else {
+    } else {
       uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
       wand = Wand.getWand(uuid);
       wandBrush = wand.getBrush();
@@ -92,13 +89,11 @@ public class WandBrushCommand implements CommandExecutor {
             int y = (int) parseRelativeWave(tloc.getY(), args[2]);
             int z = (int) parseRelativeWave(tloc.getZ(), args[3]);
             loc = new Location(world, x, y, z);
-          }
-          catch (Exception e) {
+          } catch (Exception e) {
             Message.error(sender, "올바른 좌표가 아닙니다.");
             return true;
           }
-        }
-        else if (args.length >= 4) {
+        } else if (args.length >= 4) {
           if (player == null) {
             Message.error(sender, Message.CommandFeedback.ONLY_PLAYER);
             return true;
@@ -109,13 +104,11 @@ public class WandBrushCommand implements CommandExecutor {
             int y = (int) parseRelativeWave(player.getLocation().getY(), args[2]);
             int z = (int) parseRelativeWave(player.getLocation().getZ(), args[3]);
             loc = new Location(world, x, y, z);
-          }
-          catch (Exception e) {
+          } catch (Exception e) {
             Message.error(sender, "올바른 좌표가 아닙니다.");
             return true;
           }
-        }
-        else {
+        } else {
           if (player == null) {
             Message.error(sender, Message.CommandFeedback.ONLY_PLAYER);
             return true;
@@ -162,8 +155,7 @@ public class WandBrushCommand implements CommandExecutor {
         int radius;
         try {
           radius = Integer.parseInt(radiusString);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
           Wand.error(sender, "0 <= radius");
           return true;
         }
@@ -173,7 +165,8 @@ public class WandBrushCommand implements CommandExecutor {
         int commandArgsLength = 2;
         if (args.length > commandArgsLength) {
           for (String str : args) {
-            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-silent") || str.equalsIgnoreCase("-s")) {
+            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-silent")
+                || str.equalsIgnoreCase("-s")) {
               silent = true;
             }
           }
@@ -196,8 +189,7 @@ public class WandBrushCommand implements CommandExecutor {
         BlockData blockData;
         try {
           blockData = Wand.getBlockData(blockDataString);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
           Wand.error(sender, "블록 데이터 파싱 에러: " + e.getMessage());
           return true;
         }
@@ -207,7 +199,8 @@ public class WandBrushCommand implements CommandExecutor {
         int commandArgsLength = 2;
         if (args.length > commandArgsLength) {
           for (String str : args) {
-            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-silent") || str.equalsIgnoreCase("-s")) {
+            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-silent")
+                || str.equalsIgnoreCase("-s")) {
               silent = true;
             }
           }

@@ -14,12 +14,14 @@ public enum Brush implements BrushToucher {
     public void touch(Location location, Wand wand, boolean applyPhysics) {
       new Cube().touch(location, wand, applyPhysics);
     }
-  }, BALL_POINT {
+  },
+  BALL_POINT {
     @Override
     public void touch(Location location, Wand wand, boolean applyPhysics) {
       new SpherePoint().touch(location, wand, applyPhysics);
     }
-  }, BALL_ROUND {
+  },
+  BALL_ROUND {
     @Override
     public void touch(Location location, Wand wand, boolean applyPhysics) {
       new SphereRound().touch(location, wand, applyPhysics);

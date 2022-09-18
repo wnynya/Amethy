@@ -29,7 +29,8 @@ import java.util.UUID;
 
 public class WandEditCommand implements CommandExecutor {
 
-  public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+  public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
+      String[] args) {
 
     if (!Wand.ENABLED) {
       Message.info(sender, Wand.PREFIX, "완드 기능이 비활성화된 상태입니다");
@@ -43,8 +44,7 @@ public class WandEditCommand implements CommandExecutor {
     if (sender instanceof Player) {
       player = (Player) sender;
       wand = Wand.getWand(player);
-    }
-    else {
+    } else {
       uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
       wand = Wand.getWand(uuid);
     }
@@ -102,9 +102,9 @@ public class WandEditCommand implements CommandExecutor {
             return true;
           }
           try {
-            location = new Location(world, Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
-          }
-          catch (Exception e) {
+            location = new Location(world, Integer.parseInt(args[1]), Integer.parseInt(args[2]),
+                Integer.parseInt(args[3]));
+          } catch (Exception e) {
             Message.error(sender, "올바른 좌표가 아닙니다");
             return true;
           }
@@ -121,9 +121,9 @@ public class WandEditCommand implements CommandExecutor {
           }
           World world = player.getWorld();
           try {
-            location = new Location(world, Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
-          }
-          catch (Exception e) {
+            location = new Location(world, Integer.parseInt(args[1]), Integer.parseInt(args[2]),
+                Integer.parseInt(args[3]));
+          } catch (Exception e) {
             Message.error(sender, "올바른 좌표가 아닙니다");
             return true;
           }
@@ -152,13 +152,13 @@ public class WandEditCommand implements CommandExecutor {
 
         edit.setPosition(1, location);
 
-        String message = "첫번째 포지션이 설정되었습니다 (" + Wand.COLOR + location.getX() + "&r, " + Wand.COLOR + location.getY() + "&r, " + Wand.COLOR + location.getZ() + "&r)";
+        String message = "첫번째 포지션이 설정되었습니다 (" + Wand.COLOR + location.getX() + "&r, " + Wand.COLOR + location.getY()
+            + "&r, " + Wand.COLOR + location.getZ() + "&r)";
         if (edit.getPosition(1) != null && edit.getPosition(2) != null) {
           int count = Area.CUBE.getArea(edit.getPosition(1), edit.getPosition(2)).size();
           message += " (" + Wand.COLOR + count + "&r블록)";
           edit.setParticleArea(Area.CUBE_PARTICLE.getArea(edit.getPosition(1), edit.getPosition(2)));
-        }
-        else {
+        } else {
           edit.setParticleArea(Area.CUBE_PARTICLE.getArea(edit.getPosition(1), edit.getPosition(1)));
         }
 
@@ -188,9 +188,9 @@ public class WandEditCommand implements CommandExecutor {
             return true;
           }
           try {
-            location = new Location(world, Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
-          }
-          catch (Exception e) {
+            location = new Location(world, Integer.parseInt(args[1]), Integer.parseInt(args[2]),
+                Integer.parseInt(args[3]));
+          } catch (Exception e) {
             Message.error(sender, "올바른 좌표가 아닙니다");
             return true;
           }
@@ -207,9 +207,9 @@ public class WandEditCommand implements CommandExecutor {
           }
           World world = player.getWorld();
           try {
-            location = new Location(world, Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
-          }
-          catch (Exception e) {
+            location = new Location(world, Integer.parseInt(args[1]), Integer.parseInt(args[2]),
+                Integer.parseInt(args[3]));
+          } catch (Exception e) {
             Message.error(sender, "올바른 좌표가 아닙니다");
             return true;
           }
@@ -238,13 +238,13 @@ public class WandEditCommand implements CommandExecutor {
 
         edit.setPosition(2, location);
 
-        String message = "두번째 포지션이 설정되었습니다 (" + Wand.COLOR + location.getX() + "&r, " + Wand.COLOR + location.getY() + "&r, " + Wand.COLOR + location.getZ() + "&r)";
+        String message = "두번째 포지션이 설정되었습니다 (" + Wand.COLOR + location.getX() + "&r, " + Wand.COLOR + location.getY()
+            + "&r, " + Wand.COLOR + location.getZ() + "&r)";
         if (edit.getPosition(1) != null && edit.getPosition(2) != null) {
           int count = Area.CUBE.getArea(edit.getPosition(1), edit.getPosition(2)).size();
           message += " (" + Wand.COLOR + count + "&r블록)";
           edit.setParticleArea(Area.CUBE_PARTICLE.getArea(edit.getPosition(1), edit.getPosition(2)));
-        }
-        else {
+        } else {
           edit.setParticleArea(Area.CUBE_PARTICLE.getArea(edit.getPosition(2), edit.getPosition(2)));
         }
 
@@ -274,9 +274,9 @@ public class WandEditCommand implements CommandExecutor {
             return true;
           }
           try {
-            location = new Location(world, Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
-          }
-          catch (Exception e) {
+            location = new Location(world, Integer.parseInt(args[1]), Integer.parseInt(args[2]),
+                Integer.parseInt(args[3]));
+          } catch (Exception e) {
             Message.error(sender, "올바른 좌표가 아닙니다");
             return true;
           }
@@ -293,9 +293,9 @@ public class WandEditCommand implements CommandExecutor {
           }
           World world = player.getWorld();
           try {
-            location = new Location(world, Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
-          }
-          catch (Exception e) {
+            location = new Location(world, Integer.parseInt(args[1]), Integer.parseInt(args[2]),
+                Integer.parseInt(args[3]));
+          } catch (Exception e) {
             Message.error(sender, "올바른 좌표가 아닙니다");
             return true;
           }
@@ -324,7 +324,8 @@ public class WandEditCommand implements CommandExecutor {
 
         wandEdit.setPosition(3, location);
 
-        String message = "세번째 포지션이 설정되었습니다 (" + Wand.COLOR + location.getX() + "&r, " + Wand.COLOR + location.getY() + "&r, " + Wand.COLOR + location.getZ() + "&r)";
+        String message = "세번째 포지션이 설정되었습니다 (" + Wand.COLOR + location.getX() + "&r, " + Wand.COLOR + location.getY()
+            + "&r, " + Wand.COLOR + location.getZ() + "&r)";
 
         if (!silent) {
           Message.info(sender, Wand.PREFIX + Message.effect(message));
@@ -349,12 +350,10 @@ public class WandEditCommand implements CommandExecutor {
         if (args.length >= 2) {
           try {
             repeat = Integer.parseInt(args[1]);
-          }
-          catch (Exception e) {
+          } catch (Exception e) {
             if (DataTypeChecker.isInteger(args[1])) {
               Message.error(sender, "프로그램 상 사용할 수 없는 범위의 수입니다");
-            }
-            else {
+            } else {
               Message.error(sender, "반복 횟수 값은 정수만 입력할 수 있습니다");
             }
             return true;
@@ -372,8 +371,7 @@ public class WandEditCommand implements CommandExecutor {
           Player targetPlayer;
           try {
             targetPlayer = Bukkit.getPlayer(UUID.fromString(targetPlayerString));
-          }
-          catch (Exception e) {
+          } catch (Exception e) {
             targetPlayer = Bukkit.getPlayer(targetPlayerString);
           }
           if (targetPlayer == null) {
@@ -402,8 +400,7 @@ public class WandEditCommand implements CommandExecutor {
             if (!silent) {
               Message.info(sender, Wand.PREFIX + "이전으로 되돌렸습니다");
             }
-          }
-          else {
+          } else {
             if (!silent) {
               Message.warn(sender, Wand.PREFIX + "이전으로 되돌릴 수 없습니다");
             }
@@ -425,12 +422,10 @@ public class WandEditCommand implements CommandExecutor {
         if (args.length >= 2) {
           try {
             repeat = Integer.parseInt(args[1]);
-          }
-          catch (Exception e) {
+          } catch (Exception e) {
             if (DataTypeChecker.isInteger(args[1])) {
               Message.error(sender, "프로그램 상 사용할 수 없는 범위의 수입니다");
-            }
-            else {
+            } else {
               Message.error(sender, "반복 횟수 값은 정수만 입력할 수 있습니다");
             }
             return true;
@@ -448,8 +443,7 @@ public class WandEditCommand implements CommandExecutor {
           Player targetPlayer;
           try {
             targetPlayer = Bukkit.getPlayer(UUID.fromString(targetPlayerString));
-          }
-          catch (Exception e) {
+          } catch (Exception e) {
             targetPlayer = Bukkit.getPlayer(targetPlayerString);
           }
           if (targetPlayer == null) {
@@ -478,8 +472,7 @@ public class WandEditCommand implements CommandExecutor {
             if (!silent) {
               Message.info(sender, Wand.PREFIX + "되돌리기를 취소하였습니다");
             }
-          }
-          else {
+          } else {
             if (!silent) {
               Message.warn(sender, Wand.PREFIX + "되돌리기를 취소할 수 없습니다");
             }
@@ -527,8 +520,7 @@ public class WandEditCommand implements CommandExecutor {
             x = verifyInteger("X", 30000000, -30000000, args[1]);
             y = verifyInteger("Y", 256, 0, args[2]);
             z = verifyInteger("Z", 30000000, -30000000, args[3]);
-          }
-          catch (Exception e) {
+          } catch (Exception e) {
             Console.error(e.getMessage());
             return true;
           }
@@ -539,14 +531,12 @@ public class WandEditCommand implements CommandExecutor {
             world = Bukkit.getWorld(args[4]);
             if (world != null) {
               loc = new Location(world, x, y, z);
-            }
-            else {
+            } else {
               Console.error("월드를 찾을 수 없습니다");
               return true;
             }
           }
-        }
-        else {
+        } else {
           loc = player.getLocation().getBlock().getLocation();
         }
 
@@ -555,7 +545,8 @@ public class WandEditCommand implements CommandExecutor {
         int commandArgsLength = 5;
         if (args.length > commandArgsLength) {
           for (String str : args) {
-            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-silent") || str.equalsIgnoreCase("-s")) {
+            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-silent")
+                || str.equalsIgnoreCase("-s")) {
               silent = true;
               break;
             }
@@ -565,7 +556,8 @@ public class WandEditCommand implements CommandExecutor {
         wand.copy(area, loc, null);
 
         if (!silent) {
-          Message.info(sender, Wand.PREFIX + Message.effect("선택 영역을 클립보드로 복사하였습니다 (" + Wand.COLOR + wand.clipboard.size() + "&r블록)"));
+          Message.info(sender,
+              Wand.PREFIX + Message.effect("선택 영역을 클립보드로 복사하였습니다 (" + Wand.COLOR + wand.clipboard.size() + "&r블록)"));
         }
 
         return true;
@@ -604,8 +596,7 @@ public class WandEditCommand implements CommandExecutor {
             x = verifyInteger("X", 30000000, -30000000, args[1]);
             y = verifyInteger("Y", 256, 0, args[2]);
             z = verifyInteger("Z", 30000000, -30000000, args[3]);
-          }
-          catch (Exception e) {
+          } catch (Exception e) {
             Console.error(e.getMessage());
             return true;
           }
@@ -616,14 +607,12 @@ public class WandEditCommand implements CommandExecutor {
             world = Bukkit.getWorld(args[4]);
             if (world != null) {
               loc = new Location(world, x, y, z);
-            }
-            else {
+            } else {
               Console.error("월드를 찾을 수 없습니다");
               return true;
             }
           }
-        }
-        else {
+        } else {
           loc = player.getLocation().getBlock().getLocation();
         }
 
@@ -633,10 +622,12 @@ public class WandEditCommand implements CommandExecutor {
         int commandArgsLength = 2;
         if (args.length > commandArgsLength) {
           for (String str : args) {
-            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-applyPhysics") || str.equalsIgnoreCase("-ap")) {
+            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-applyPhysics")
+                || str.equalsIgnoreCase("-ap")) {
               applyPhysics = true;
             }
-            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-silent") || str.equalsIgnoreCase("-s")) {
+            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-silent")
+                || str.equalsIgnoreCase("-s")) {
               silent = true;
             }
           }
@@ -647,7 +638,8 @@ public class WandEditCommand implements CommandExecutor {
         wand.copy(area, loc, null);
 
         if (!silent) {
-          Message.info(sender, Wand.PREFIX + Message.effect("선택 영역을 클립보드로 잘라내었습니다 (" + Wand.COLOR + wand.clipboard.size() + "&r블록)"));
+          Message.info(sender,
+              Wand.PREFIX + Message.effect("선택 영역을 클립보드로 잘라내었습니다 (" + Wand.COLOR + wand.clipboard.size() + "&r블록)"));
         }
 
         return true;
@@ -681,8 +673,7 @@ public class WandEditCommand implements CommandExecutor {
             lx = verifyInteger("X", 30000000, -30000000, args[1]);
             ly = verifyInteger("Y", 256, 0, args[2]);
             lz = verifyInteger("Z", 30000000, -30000000, args[3]);
-          }
-          catch (Exception e) {
+          } catch (Exception e) {
             Console.error(e.getMessage());
             return true;
           }
@@ -693,14 +684,12 @@ public class WandEditCommand implements CommandExecutor {
             world = Bukkit.getWorld(args[4]);
             if (world != null) {
               posP = new Location(world, lx, ly, lz);
-            }
-            else {
+            } else {
               Console.error("월드를 찾을 수 없습니다");
               return true;
             }
           }
-        }
-        else {
+        } else {
           posP = player.getLocation().getBlock().getLocation();
         }
 
@@ -733,7 +722,8 @@ public class WandEditCommand implements CommandExecutor {
         List<Location> area = new ArrayList<>();
 
         for (WandBlock wandBlock : wand.clipboard) {
-          Location loc = new Location(posP.getWorld(), (int) wandBlock.getLocation().getX() + posP.getX(), (int) wandBlock.getLocation().getY() + posP.getY(), (int) wandBlock.getLocation().getZ() + posP.getZ());
+          Location loc = new Location(posP.getWorld(), (int) wandBlock.getLocation().getX() + posP.getX(),
+              (int) wandBlock.getLocation().getY() + posP.getY(), (int) wandBlock.getLocation().getZ() + posP.getZ());
           area.add(loc);
         }
 
@@ -771,7 +761,8 @@ public class WandEditCommand implements CommandExecutor {
         int commandArgsLength = 2;
         if (args.length > commandArgsLength) {
           for (String str : args) {
-            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-silent") || str.equalsIgnoreCase("-s")) {
+            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-silent")
+                || str.equalsIgnoreCase("-s")) {
               silent = true;
               break;
             }
@@ -851,7 +842,8 @@ public class WandEditCommand implements CommandExecutor {
         int commandArgsLength = 2;
         if (args.length > commandArgsLength) {
           for (String str : args) {
-            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-silent") || str.equalsIgnoreCase("-s")) {
+            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-silent")
+                || str.equalsIgnoreCase("-s")) {
               silent = true;
               break;
             }
@@ -896,12 +888,10 @@ public class WandEditCommand implements CommandExecutor {
         if (args.length >= 2) {
           try {
             repeat = Integer.parseInt(args[1]);
-          }
-          catch (Exception e) {
+          } catch (Exception e) {
             if (DataTypeChecker.isInteger(args[1])) {
               Message.error(sender, "프로그램 상 사용할 수 없는 범위의 수입니다");
-            }
-            else {
+            } else {
               Message.error(sender, "반복 횟수 값은 정수만 입력할 수 있습니다");
             }
             return true;
@@ -919,8 +909,7 @@ public class WandEditCommand implements CommandExecutor {
         String dir;
         if (args.length >= 3) {
           dir = args[2].toLowerCase();
-        }
-        else {
+        } else {
           Vector vector = player.getLocation().getDirection();
 
           double maxd = Math.max(Math.abs(vector.getX()), Math.max(Math.abs(vector.getY()), Math.abs(vector.getZ())));
@@ -928,28 +917,22 @@ public class WandEditCommand implements CommandExecutor {
           if (maxd == Math.abs(vector.getX())) {
             if (vector.getX() > 0) {
               dir = "east";
-            }
-            else {
+            } else {
               dir = "west";
             }
-          }
-          else if (maxd == Math.abs(vector.getY())) {
+          } else if (maxd == Math.abs(vector.getY())) {
             if (vector.getY() > 0) {
               dir = "up";
-            }
-            else {
+            } else {
               dir = "down";
             }
-          }
-          else if (maxd == Math.abs(vector.getZ())) {
+          } else if (maxd == Math.abs(vector.getZ())) {
             if (vector.getZ() > 0) {
               dir = "south";
-            }
-            else {
+            } else {
               dir = "north";
             }
-          }
-          else {
+          } else {
             Console.error("올바르지 않은 방향입니다 (e)");
             return true;
           }
@@ -992,12 +975,17 @@ public class WandEditCommand implements CommandExecutor {
             Location loc = wandBlock.getLocation();
             Location newLoc;
             switch (dir) {
-              case "east" -> newLoc = new Location(world, loc.getX() + (m * ((maxX + 1) - minX)), loc.getY(), loc.getZ());
-              case "west" -> newLoc = new Location(world, loc.getX() - (m * ((maxX + 1) - minX)), loc.getY(), loc.getZ());
-              case "south" -> newLoc = new Location(world, loc.getX(), loc.getY(), loc.getZ() + (m * ((maxZ + 1) - minZ)));
-              case "north" -> newLoc = new Location(world, loc.getX(), loc.getY(), loc.getZ() - (m * ((maxZ + 1) - minZ)));
+              case "east" ->
+                newLoc = new Location(world, loc.getX() + (m * ((maxX + 1) - minX)), loc.getY(), loc.getZ());
+              case "west" ->
+                newLoc = new Location(world, loc.getX() - (m * ((maxX + 1) - minX)), loc.getY(), loc.getZ());
+              case "south" ->
+                newLoc = new Location(world, loc.getX(), loc.getY(), loc.getZ() + (m * ((maxZ + 1) - minZ)));
+              case "north" ->
+                newLoc = new Location(world, loc.getX(), loc.getY(), loc.getZ() - (m * ((maxZ + 1) - minZ)));
               case "up" -> newLoc = new Location(world, loc.getX(), loc.getY() + (m * ((maxY + 1) - minY)), loc.getZ());
-              case "down" -> newLoc = new Location(world, loc.getX(), loc.getY() - (m * ((maxY + 1) - minY)), loc.getZ());
+              case "down" ->
+                newLoc = new Location(world, loc.getX(), loc.getY() - (m * ((maxY + 1) - minY)), loc.getZ());
               default -> {
                 Console.error("올바르지 않은 방향입니다");
                 return true;
@@ -1017,7 +1005,8 @@ public class WandEditCommand implements CommandExecutor {
             case "north" -> "북쪽";
             default -> "";
           };
-          Message.info(sender, Wand.PREFIX + Message.effect("지정 영역을 " + Wand.COLOR + dirKo + "&r으로 " + Wand.COLOR + repeat + "&r회 붙여넣었습니다 (" + Wand.COLOR + undoArea.size() + "블록)"));
+          Message.info(sender, Wand.PREFIX + Message.effect("지정 영역을 " + Wand.COLOR + dirKo + "&r으로 " + Wand.COLOR
+              + repeat + "&r회 붙여넣었습니다 (" + Wand.COLOR + undoArea.size() + "블록)"));
         }
 
         wand.stack(pos1, pos2, dir, repeat, applyPhysics);
@@ -1065,8 +1054,7 @@ public class WandEditCommand implements CommandExecutor {
         BlockData blockData_original;
         try {
           blockData_original = Wand.getBlockData(blockDataString_original);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
           Message.error(sender, "블록 데이터 파싱 에러: " + e.getMessage());
           return true;
         }
@@ -1077,8 +1065,7 @@ public class WandEditCommand implements CommandExecutor {
         BlockData blockData_replace;
         try {
           blockData_replace = Wand.getBlockData(blockDataString_replace);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
           Message.error(sender, "블록 데이터 파싱 에러: " + e.getMessage());
           return true;
         }
@@ -1098,7 +1085,8 @@ public class WandEditCommand implements CommandExecutor {
         }
 
         // filter area
-        List<Location> filteredArea = wand.scan(area, blockData_original, !dataString_original.equals("[]") && !dataString_original.equals(""));
+        List<Location> filteredArea = wand.scan(area, blockData_original,
+            !dataString_original.equals("[]") && !dataString_original.equals(""));
 
         if (filteredArea.size() == 0) {
           Message.error(sender, "바꿀 블럭이 없습니다");
@@ -1110,7 +1098,8 @@ public class WandEditCommand implements CommandExecutor {
         if (!silent) {
           String blockNameOriginal = blockData_original.getMaterial().toString();
           String blockNameReplace = blockData_replace.getMaterial().toString();
-          Message.info(sender, Wand.PREFIX + Message.effect("지정 영역의 " + blockNameOriginal + "을(를)" + " " + blockNameReplace + "(으)로" + " 바꾸었습니다 (&6" + filteredArea.size() + "&r블록)"));
+          Message.info(sender, Wand.PREFIX + Message.effect("지정 영역의 " + blockNameOriginal + "을(를)" + " "
+              + blockNameReplace + "(으)로" + " 바꾸었습니다 (&6" + filteredArea.size() + "&r블록)"));
         }
 
         wand.fill(blockData_replace, filteredArea, applyPhysics);
@@ -1144,21 +1133,18 @@ public class WandEditCommand implements CommandExecutor {
         BlockData blockData_original;
         try {
           blockData_original = Wand.getBlockData(blockDataString_original);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
           Message.error(sender, "블록 데이터 파싱 에러: " + e.getMessage());
           return true;
         }
         String dataString_original = Wand.getDataString(blockDataString_original);
-
 
         // blockdata
         String blockDataString_replace = args[2];
         BlockData blockData_replace;
         try {
           blockData_replace = Wand.getBlockData(blockDataString_replace);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
           Message.error(sender, "블록 데이터 파싱 에러: " + e.getMessage());
           return true;
         }
@@ -1168,12 +1154,10 @@ public class WandEditCommand implements CommandExecutor {
         if (args.length > 3) {
           try {
             radius = Integer.parseInt(args[3]);
-          }
-          catch (Exception e) {
+          } catch (Exception e) {
             if (DataTypeChecker.isInteger(args[3])) {
               Message.error(sender, "프로그램 상 사용할 수 없는 범위의 수입니다");
-            }
-            else {
+            } else {
               Message.error(sender, "반지름 값은 정수만 입력할 수 있습니다");
             }
             return true;
@@ -1205,7 +1189,8 @@ public class WandEditCommand implements CommandExecutor {
         }
 
         // filter area
-        List<Location> filteredArea = wand.scan(area, blockData_original, !dataString_original.equals("[]") && !dataString_original.equals(""));
+        List<Location> filteredArea = wand.scan(area, blockData_original,
+            !dataString_original.equals("[]") && !dataString_original.equals(""));
 
         if (filteredArea.size() == 0) {
           Message.error(sender, "바꿀 블럭이 없습니다");
@@ -1217,7 +1202,8 @@ public class WandEditCommand implements CommandExecutor {
         if (!silent) {
           String blockNameOriginal = blockData_original.getMaterial().toString();
           String blockNameReplace = blockData_replace.getMaterial().toString();
-          Message.info(sender, Wand.PREFIX + Message.effect("주위 " + radius + "블록 반경의 " + blockNameOriginal + "을(를)" + " " + blockNameReplace + "(으)로" + " 바꾸었습니다 (&6" + filteredArea.size() + "&r블록)"));
+          Message.info(sender, Wand.PREFIX + Message.effect("주위 " + radius + "블록 반경의 " + blockNameOriginal + "을(를)"
+              + " " + blockNameReplace + "(으)로" + " 바꾸었습니다 (&6" + filteredArea.size() + "&r블록)"));
         }
 
         wand.fill(blockData_replace, filteredArea, applyPhysics);
@@ -1264,8 +1250,7 @@ public class WandEditCommand implements CommandExecutor {
         BlockData blockData;
         try {
           blockData = Wand.getBlockData(blockDataString);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
           Wand.error(sender, "블록 데이터 파싱 에러: " + e.getMessage());
           return true;
         }
@@ -1276,10 +1261,12 @@ public class WandEditCommand implements CommandExecutor {
         int commandArgsLength = 2;
         if (args.length > commandArgsLength) {
           for (String str : args) {
-            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-applyPhysics") || str.equalsIgnoreCase("-ap")) {
+            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-applyPhysics")
+                || str.equalsIgnoreCase("-ap")) {
               applyPhysics = true;
             }
-            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-silent") || str.equalsIgnoreCase("-s")) {
+            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-silent")
+                || str.equalsIgnoreCase("-s")) {
               silent = true;
             }
           }
@@ -1288,7 +1275,10 @@ public class WandEditCommand implements CommandExecutor {
         wand.storeUndo(area);
 
         if (!silent) {
-          Message.send(sender, Message.parse(Message.effect(Wand.PREFIX), Message.parse(blockData.getMaterial()).color(TextColor.fromHexString(Wand.COLORHEX)), Message.effect("&r을(를) " + Wand.COLOR + area.size() + "&r개 설치하였습니다")));
+          Message.send(sender,
+              Message.parse(Message.effect(Wand.PREFIX),
+                  Message.parse(blockData.getMaterial()).color(TextColor.fromHexString(Wand.COLORHEX)),
+                  Message.effect("&r을(를) " + Wand.COLOR + area.size() + "&r개 설치하였습니다")));
         }
 
         wand.fill(blockData, area, applyPhysics);
@@ -1301,7 +1291,8 @@ public class WandEditCommand implements CommandExecutor {
        */
 
       // 첫번째 선택 좌표 기준의 반지름 영역을 특정 형태의 원기둥으로 채우기
-      case "cyl", "emptycyl", "walledcyl", "pointcyl", "emptypointcyl", "walledpointcyl", "ecyl", "wcyl", "pcyl", "wpcyl", "epcyl" -> {
+      case "cyl", "emptycyl", "walledcyl", "pointcyl", "emptypointcyl", "walledpointcyl", "ecyl", "wcyl", "pcyl",
+          "wpcyl", "epcyl" -> {
         if (!sender.hasPermission("cherry.wand.edit.cyl")) {
           Message.error(sender, Message.CommandFeedback.NO_PERMISSION);
           return true;
@@ -1318,8 +1309,7 @@ public class WandEditCommand implements CommandExecutor {
         BlockData blockData;
         try {
           blockData = Wand.getBlockData(blockDataString);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
           Message.error(sender, "블록 데이터 파싱 에러: " + e.getMessage());
           return true;
         }
@@ -1336,12 +1326,10 @@ public class WandEditCommand implements CommandExecutor {
         if (args.length >= 3) {
           try {
             radius = Integer.parseInt(args[2]);
-          }
-          catch (Exception e) {
+          } catch (Exception e) {
             if (DataTypeChecker.isInteger(args[2])) {
               Message.error(sender, "프로그램 상 사용할 수 없는 범위의 수입니다");
-            }
-            else {
+            } else {
               Message.error(sender, "반지름 값은 정수만 입력할 수 있습니다");
             }
             return true;
@@ -1361,12 +1349,10 @@ public class WandEditCommand implements CommandExecutor {
         if (args.length >= 4) {
           try {
             height = Integer.parseInt(args[3]);
-          }
-          catch (Exception e) {
+          } catch (Exception e) {
             if (DataTypeChecker.isInteger(args[3])) {
               Message.error(sender, "프로그램 상 사용할 수 없는 범위의 수입니다");
-            }
-            else {
+            } else {
               Message.error(sender, "높이 값은 정수만 입력할 수 있습니다");
             }
             return true;
@@ -1408,10 +1394,12 @@ public class WandEditCommand implements CommandExecutor {
         int commandArgsLength = 4;
         if (args.length > commandArgsLength) {
           for (String str : args) {
-            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-applyPhysics") || str.equalsIgnoreCase("-ap")) {
+            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-applyPhysics")
+                || str.equalsIgnoreCase("-ap")) {
               applyPhysics = true;
             }
-            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-silent") || str.equalsIgnoreCase("-s")) {
+            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-silent")
+                || str.equalsIgnoreCase("-s")) {
               silent = true;
             }
           }
@@ -1420,7 +1408,10 @@ public class WandEditCommand implements CommandExecutor {
         wand.storeUndo(area);
 
         if (!silent) {
-          Message.send(sender, Message.parse(Message.effect(Wand.PREFIX), Message.parse(blockData.getMaterial()).color(TextColor.fromHexString(Wand.COLORHEX)), Message.effect("&r을(를) " + Wand.COLOR + area.size() + "&r개 설치하였습니다")));
+          Message.send(sender,
+              Message.parse(Message.effect(Wand.PREFIX),
+                  Message.parse(blockData.getMaterial()).color(TextColor.fromHexString(Wand.COLORHEX)),
+                  Message.effect("&r을(를) " + Wand.COLOR + area.size() + "&r개 설치하였습니다")));
         }
 
         wand.fill(blockData, area, applyPhysics);
@@ -1450,8 +1441,7 @@ public class WandEditCommand implements CommandExecutor {
         BlockData blockData;
         try {
           blockData = Wand.getBlockData(blockDataString);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
           Message.error(sender, "블록 데이터 파싱 에러: " + e.getMessage());
           return true;
         }
@@ -1468,12 +1458,10 @@ public class WandEditCommand implements CommandExecutor {
         if (args.length >= 3) {
           try {
             radius = Integer.parseInt(args[2]);
-          }
-          catch (Exception e) {
+          } catch (Exception e) {
             if (DataTypeChecker.isInteger(args[2])) {
               Message.error(sender, "프로그램 상 사용할 수 없는 범위의 수입니다");
-            }
-            else {
+            } else {
               Message.error(sender, "반지름 값은 정수만 입력할 수 있습니다");
             }
             return true;
@@ -1511,10 +1499,12 @@ public class WandEditCommand implements CommandExecutor {
         int commandArgsLength = 3;
         if (args.length > commandArgsLength) {
           for (String str : args) {
-            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-applyPhysics") || str.equalsIgnoreCase("-ap")) {
+            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-applyPhysics")
+                || str.equalsIgnoreCase("-ap")) {
               applyPhysics = true;
             }
-            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-silent") || str.equalsIgnoreCase("-s")) {
+            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-silent")
+                || str.equalsIgnoreCase("-s")) {
               silent = true;
             }
           }
@@ -1523,7 +1513,10 @@ public class WandEditCommand implements CommandExecutor {
         wand.storeUndo(area);
 
         if (!silent) {
-          Message.send(sender, Message.parse(Message.effect(Wand.PREFIX), Message.parse(blockData.getMaterial()).color(TextColor.fromHexString(Wand.COLORHEX)), Message.effect("&r을(를) " + Wand.COLOR + area.size() + "&r개 설치하였습니다")));
+          Message.send(sender,
+              Message.parse(Message.effect(Wand.PREFIX),
+                  Message.parse(blockData.getMaterial()).color(TextColor.fromHexString(Wand.COLORHEX)),
+                  Message.effect("&r을(를) " + Wand.COLOR + area.size() + "&r개 설치하였습니다")));
         }
 
         wand.fill(blockData, area, applyPhysics);
@@ -1532,7 +1525,8 @@ public class WandEditCommand implements CommandExecutor {
       }
 
       // 특정 좌표 기준의 반지름 영역을 특정 형태의 구로 채우기
-      case "spherenear", "emptyspherenear", "pointspherenear", "emptypointspherenear", "ensphere", "pnsphere", "epnsphere" -> {
+      case "spherenear", "emptyspherenear", "pointspherenear", "emptypointspherenear", "ensphere", "pnsphere",
+          "epnsphere" -> {
         if (!sender.hasPermission("cherry.wand.edit.sphere")) {
           Message.error(sender, Message.CommandFeedback.NO_PERMISSION);
           return true;
@@ -1549,8 +1543,7 @@ public class WandEditCommand implements CommandExecutor {
         BlockData blockData;
         try {
           blockData = Wand.getBlockData(blockDataString);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
           Message.error(sender, "블록 데이터 파싱 에러: " + e.getMessage());
           return true;
         }
@@ -1563,12 +1556,10 @@ public class WandEditCommand implements CommandExecutor {
         if (args.length >= 3) {
           try {
             radius = Integer.parseInt(args[2]);
-          }
-          catch (Exception e) {
+          } catch (Exception e) {
             if (DataTypeChecker.isInteger(args[2])) {
               Message.error(sender, "프로그램 상 사용할 수 없는 범위의 수입니다");
-            }
-            else {
+            } else {
               Message.error(sender, "반지름 값은 정수만 입력할 수 있습니다");
             }
             return true;
@@ -1606,10 +1597,12 @@ public class WandEditCommand implements CommandExecutor {
         int commandArgsLength = 3;
         if (args.length > commandArgsLength) {
           for (String str : args) {
-            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-applyPhysics") || str.equalsIgnoreCase("-ap")) {
+            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-applyPhysics")
+                || str.equalsIgnoreCase("-ap")) {
               applyPhysics = true;
             }
-            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-silent") || str.equalsIgnoreCase("-s")) {
+            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-silent")
+                || str.equalsIgnoreCase("-s")) {
               silent = true;
             }
           }
@@ -1618,7 +1611,10 @@ public class WandEditCommand implements CommandExecutor {
         wand.storeUndo(area);
 
         if (!silent) {
-          Message.send(sender, Message.parse(Message.effect(Wand.PREFIX), Message.parse(blockData.getMaterial()).color(TextColor.fromHexString(Wand.COLORHEX)), Message.effect("&r을(를) " + Wand.COLOR + area.size() + "&r개 설치하였습니다")));
+          Message.send(sender,
+              Message.parse(Message.effect(Wand.PREFIX),
+                  Message.parse(blockData.getMaterial()).color(TextColor.fromHexString(Wand.COLORHEX)),
+                  Message.effect("&r을(를) " + Wand.COLOR + area.size() + "&r개 설치하였습니다")));
         }
 
         wand.fill(blockData, area, applyPhysics);
@@ -1657,8 +1653,7 @@ public class WandEditCommand implements CommandExecutor {
         BlockData blockData;
         try {
           blockData = Wand.getBlockData(blockDataString);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
           Message.error(sender, "블록 데이터 파싱 에러: " + e.getMessage());
           return true;
         }
@@ -1669,10 +1664,12 @@ public class WandEditCommand implements CommandExecutor {
         int commandArgsLength = 2;
         if (args.length > commandArgsLength) {
           for (String str : args) {
-            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-applyPhysics") || str.equalsIgnoreCase("-ap")) {
+            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-applyPhysics")
+                || str.equalsIgnoreCase("-ap")) {
               applyPhysics = true;
             }
-            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-silent") || str.equalsIgnoreCase("-s")) {
+            if ((args.length <= commandArgsLength + 2) && str.equalsIgnoreCase("-silent")
+                || str.equalsIgnoreCase("-s")) {
               silent = true;
             }
           }
@@ -1681,7 +1678,10 @@ public class WandEditCommand implements CommandExecutor {
         wand.storeUndo(area);
 
         if (!silent) {
-          Message.send(sender, Message.parse(Message.effect(Wand.PREFIX), Message.parse(blockData.getMaterial()).color(TextColor.fromHexString(Wand.COLORHEX)), Message.effect("&r을(를) " + Wand.COLOR + area.size() + "&r개 설치하였습니다")));
+          Message.send(sender,
+              Message.parse(Message.effect(Wand.PREFIX),
+                  Message.parse(blockData.getMaterial()).color(TextColor.fromHexString(Wand.COLORHEX)),
+                  Message.effect("&r을(를) " + Wand.COLOR + area.size() + "&r개 설치하였습니다")));
         }
 
         wand.fill(blockData, area, applyPhysics);
@@ -1705,8 +1705,7 @@ public class WandEditCommand implements CommandExecutor {
         BlockData blockData;
         try {
           blockData = Wand.getBlockData(blockDataString);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
           Wand.error(sender, "블록 데이터 파싱 에러: " + e.getMessage());
           return true;
         }
@@ -1715,8 +1714,7 @@ public class WandEditCommand implements CommandExecutor {
         player.sendMessage(Message.parse(Wand.PREFIX, Wand.COLOR + found.size(), " 개의 데이터가 검색되었습니다"));
         if (found.size() > 50) {
           player.sendMessage(Message.parse(Wand.PREFIX, "데이터가 출력하기에 너무 많습니다"));
-        }
-        else {
+        } else {
           for (Location loc : found) {
             player.sendMessage(Wand.PREFIX, loc.toString());
           }
@@ -1735,12 +1733,10 @@ public class WandEditCommand implements CommandExecutor {
     int i;
     try {
       i = Integer.parseInt(input);
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       if (DataTypeChecker.isInteger(input)) {
         throw new Exception("프로그램 상 사용할 수 없는 범위의 수입니다");
-      }
-      else {
+      } else {
         throw new Exception(name + " 값은 정수만 입력할 수 있습니다");
       }
     }

@@ -1,6 +1,5 @@
 package io.wany.amethy.modules;
 
-import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -21,29 +20,28 @@ public class Config {
   public Config(String name) {
     this.name = name;
     this.file = new File(Amethy.PLUGIN.getDataFolder() + "/" + this.name + ".yml");
-    try {
-      this.config = YamlConfiguration.loadConfiguration(file);
-      this.config.save(this.file);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    this.load();
   }
 
   public Config(File file) {
     this.name = file.getName();
     this.file = file;
-    try {
-      this.config = YamlConfiguration.loadConfiguration(file);
-      this.config.save(this.file);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    this.load();
   }
 
   public Config(YamlConfiguration yamlConfiguration) {
     this.name = yamlConfiguration.getName();
     this.file = null;
     this.config = yamlConfiguration;
+  }
+
+  public void load() {
+    try {
+      this.config = YamlConfiguration.loadConfiguration(this.file);
+      this.config.save(this.file);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   public static boolean exist(String configName) {
@@ -173,6 +171,10 @@ public class Config {
     FileConfiguration config = Amethy.PLUGIN.getConfig();
     Amethy.PLUGIN.getConfig().options().copyDefaults(true);
     Amethy.PLUGIN.saveDefaultConfig();
+    if (config.getInt("version") != Amethy.CONFIG_VERSION) {
+      Console.warn("플러그인 콘피그 버전이 맞지 않습니다. 플러그인이 정상적으로 작동하지 않을 수 있습니다.");
+      Console.warn("필요 버전: " + Amethy.CONFIG_VERSION + ", 감지된 버전: " + config.getInt("version"));
+    }
     Amethy.DEBUG = config.getBoolean("debug");
     Amethy.NIGHT = config.getBoolean("night");
     return config;

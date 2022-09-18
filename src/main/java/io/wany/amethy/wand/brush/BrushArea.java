@@ -27,5 +27,4 @@ public class BrushArea {
     public static final String DESTROY = "destroy";
   }
 
-
 }

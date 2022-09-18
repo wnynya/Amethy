@@ -12,7 +12,9 @@ const __dirname = path.dirname(__filename);
 import YAML from 'yaml';
 import JSZip from 'jszip';
 
-const config = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../config.json')));
+const config = JSON.parse(
+  fs.readFileSync(path.resolve(__dirname, '../config.json'))
+);
 
 /**
  * functions
@@ -38,7 +40,10 @@ async function parse(opkgpath) {
     }
   }
 
-  version = format(config.channels[channel].version, { version: version, time: Date.now() });
+  version = format(config.channels[channel].version, {
+    version: version,
+    time: Date.now(),
+  });
 
   pluginYaml.version = version;
 
@@ -86,7 +91,10 @@ async function delayedTask(task, delay = 0) {
  * main
  */
 async function main() {
-  const parsed = await delayedTask(parse(config.target.path), config.target.delay);
+  const parsed = await delayedTask(
+    parse(config.target.path),
+    config.target.delay
+  );
 
   return new Promise((resolve, reject) => {
     console.log('Parsed Data:');

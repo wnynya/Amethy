@@ -17,6 +17,7 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 
 import io.wany.amethy.Amethy;
+import io.wany.amethy.modules.Console;
 
 public class TerminalConsole {
 
@@ -51,7 +52,7 @@ public class TerminalConsole {
 
   public static void sendOfflineLogs() {
     while (offlineLogs.size() > 0) {
-      if (!Terminal.WEBSOCKET.isConnected()) {
+      if (!Terminal.OPENED) {
         return;
       }
       Log log = offlineLogs.get(0);
@@ -124,9 +125,11 @@ public class TerminalConsole {
     Logger logger = (Logger) LogManager.getRootLogger();
     logFilter = new TerminalConsoleLogFilter();
     logger.addFilter(logFilter);
+    Console.debug(Terminal.PREFIX + "로그 필터 열림");
   }
 
   public static void onDisable() {
     logFilter.disable();
+    Console.debug(Terminal.PREFIX + "로그 필터 닫힘");
   }
 }

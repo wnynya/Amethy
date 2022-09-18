@@ -7,6 +7,23 @@
 # 변경 및 저장 후 amethy reload 명령어를 사용하여 적용하십시오.
 
 #==============================================================================#
+# 기본 설정
+#==============================================================================#
+
+server:
+  name: ''
+
+database:
+  enable: false
+  mysql:
+    host: 'localhost'
+    port: 3306
+    username: ''
+    password: ''
+    database: ''
+    tableprefix: 'amethy_'
+
+#==============================================================================#
 # 이벤트 설정
 #==============================================================================#
 
@@ -101,7 +118,7 @@ event:
       normal:
         chat:
           enable: true
-          format: '&r{prefix}&r{displayname}&r{suffix}&r: &r{message}'
+          format: '&r<{prefix}&r{displayname}&r{suffix}&r> &r{message}'
       # 채널 연결 채팅 시 (Amethy-BungeeCord 필요)
       bungeecord:
         channel: 'AmethyDefault'
@@ -338,8 +355,7 @@ automation:
 #===== PlayerSync
 playersync:
   enable: false
-  # 같은 채널 이름을 가진 서버끼리 데이터가 연동됩니다. 유출 시 서버 보안에 큰 문제를 야기할 수 있으니 충분히 복잡하게 설정하십시오.
-  # 허용 문자 [a-z0-9-_]+;
+  # 같은 채널 이름을 가진 서버끼리 데이터가 연동됩니다. 허용 문자 [a-z0-9-_]
   channel: ''
 
 #===== BungeeCord 지원
@@ -472,4 +488,5 @@ updater:
   auto: false
 debug: false
 night: false
+version: 100
 #==============================================================================#

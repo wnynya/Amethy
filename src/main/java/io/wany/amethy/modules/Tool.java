@@ -11,22 +11,22 @@ import java.util.UUID;
 
 public class Tool {
 
-  public static UUID intArray2UUID (int[] intArray) {
-    int[] s = new int[]{0, 0, 0, 0};
+  public static UUID intArray2UUID(int[] intArray) {
+    int[] s = new int[] { 0, 0, 0, 0 };
     System.arraycopy(intArray, 0, s, 0, Math.min(intArray.length, s.length));
     StringBuilder sb = new StringBuilder();
     for (var i = 0; i < 4; i++) {
       int a = s[i];
       sb.append(Long.toHexString(4294967296L + a));
     }
-    return UUID.fromString(sb.toString().replaceAll("([0-9a-f]{8})([0-9a-f]{4})([0-9a-f]{4})([0-9a-f]{4})([0-9a-f]{12})", "$1-$2-$3-$4-$5"));
+    return UUID.fromString(sb.toString()
+        .replaceAll("([0-9a-f]{8})([0-9a-f]{4})([0-9a-f]{4})([0-9a-f]{4})([0-9a-f]{12})", "$1-$2-$3-$4-$5"));
   }
 
   public static Object booleanObject(boolean bool, Object trueObject, Object falseObject) {
     if (bool) {
       return trueObject;
-    }
-    else {
+    } else {
       return falseObject;
     }
   }
@@ -34,8 +34,7 @@ public class Tool {
   public static ItemStack booleanItemStack(boolean bool, ItemStack trueObject, ItemStack falseObject) {
     if (bool) {
       return trueObject;
-    }
-    else {
+    } else {
       return falseObject;
     }
   }

@@ -48,7 +48,8 @@ public class Cube {
     for (int x = (int) minX; x <= maxX; x++) {
       for (int y = (int) minY; y <= maxY; y++) {
         for (int z = (int) minZ; z <= maxZ; z++) {
-          if (x == (int) minX || x == (int) maxX || y == (int) minY || y == (int) maxY || z == (int) minZ || z == (int) maxZ) {
+          if (x == (int) minX || x == (int) maxX || y == (int) minY || y == (int) maxY || z == (int) minZ
+              || z == (int) maxZ) {
             list.add(new Location(pos1.getWorld(), x, y, z));
           }
         }
@@ -101,18 +102,17 @@ public class Cube {
       for (int y = (int) minY; y <= maxY; y++) {
         for (int z = (int) minZ; z <= maxZ; z++) {
           if ((x == (int) maxX && y == (int) maxY)
-            || (y == (int) maxY && z == (int) maxZ)
-            || (x == (int) maxX && z == (int) maxZ)
-            || (x == (int) minX && y == (int) minY)
-            || (y == (int) minY && z == (int) minZ)
-            || (x == (int) minX && z == (int) minZ)
-            || (x == (int) maxX && y == (int) minY)
-            || (x == (int) maxX && z == (int) minZ)
-            || (y == (int) maxY && x == (int) minX)
-            || (y == (int) maxY && z == (int) minZ)
-            || (z == (int) maxZ && x == (int) minX)
-            || (z == (int) maxZ && y == (int) minY)
-          ) {
+              || (y == (int) maxY && z == (int) maxZ)
+              || (x == (int) maxX && z == (int) maxZ)
+              || (x == (int) minX && y == (int) minY)
+              || (y == (int) minY && z == (int) minZ)
+              || (x == (int) minX && z == (int) minZ)
+              || (x == (int) maxX && y == (int) minY)
+              || (x == (int) maxX && z == (int) minZ)
+              || (y == (int) maxY && x == (int) minX)
+              || (y == (int) maxY && z == (int) minZ)
+              || (z == (int) maxZ && x == (int) minX)
+              || (z == (int) maxZ && y == (int) minY)) {
             double x1 = x;
             double y1 = y;
             double z1 = z;
@@ -135,8 +135,7 @@ public class Cube {
               list.add(new Location(pos1.getWorld(), x, y1, z));
               list.add(new Location(pos1.getWorld(), x, y, z1));
               list.add(new Location(pos1.getWorld(), x, y, z));
-            }
-            else if ((maxX == minX) && (maxY == minY)) {
+            } else if ((maxX == minX) && (maxY == minY)) {
               list.add(new Location(pos1.getWorld(), x, y1, z1));
               list.add(new Location(pos1.getWorld(), x1, y, z1));
               list.add(new Location(pos1.getWorld(), x1, y1, z));
@@ -144,8 +143,7 @@ public class Cube {
               list.add(new Location(pos1.getWorld(), x, y1, z));
               list.add(new Location(pos1.getWorld(), x, y, z1));
               list.add(new Location(pos1.getWorld(), x, y, z));
-            }
-            else if ((maxY == minY) && (maxZ == minZ)) {
+            } else if ((maxY == minY) && (maxZ == minZ)) {
               list.add(new Location(pos1.getWorld(), x, y1, z1));
               list.add(new Location(pos1.getWorld(), x1, y, z1));
               list.add(new Location(pos1.getWorld(), x1, y1, z));
@@ -153,8 +151,7 @@ public class Cube {
               list.add(new Location(pos1.getWorld(), x, y1, z));
               list.add(new Location(pos1.getWorld(), x, y, z1));
               list.add(new Location(pos1.getWorld(), x, y, z));
-            }
-            else if ((maxX == minX) && (maxZ == minZ)) {
+            } else if ((maxX == minX) && (maxZ == minZ)) {
               list.add(new Location(pos1.getWorld(), x, y1, z1));
               list.add(new Location(pos1.getWorld(), x1, y, z1));
               list.add(new Location(pos1.getWorld(), x1, y1, z));
@@ -162,125 +159,97 @@ public class Cube {
               list.add(new Location(pos1.getWorld(), x, y1, z));
               list.add(new Location(pos1.getWorld(), x, y, z1));
               list.add(new Location(pos1.getWorld(), x, y, z));
-            }
-            else if ((maxX == minX)) {
+            } else if ((maxX == minX)) {
               if (y == (int) maxY && z == (int) maxZ) {
                 list.add(new Location(pos1.getWorld(), x, y1, z1));
                 list.add(new Location(pos1.getWorld(), x1, y, z1));
                 list.add(new Location(pos1.getWorld(), x1, y1, z));
                 list.add(new Location(pos1.getWorld(), x, y, z1));
                 list.add(new Location(pos1.getWorld(), x, y1, z));
-              }
-              else if (y == (int) maxY && z == (int) minZ) {
+              } else if (y == (int) maxY && z == (int) minZ) {
                 list.add(new Location(pos1.getWorld(), x, y1, z1));
                 list.add(new Location(pos1.getWorld(), x, y, z1));
                 list.add(new Location(pos1.getWorld(), x1, y, z));
-              }
-              else if (y == (int) minY && z == (int) maxZ) {
+              } else if (y == (int) minY && z == (int) maxZ) {
                 list.add(new Location(pos1.getWorld(), x1, y1, z));
                 list.add(new Location(pos1.getWorld(), x, y, z));
                 list.add(new Location(pos1.getWorld(), x, y, z1));
-              }
-              else if (y == (int) maxY) {
+              } else if (y == (int) maxY) {
                 list.add(new Location(pos1.getWorld(), x, y1, z1));
-              }
-              else if (z == (int) maxZ) {
+              } else if (z == (int) maxZ) {
                 list.add(new Location(pos1.getWorld(), x, y1, z1));
-              }
-              else if (y == (int) minY) {
+              } else if (y == (int) minY) {
+                list.add(new Location(pos1.getWorld(), x, y, z));
+              } else if (z == (int) minZ) {
                 list.add(new Location(pos1.getWorld(), x, y, z));
               }
-              else if (z == (int) minZ) {
-                list.add(new Location(pos1.getWorld(), x, y, z));
-              }
-            }
-            else if ((maxY == minY)) {
+            } else if ((maxY == minY)) {
               if (x == (int) maxX && z == (int) maxZ) {
                 list.add(new Location(pos1.getWorld(), x, y1, z1));
                 list.add(new Location(pos1.getWorld(), x1, y, z1));
                 list.add(new Location(pos1.getWorld(), x1, y1, z));
                 list.add(new Location(pos1.getWorld(), x, y, z1));
                 list.add(new Location(pos1.getWorld(), x1, y, z));
-              }
-              else if (x == (int) maxX && z == (int) minZ) {
+              } else if (x == (int) maxX && z == (int) minZ) {
                 list.add(new Location(pos1.getWorld(), x, y1, z1));
                 list.add(new Location(pos1.getWorld(), x, y, z1));
                 list.add(new Location(pos1.getWorld(), x1, y, z));
-              }
-              else if (x == (int) minX && z == (int) maxZ) {
+              } else if (x == (int) minX && z == (int) maxZ) {
                 list.add(new Location(pos1.getWorld(), x1, y1, z));
                 list.add(new Location(pos1.getWorld(), x1, y, z));
                 list.add(new Location(pos1.getWorld(), x, y, z1));
-              }
-              else if (x == (int) maxX) {
+              } else if (x == (int) maxX) {
                 list.add(new Location(pos1.getWorld(), x1, y, z1));
-              }
-              else if (z == (int) maxZ) {
+              } else if (z == (int) maxZ) {
                 list.add(new Location(pos1.getWorld(), x1, y, z1));
-              }
-              else if (x == (int) minX) {
+              } else if (x == (int) minX) {
+                list.add(new Location(pos1.getWorld(), x, y, z));
+              } else if (z == (int) minZ) {
                 list.add(new Location(pos1.getWorld(), x, y, z));
               }
-              else if (z == (int) minZ) {
-                list.add(new Location(pos1.getWorld(), x, y, z));
-              }
-            }
-            else if ((maxZ == minZ)) {
+            } else if ((maxZ == minZ)) {
               if (x == (int) maxX && y == (int) maxY) {
                 list.add(new Location(pos1.getWorld(), x, y1, z1));
                 list.add(new Location(pos1.getWorld(), x1, y, z1));
                 list.add(new Location(pos1.getWorld(), x1, y1, z));
                 list.add(new Location(pos1.getWorld(), x, y1, z));
                 list.add(new Location(pos1.getWorld(), x1, y, z));
-              }
-              else if (x == (int) maxX && y == (int) minY) {
+              } else if (x == (int) maxX && y == (int) minY) {
                 list.add(new Location(pos1.getWorld(), x, y, z));
                 list.add(new Location(pos1.getWorld(), x, y, z1));
                 list.add(new Location(pos1.getWorld(), x1, y, z));
-              }
-              else if (x == (int) minX && y == (int) maxY) {
+              } else if (x == (int) minX && y == (int) maxY) {
                 list.add(new Location(pos1.getWorld(), x1, y1, z));
                 list.add(new Location(pos1.getWorld(), x, y, z1));
                 list.add(new Location(pos1.getWorld(), x, y, z));
-              }
-              else if (x == (int) maxX) {
+              } else if (x == (int) maxX) {
                 list.add(new Location(pos1.getWorld(), x1, y1, z));
-              }
-              else if (y == (int) maxY) {
+              } else if (y == (int) maxY) {
                 list.add(new Location(pos1.getWorld(), x1, y1, z));
-              }
-              else if (x == (int) minX) {
+              } else if (x == (int) minX) {
+                list.add(new Location(pos1.getWorld(), x, y, z));
+              } else if (y == (int) minY) {
                 list.add(new Location(pos1.getWorld(), x, y, z));
               }
-              else if (y == (int) minY) {
-                list.add(new Location(pos1.getWorld(), x, y, z));
-              }
-            }
-            else {
+            } else {
               if (x == (int) maxX && y == (int) maxY && z == (int) maxZ) {
                 list.add(new Location(pos1.getWorld(), x, y1, z1));
                 list.add(new Location(pos1.getWorld(), x1, y, z1));
                 list.add(new Location(pos1.getWorld(), x1, y1, z));
-              }
-              else if (x == (int) maxX && y == (int) maxY && z == (int) minZ) {
+              } else if (x == (int) maxX && y == (int) maxY && z == (int) minZ) {
                 list.add(new Location(pos1.getWorld(), x, y1, z));
                 list.add(new Location(pos1.getWorld(), x1, y, z));
-              }
-              else if (x == (int) maxX && y == (int) minY && z == (int) maxZ) {
+              } else if (x == (int) maxX && y == (int) minY && z == (int) maxZ) {
                 list.add(new Location(pos1.getWorld(), x1, y, z));
                 list.add(new Location(pos1.getWorld(), x, y, z1));
-              }
-              else if (x == (int) minX && y == (int) maxY && z == (int) maxZ) {
+              } else if (x == (int) minX && y == (int) maxY && z == (int) maxZ) {
                 list.add(new Location(pos1.getWorld(), x, y, z1));
                 list.add(new Location(pos1.getWorld(), x, y1, z));
-              }
-              else if (x == (int) maxX && y == (int) minY && z == (int) minZ) {
+              } else if (x == (int) maxX && y == (int) minY && z == (int) minZ) {
                 list.add(new Location(pos1.getWorld(), x, y, z));
-              }
-              else if (x == (int) minX && y == (int) minY && z == (int) maxZ) {
+              } else if (x == (int) minX && y == (int) minY && z == (int) maxZ) {
                 list.add(new Location(pos1.getWorld(), x, y, z));
-              }
-              else if (x == (int) minX && y == (int) maxY && z == (int) minZ) {
+              } else if (x == (int) minX && y == (int) maxY && z == (int) minZ) {
                 list.add(new Location(pos1.getWorld(), x, y, z));
               }
             }

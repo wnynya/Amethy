@@ -20,6 +20,7 @@ import io.wany.amethy.modules.Config;
 import io.wany.amethy.modules.PlayerSync;
 import io.wany.amethy.modules.ServerPropertiesSorter;
 import io.wany.amethy.modules.Updater;
+import io.wany.amethy.modules.amethy.Database;
 import io.wany.amethy.supports.coreprotect.CoreProtectSupport;
 import io.wany.amethy.supports.cucumbery.CucumberySupport;
 import io.wany.amethy.supports.vault.VaultSupport;
@@ -42,8 +43,10 @@ public class Amethy extends JavaPlugin {
 
   public static final String COLOR = "#D2B0DD;";
   public static final String PREFIX = COLOR + "&l[Amethy]:&r ";
+  public static final String PREFIX_CONSOLE = "[Amethy] ";
   public static final UUID UUID = java.util.UUID.fromString("00000000-0000-0000-0000-000000000000");
   public static final String API = "https://api.wany.io/amethy";
+  public static final int CONFIG_VERSION = 100;
 
   public static boolean DEBUG = false;
   public static boolean NIGHT = false;
@@ -60,12 +63,15 @@ public class Amethy extends JavaPlugin {
     PLUGIN = this;
     CONFIG = Config.onLoad();
     Terminal.onLoad();
+    Database.onLoad();
+
   }
 
   @Override
   public void onEnable() {
 
     Terminal.onEnable();
+
     PlayerSync.onEnable();
 
     Wand.onEnable();
@@ -125,6 +131,8 @@ public class Amethy extends JavaPlugin {
     CoreProtectSupport.onDisable();
 
     Updater.onDisable();
+
+    Database.onDisable();
 
     Terminal.onDisable();
 

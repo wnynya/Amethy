@@ -9,8 +9,7 @@ public class VaultChat {
   public static String getPrefix(Player player) {
     if (VaultSupport.CHAT == null) {
       return "";
-    }
-    else {
+    } else {
       return VaultSupport.CHAT.getPlayerPrefix(player);
     }
   }
@@ -18,8 +17,7 @@ public class VaultChat {
   public static String getSuffix(Player player) {
     if (VaultSupport.CHAT == null) {
       return "";
-    }
-    else {
+    } else {
       return VaultSupport.CHAT.getPlayerSuffix(player);
     }
   }
@@ -27,8 +25,7 @@ public class VaultChat {
   public static String getPrefix(World world, OfflinePlayer player) {
     if (VaultSupport.CHAT == null) {
       return "";
-    }
-    else {
+    } else {
       return VaultSupport.CHAT.getPlayerPrefix(world.getName(), player);
     }
   }
@@ -36,8 +33,7 @@ public class VaultChat {
   public static String getSuffix(World world, OfflinePlayer player) {
     if (VaultSupport.CHAT == null) {
       return "";
-    }
-    else {
+    } else {
       return VaultSupport.CHAT.getPlayerSuffix(world.getName(), player);
     }
   }

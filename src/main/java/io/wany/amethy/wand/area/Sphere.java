@@ -48,26 +48,22 @@ public class Sphere {
 
     for (int x = (int) minX; x <= maxX; x++) {
       for (int y = (int) minY; y <= maxY; y++) {
-        z:
-        for (int z = (int) minZ; z <= maxZ; z++) {
+        z: for (int z = (int) minZ; z <= maxZ; z++) {
           Location loc = new Location(pos1.getWorld(), x, y, z); // 테스트할 위치
           int[] array = new int[3];
           if (x >= pos.getX()) {
             array[0] = 1;
-          }
-          else {
+          } else {
             array[0] = -1;
           }
           if (y >= pos.getY()) {
             array[1] = 1;
-          }
-          else {
+          } else {
             array[1] = -1;
           }
           if (z >= pos.getZ()) {
             array[2] = 1;
-          }
-          else {
+          } else {
             array[2] = -1;
           }
           if (check(pos, x, y, z, r, array)) {
@@ -128,12 +124,12 @@ public class Sphere {
 
     List<Location> list = new ArrayList<>();
 
-    int[][] array = new int[][]{{1, 1, 1}, {-1, 1, 1}, {1, -1, 1}, {1, 1, -1}, {-1, -1, 1}, {1, -1, -1}, {-1, 1, -1}, {-1, -1, -1},};
+    int[][] array = new int[][] { { 1, 1, 1 }, { -1, 1, 1 }, { 1, -1, 1 }, { 1, 1, -1 }, { -1, -1, 1 }, { 1, -1, -1 },
+        { -1, 1, -1 }, { -1, -1, -1 }, };
 
     for (int x = (int) minX; x <= maxX; x++) {
       for (int y = (int) minY; y <= maxY; y++) {
-        z:
-        for (int z = (int) minZ; z <= maxZ; z++) {
+        z: for (int z = (int) minZ; z <= maxZ; z++) {
           Location loc = new Location(pos1.getWorld(), x, y, z);
           for (int[] ints : array) {
             if (x >= pos.getX() && y >= pos.getY() && z >= pos.getZ()) {

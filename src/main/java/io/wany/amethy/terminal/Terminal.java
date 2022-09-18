@@ -15,17 +15,23 @@ import org.bukkit.Bukkit;
 
 import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.Config;
+import io.wany.amethy.modules.Console;
 import io.wany.amethy.modules.network.HTTPRequest;
 import io.wany.amethy.modules.network.WebSocketClient;
 import io.wany.amethy.modules.network.WebSocketClientOptions;
+import io.wany.amethy.terminal.TerminalConsole.Log;
 
 public class Terminal {
+
+  public static String PREFIX = "&l[터미널]:&r ";
+  public static boolean ENABLED = false;
 
   public static String ID;
   private static String PKEY;
   protected static String KEY = "401790cf28f159d50950333f0856e482";
   protected static WebSocketClient WEBSOCKET;
   protected static boolean ISRELOAD = Bukkit.getWorlds().size() != 0;
+  protected static boolean OPENED = false;
 
   public static boolean ping() {
     try {
@@ -92,6 +98,7 @@ public class Terminal {
       String[] d2 = getID();
       ID = d2[0];
       PKEY = d2[1];
+      Console.debug(PREFIX + ID);
     }
     WebSocketClientOptions options = new WebSocketClientOptions();
     options.AUTO_RECONNECT = true;
@@ -101,9 +108,9 @@ public class Terminal {
     try {
       WEBSOCKET = new WebSocketClient(new URI("wss://api.wany.io/amethy/terminal/node"), options);
     } catch (Exception e) {
-      e.printStackTrace();
     }
     WEBSOCKET.on("open", (args) -> {
+      Console.debug(PREFIX + "연결됨");
     });
     WEBSOCKET.on("json", (args) -> {
       String event = args[1].toString();
@@ -112,8 +119,12 @@ public class Terminal {
       TerminalListener.on(event, message, data);
     });
     WEBSOCKET.on("close", (args) -> {
+      OPENED = false;
+      Console.debug(PREFIX + "연결 종료");
     });
     WEBSOCKET.on("failed", (args) -> {
+      OPENED = false;
+      Console.debug(PREFIX + "연결 실패");
       disableWebSocket();
       loadWebSocket();
     });
@@ -160,14 +171,22 @@ public class Terminal {
   }
 
   public static void onLoad() {
+    ENABLED = true;
     Executors.newFixedThreadPool(1).submit(() -> {
-      loadWebSocket();
-
       TerminalConsole.onLoad();
+      loadWebSocket();
+      Console.debug(PREFIX + ID);
     });
   }
 
   public static void onEnable() {
+    if (Terminal.ISRELOAD) {
+      Terminal.ISRELOAD = false;
+      TerminalConsole.offlineLogs.add(new Log(
+          "Enabling Amethy v" + Amethy.PLUGIN.getDescription().getVersion(),
+          System.currentTimeMillis(), "INFO",
+          "Server thread", "Amethy"));
+    }
     Executors.newFixedThreadPool(1).submit(() -> {
       TerminalDashboard.onEnable();
       TerminalPlayers.onEnable();

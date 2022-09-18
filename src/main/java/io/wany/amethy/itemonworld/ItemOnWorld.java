@@ -32,7 +32,7 @@ import java.util.*;
 public class ItemOnWorld {
 
   public static String COLOR = "#FF425A;";
-  public static String PREFIX = COLOR + "&l[ItemOnWorld]:&r ";
+  public static String PREFIX = COLOR + "&l[아이템온월드]:&r ";
   public static boolean ENABLED = false;
 
   private static final List<ItemOnWorld> itemOnWorlds = new ArrayList<>();
@@ -208,10 +208,10 @@ public class ItemOnWorld {
   public static void onEnable() {
 
     if (!Amethy.CONFIG.getBoolean("itemonworld.enable")) {
-      Console.debug(Message.effect(PREFIX + "ItemOnWorld Disabled"));
+      Console.debug(Message.effect(PREFIX + "아이템온월드 &c비활성화됨"));
       return;
     }
-    Console.debug(Message.effect(PREFIX + "Enabling ItemOnWorld"));
+    Console.debug(Message.effect(PREFIX + "아이템온월드 &a활성화됨"));
     ENABLED = true;
 
     try {

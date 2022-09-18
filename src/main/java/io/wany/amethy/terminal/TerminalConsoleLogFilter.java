@@ -98,8 +98,13 @@ public class TerminalConsoleLogFilter implements Filter {
 
         TerminalConsole.Log log = new TerminalConsole.Log(message, time, level, thread, logger);
 
-        if (Terminal.WEBSOCKET.isConnected() && TerminalConsole.offlineLogs.size() <= 0) {
-          TerminalConsole.sendLog(log);
+        if (Terminal.OPENED) {
+          if (TerminalConsole.offlineLogs.size() <= 0) {
+            TerminalConsole.sendLog(log);
+          } else {
+            TerminalConsole.offlineLogs.add(log);
+            TerminalConsole.sendOfflineLogs();
+          }
         } else {
           TerminalConsole.offlineLogs.add(log);
         }

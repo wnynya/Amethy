@@ -18,14 +18,9 @@ public class TerminalListener {
     switch (event) {
 
       case "init": {
+        Terminal.OPENED = true;
         TerminalDashboard.sendSystemInfo();
         TerminalConsole.sendOfflineLogs();
-        if (Terminal.ISRELOAD) {
-          Terminal.ISRELOAD = false;
-          TerminalConsole.sendLog(new Log(
-              "Enabling Amethy v" + Amethy.PLUGIN.getDescription().getVersion(), System.currentTimeMillis(), "INFO",
-              "Server thread", "Amethy"));
-        }
         break;
       }
 
