@@ -3,6 +3,7 @@ package io.wany.amethy.listeners;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.Message;
+import io.wany.amethy.sync.Sync;
 import net.kyori.adventure.text.Component;
 
 import java.util.concurrent.ExecutorService;
@@ -21,6 +22,7 @@ public class PlayerChat implements Listener {
   public void onPlayerChat(AsyncChatEvent event) {
     setPlayerChatRenderer(event);
     playPlayerChatSound(event);
+    Sync.onPlayerChat(event);
   }
 
   private static void setPlayerChatRenderer(AsyncChatEvent event) {

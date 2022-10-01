@@ -1,4 +1,4 @@
-package io.wany.amethy.playersync;
+package io.wany.amethy.sync;
 
 import java.util.ArrayList;
 import java.util.List;

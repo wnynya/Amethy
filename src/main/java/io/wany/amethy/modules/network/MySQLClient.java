@@ -2,6 +2,7 @@ package io.wany.amethy.modules.network;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -26,19 +27,64 @@ public class MySQLClient {
     return this.conn.createStatement();
   }
 
+  private PreparedStatement getPreparedStatement(String q) throws SQLException {
+    return this.conn.prepareStatement(q);
+  }
+
   public MySQLResult query(String q) throws SQLException {
     Statement s = this.getStatement();
-    ResultSet rs = s.executeQuery(q);
-    MySQLResult r = new MySQLResult();
-    while (rs.next()) {
-      ResultSetMetaData meta = rs.getMetaData();
-      for (int i = 1; i <= meta.getColumnCount(); i++) {
-        r.set(meta.getColumnName(i), rs.getObject(i).toString());
+    MySQLResult r = null;
+    if (q.toUpperCase().startsWith("SELECT")
+        || q.toUpperCase().startsWith("SHOW")) {
+      ResultSet rs = s.executeQuery(q);
+      r = new MySQLResult();
+      while (rs.next()) {
+        ResultSetMetaData meta = rs.getMetaData();
+        for (int i = 1; i <= meta.getColumnCount(); i++) {
+          r.set(meta.getColumnName(i), rs.getObject(i).toString());
+        }
+        r.nextIndex();
       }
-      r.nextIndex();
+      r.close();
+      rs.close();
+    } else {
+      s.execute(q);
     }
-    r.close();
-    rs.close();
+    s.close();
+    return r;
+  }
+
+  public MySQLResult query(String q, Object[] v) throws SQLException {
+    PreparedStatement s = getPreparedStatement(q);
+    for (int i = 0; i < v.length; i++) {
+      Object o = v[i];
+      if (o instanceof String) {
+        s.setString(i + 1, (String) o);
+      } else if (o instanceof String) {
+        s.setString(i + 1, (String) o);
+      } else if (o instanceof String) {
+        s.setString(i + 1, (String) o);
+      } else {
+        s.setObject(i + 1, o);
+      }
+    }
+    MySQLResult r = null;
+    if (q.toUpperCase().startsWith("SELECT")
+        || q.toUpperCase().startsWith("SHOW")) {
+      ResultSet rs = s.executeQuery();
+      r = new MySQLResult();
+      while (rs.next()) {
+        ResultSetMetaData meta = rs.getMetaData();
+        for (int i = 1; i <= meta.getColumnCount(); i++) {
+          r.set(meta.getColumnName(i), rs.getObject(i).toString());
+        }
+        r.nextIndex();
+      }
+      r.close();
+      rs.close();
+    } else {
+      s.execute();
+    }
     s.close();
     return r;
   }

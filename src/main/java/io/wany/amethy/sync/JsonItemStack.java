@@ -1,4 +1,4 @@
-package io.wany.amethy.playersync;
+package io.wany.amethy.sync;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

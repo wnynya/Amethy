@@ -50,6 +50,10 @@ public class MySQLResult {
     return this.toJsonArray().toString();
   }
 
+  public int size() {
+    return this.result.size();
+  }
+
   public HashMap<String, String> get(int i) {
     try {
       return this.result.get(i);

@@ -19,11 +19,13 @@ import io.wany.amethy.listeners.*;
 import io.wany.amethy.modules.Config;
 import io.wany.amethy.modules.PlayerSync;
 import io.wany.amethy.modules.ServerPropertiesSorter;
+import io.wany.amethy.modules.StopServer;
 import io.wany.amethy.modules.Updater;
 import io.wany.amethy.modules.amethy.Database;
 import io.wany.amethy.supports.coreprotect.CoreProtectSupport;
 import io.wany.amethy.supports.cucumbery.CucumberySupport;
 import io.wany.amethy.supports.vault.VaultSupport;
+import io.wany.amethy.sync.Sync;
 import io.wany.amethy.terminal.Terminal;
 import io.wany.amethy.wand.Wand;
 import io.wany.amethy.wand.command.WandEditCommand;
@@ -72,7 +74,7 @@ public class Amethy extends JavaPlugin {
 
     Terminal.onEnable();
 
-    PlayerSync.onEnable();
+    Sync.onEnable();
 
     Wand.onEnable();
     ItemOnWorld.onEnable();
@@ -119,6 +121,8 @@ public class Amethy extends JavaPlugin {
     Updater.onEnable();
     ServerPropertiesSorter.onEnable();
 
+    StopServer.onEnable();
+
   }
 
   @Override
@@ -132,9 +136,13 @@ public class Amethy extends JavaPlugin {
 
     Updater.onDisable();
 
+    Sync.onDisable();
+
     Database.onDisable();
 
     Terminal.onDisable();
+
+    StopServer.onDisable();
 
   }
 

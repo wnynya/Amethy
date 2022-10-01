@@ -11,8 +11,9 @@
 #==============================================================================#
 
 server:
-  name: ''
+  name: '' # 서버 이름
 
+# 데이터베이스 설정
 database:
   enable: false
   mysql:
@@ -58,16 +59,12 @@ event:
 
     # 서버 접속 시 플레이어 입장 메시지를 설정합니다.
     msg:
-      # 일반적인 서버 접속 시
-      normal:
-        # 채팅
-        chat:
+      normal: # 일반적인 서버 접속 시
+        chat: # 채팅
           enable: true
           format: '&r{prefix}&r{displayname}&r{suffix}&r &7&ljoined the game'
-      # 서버 변경 시 (Amethy-BungeeCord 필요)
-      change:
-        # 채팅
-        chat:
+      change: # 서버 변경 시 (채팅 동기화 설정 필요)
+        chat: # 채팅
           enable: true
           format: '&r{prefix}&r{displayname}&r{suffix}&r &7&ljoined from &r#D2B0DD;{fromserver}'
 
@@ -78,8 +75,7 @@ event:
       soundCategory: 'MASTER'
       volume: 1.0
       pitch: 1.0
-      # 접속하는 당사자 플레이어에게도 사운드가 들릴 지 설정합니다.
-      targetPlayer: false
+      targetPlayer: false # 접속하는 당사자 플레이어에게도 사운드가 들릴 지 설정합니다.
 
     # 플레이어가 접속할 때 플레이어를 지정된 스폰 위치로 이동시킬 지 설정합니다.
     moveToSpawn:
@@ -89,16 +85,12 @@ event:
   quit:
     # 서버 퇴장시 플레이어 퇴장 메시지를 설정합니다.
     msg:
-      # 일반적인 서버 퇴장 시
-      normal:
-        # 채팅
-        chat:
+      normal: # 일반적인 서버 퇴장 시
+        chat: # 채팅
           enable: true
           format: '&r{prefix}&r{displayname}&r{suffix}&r &7&lleft the game'
-      # 서버 변경 시 (Amethy-BungeeCord 필요)
-      change:
-        # 채팅
-        chat:
+      change: # 서버 변경 시 (채팅 동기화 설정 필요)
+        chat: # 채팅
           enable: true
           format: '&r{prefix}&r{displayname}&r{suffix}&r &7&lleft for &r#D2B0DD;{gotoserver}'
 
@@ -114,14 +106,11 @@ event:
   chat:
     # 플레이어가 채팅할 때 채팅 형식을 설정합니다.
     msg:
-      # 일반적인 채팅 시
-      normal:
+      normal: # 일반적인 채팅 시
         chat:
           enable: true
           format: '&r<{prefix}&r{displayname}&r{suffix}&r> &r{message}'
-      # 채널 연결 채팅 시 (Amethy-BungeeCord 필요)
-      bungeecord:
-        channel: 'AmethyDefault'
+      sync: # 채널 연결 채팅 시 (채팅 동기화 설정 필요)
         chat:
           enable: false
           format: '&r&7[{server}] &r<{prefix}&r{displayname}&r{suffix}&r> &r{message}'
@@ -173,7 +162,56 @@ event:
 
   #===== TNT 점화 시 이벤트
   tntPrimed:
-    fixVelocity: true
+    fixVelocity: true # TNT 점화시 TNT 가 움직이지 않게 합니다.
+
+#==============================================================================#
+# 동기화 설정
+#==============================================================================#
+
+sync:
+  enable: false
+
+  #===== 플레이어 정보 동기화 (데이터베이스 사용 설정 필요)
+  player:
+    enable: false
+    channel: '' # 동기화 채널 (데이터베이스 내 같은 채널을 가진 서버끼리 정보가 동기화됩니다.)
+    health: true # 플레이어 체력 (하트, 허기 등)
+    experience: true # 플레이어 경험치
+    inventory: true # 플레이어 인벤토리
+    enderchest: true # 플레이어 엔더 상자
+    potioneffects: true # 플레이어 포션 효과
+    cucumberycustomeffects: true # Cucumbery 플러그인 커스텀 이펙트
+
+  #===== Valut 플러그인 동기화 (데이터베이스 사용 설정 필요)
+  vault:
+    economy: # Valut 플러그인 Economy 값
+      enable: false
+      channel: '' # 동기화 채널 (데이터베이스 내 같은 채널을 가진 서버끼리 정보가 동기화됩니다.)
+
+  #===== 채팅 동기화 (데이터베이스 사용 설정 필요)
+  chat:
+    enable: false
+    # 동기화 채널 (데이터베이스 내 같은 채널을 가진 서버끼리 정보가 동기화됩니다.)
+    # 플레이어 들어올 때 / 나갈 때의 채팅 이벤트에도 사용됩니다.
+    channel: ''
+
+  #===== 현실 동기화
+  realworld:
+    enable: false
+
+    # 현실 시간 동기화
+    datetime:
+      enable: true
+      timezone: 'Asia/Seoul'
+      worlds: # 적용될 월드 목록
+        - 'world'
+
+    # 현실 날씨 동기화
+    weather:
+      enable: false
+      location: 'Seoul,KR'
+      worlds: # 적용될 월드 목록
+        - 'world'
 
 #==============================================================================#
 # 완드 설정
@@ -330,18 +368,6 @@ itemonworld:
         - '822a48a5759eddef9e2918fc85996f8491cc92578d54dcd62e2b6d913bfb421e' # Bag of Gunpowder
 
 #==============================================================================#
-# 날씨 및 시각 동기화 설정
-#==============================================================================#
-
-realworldsync:
-  datetime:
-    enable: false
-    timezone: 'Asia/Seoul'
-  weather:
-    enable: false
-    location: 'Seoul,KR'
-
-#==============================================================================#
 # 자동화 설정
 #==============================================================================#
 
@@ -351,12 +377,6 @@ automation:
 #==============================================================================#
 # 지원 및 연동 설정
 #==============================================================================#
-
-#===== PlayerSync
-playersync:
-  enable: false
-  # 같은 채널 이름을 가진 서버끼리 데이터가 연동됩니다. 허용 문자 [a-z0-9-_]
-  channel: ''
 
 #===== BungeeCord 지원
 bungeecord-support:
@@ -489,4 +509,5 @@ updater:
 debug: false
 night: false
 version: 100
+reboot: false
 #==============================================================================#

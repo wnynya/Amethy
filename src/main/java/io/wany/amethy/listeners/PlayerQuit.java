@@ -13,6 +13,7 @@ import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.Console;
 import io.wany.amethy.modules.Message;
 import io.wany.amethy.modules.PlayerSync;
+import io.wany.amethy.sync.Sync;
 import io.wany.amethy.wand.Wand;
 
 import java.util.HashMap;
@@ -29,7 +30,7 @@ public class PlayerQuit implements Listener {
     chatPlayerChangeQuitMessage(event);
     consolePlayerChangeQuitMessage(event);
     Wand.onPlayerQuit(event);
-    PlayerSync.onPlayerQuit(event);
+    Sync.onPlayerQuit(event);
   }
 
   private void chatPlayerQuitMessage(PlayerQuitEvent event) {

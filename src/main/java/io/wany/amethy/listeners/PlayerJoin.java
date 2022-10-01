@@ -14,6 +14,7 @@ import io.wany.amethy.modules.Console;
 import io.wany.amethy.modules.Message;
 import io.wany.amethy.modules.PlayerSync;
 import io.wany.amethy.supports.cucumbery.CucumberySupport;
+import io.wany.amethy.sync.Sync;
 import io.wany.amethy.wand.Wand;
 
 import java.util.HashMap;
@@ -29,7 +30,7 @@ public class PlayerJoin implements Listener {
     consolePlayerJoinMessage(event);
     playPlayerJoinSound(event);
     updatePlayerJoin(event);
-    PlayerSync.onPlayerJoin(event);
+    Sync.onPlayerJoin(event);
     Wand.onPlayerJoin(event);
   }
 

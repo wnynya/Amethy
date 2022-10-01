@@ -50,17 +50,17 @@ public class Console {
 
   public static void warn(Object... objects) {
     String message = objectsString(objects);
-    logWarn(Color.mfc2ansi(Message.effect(Amethy.PREFIX_CONSOLE + message)) + "\u001b[0m");
+    logWarn(Color.mfc2ansi(Message.effect(Amethy.PREFIX_CONSOLE + message.replace("&r", "&r&e"))) + "\u001b[0m");
   }
 
   public static void error(Object... objects) {
     String message = objectsString(objects);
-    logError(Color.mfc2ansi(Message.effect(Amethy.PREFIX_CONSOLE + message)) + "\u001b[0m");
+    logError(Color.mfc2ansi(Message.effect(Amethy.PREFIX_CONSOLE + message.replace("&r", "&r&c"))) + "\u001b[0m");
   }
 
   public static void fatal(Object... objects) {
     String message = objectsString(objects);
-    logFatal(Color.mfc2ansi(Message.effect(Amethy.PREFIX_CONSOLE + message)) + "\u001b[0m");
+    logFatal(Color.mfc2ansi(Message.effect(Amethy.PREFIX_CONSOLE + message.replace("&r", "&r&c"))) + "\u001b[0m");
   }
 
   public static void debug(Object... objects) {

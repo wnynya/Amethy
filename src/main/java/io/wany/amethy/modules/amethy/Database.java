@@ -23,12 +23,20 @@ public class Database {
     return client.query(q);
   }
 
+  public static MySQLResult query(String q, Object[] o) throws SQLException {
+    if (!ENABLED) {
+      return null;
+    }
+    return client.query(q, o);
+  }
+
   public static void onLoad() {
     if (!Amethy.CONFIG.getBoolean("database.enable")) {
       Console.debug(PREFIX + "데이터베이스 연결 &c비활성화됨");
       return;
     }
     Console.debug(PREFIX + "데이터베이스 연결 &a활성화됨");
+    TABLE_PREFIX = Amethy.CONFIG.getString("database.mysql.tableprefix");
     try {
       Console.debug(PREFIX + "데이터베이스 연결 중...");
       MySQLConfig cfg = new MySQLConfig(

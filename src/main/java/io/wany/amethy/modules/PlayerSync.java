@@ -13,7 +13,7 @@ import com.google.gson.JsonObject;
 
 import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.network.HTTPRequest;
-import io.wany.amethy.playersync.JsonPlayer;
+import io.wany.amethy.sync.JsonPlayer;
 
 public class PlayerSync {
 

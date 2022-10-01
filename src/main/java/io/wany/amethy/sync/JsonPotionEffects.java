@@ -1,4 +1,4 @@
-package io.wany.amethy.playersync;
+package io.wany.amethy.sync;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +32,9 @@ public class JsonPotionEffects {
   }
 
   public static void apply(JsonArray effects, Player player) {
+    player.getActivePotionEffects().forEach(effect -> {
+      player.removePotionEffect(effect.getType());
+    });
     List<PotionEffect> potionEffects = new ArrayList<>();
     effects.forEach(object -> {
       JsonObject effect = object.getAsJsonObject();

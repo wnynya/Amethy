@@ -1,4 +1,4 @@
-package io.wany.amethy.playersync;
+package io.wany.amethy.sync;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -26,7 +26,7 @@ public class JsonPlayer {
     object.add("inventory", JsonInventory.jsonify(player.getInventory()));
     object.add("enderchest", JsonInventory.jsonify(player.getEnderChest()));
     object.add("potioneffects", JsonPotionEffects.jsonify(player));
-    object.addProperty("cucumberyeffects", JsonCucumberyEffects.stringiify(player));
+    object.addProperty("cucumberyeffects", StringCucumberyEffects.stringify(player));
     return object;
   }
 
@@ -40,7 +40,7 @@ public class JsonPlayer {
     JsonInventory.apply(object.get("inventory").getAsJsonArray(), player.getInventory(), player);
     JsonInventory.apply(object.get("enderchest").getAsJsonArray(), player.getEnderChest(), player);
     JsonPotionEffects.apply(object.get("potioneffects").getAsJsonArray(), player);
-    JsonCucumberyEffects.apply(object.get("cucumberyeffects").getAsString(), player);
+    StringCucumberyEffects.apply(object.get("cucumberyeffects").getAsString(), player);
   }
 
   public static void clear(Player player) {

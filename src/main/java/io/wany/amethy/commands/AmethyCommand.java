@@ -3,6 +3,7 @@ package io.wany.amethy.commands;
 import io.wany.amethy.Amethy;
 import io.wany.amethy.gui.Menu;
 import io.wany.amethy.modules.Console;
+import io.wany.amethy.modules.Crypto;
 import io.wany.amethy.modules.Message;
 import io.wany.amethy.modules.PlayerSync;
 import io.wany.amethy.modules.PluginLoader;
@@ -12,7 +13,9 @@ import io.wany.amethy.modules.Updater.Version;
 import io.wany.amethy.modules.network.MySQLClient;
 import io.wany.amethy.modules.network.MySQLConfig;
 import io.wany.amethy.modules.network.MySQLResult;
-import io.wany.amethy.playersync.JsonPlayer;
+import io.wany.amethy.sync.JsonPlayer;
+import io.wany.amethy.sync.Sync;
+import io.wany.amethy.sync.SyncChat;
 import io.wany.amethy.terminal.Terminal;
 
 import java.io.FileNotFoundException;
@@ -163,12 +166,7 @@ public class AmethyCommand implements CommandExecutor {
 
       case "test" -> {
         try {
-          MySQLClient client = new MySQLClient("test", new MySQLConfig(
-              "server-pingo.wnynya.com", 24036,
-              "tester", "OrangeCakeWithCherry@snow", "w"));
-          MySQLResult result = client.query("SELECT * FROM test");
-          Console.log(result.toJsonArray().toString());
-          sender.sendMessage(Message.of("ok"));
+          SyncChat.testChat("testmessage");
         } catch (Exception e) {
           e.printStackTrace();
         }

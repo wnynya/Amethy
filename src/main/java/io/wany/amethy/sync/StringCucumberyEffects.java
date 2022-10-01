@@ -1,4 +1,4 @@
-package io.wany.amethy.playersync;
+package io.wany.amethy.sync;
 
 import java.io.File;
 import java.io.StringReader;
@@ -11,9 +11,9 @@ import com.jho5245.cucumbery.custom.customeffect.CustomEffectManager;
 
 import io.wany.amethy.Amethy;
 
-public class JsonCucumberyEffects {
+public class StringCucumberyEffects {
 
-  public static String stringiify(Player player) {
+  public static String stringify(Player player) {
     CustomEffectManager.save(player.getUniqueId());
     File file = new File(
         Amethy.PLUGINS_DIR + "/Cucumbery/data/CustomEffects/" + player.getUniqueId().toString() + ".yml");
