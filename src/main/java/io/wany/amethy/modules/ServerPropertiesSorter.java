@@ -6,6 +6,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.util.*;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 public class ServerPropertiesSorter {
 
   public static File file;
@@ -36,6 +38,7 @@ public class ServerPropertiesSorter {
       writer.append(content);
       for (String key : propertiesKeys) {
         String value = propertiesMap.get(key);
+        value = StringEscapeUtils.escapeJava(value);
         writer.append(key).append("=").append(value).append("\n");
       }
       writer.close();

@@ -1,7 +1,7 @@
 import Date from '@wany/date';
 import { console } from '@wany/logger';
 import Crypto from '@wany/crypto';
-import { FilePostRequest } from '@wany/request';
+import FormData from 'form-data';
 
 import fs from 'fs';
 import path from 'path';
@@ -102,12 +102,44 @@ async function main() {
     console.log('  apiVersion: ' + parsed.apiVersion);
     console.log('  channel   : ' + parsed.channel);
 
-    FilePostRequest(config.api.host + '?o=' + config.api.key, {
+    const p = fs.createReadStream(parsed.path);
+
+    const form = new FormData();
+
+    form.append('name', config.name);
+    form.append('version', parsed.version);
+    form.append('apiVersion', parsed.apiVersion);
+    form.append('channel', parsed.channel);
+    form.append('package', p);
+
+    form.submit(
+      {
+        protocol: 'https:',
+        host: config.api.host,
+        path: config.api.path,
+        headers: {
+          o: config.api.key,
+        },
+      },
+      (error, res) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        console.log('Upload Complete');
+        fs.unlinkSync(parsed.path);
+        fs.unlinkSync(config.target.path);
+        console.log('File Removed');
+        resolve();
+      }
+    );
+
+    /*FilePostRequest(config.api.host + '?o=' + config.api.key, {
       name: config.name,
       version: parsed.version,
       apiVersion: parsed.apiVersion,
       channel: parsed.channel,
-      package: fs.createReadStream(parsed.path),
+      package: p,
     })
       .then(() => {
         console.log('Upload Complete');
@@ -118,7 +150,7 @@ async function main() {
       })
       .catch((error) => {
         reject(error);
-      });
+      });*/
   });
 }
 

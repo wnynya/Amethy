@@ -1,211 +1,241 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.wany.amethy</groupId>
-    <artifactId>Amethy</artifactId>
-    <version>1.0.0</version>
+  <groupId>io.wany.amethy</groupId>
+  <artifactId>Amethy</artifactId>
+  <version>1.0.0</version>
 
-    <name>Amethy</name>
-    <url>https://amethy.wany.io</url>
+  <name>Amethy</name>
+  <url>https://amethy.wany.io</url>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <java.version>17</java.version>
-    </properties>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <java.version>17</java.version>
+  </properties>
 
-    <repositories>
-        <repository>
-            <id>cucumbery</id>
-            <url>https://cucumbery.com/repository/</url>
-        </repository>
-        <repository>
-            <id>papermc</id>
-            <name>PaperMC Repository</name>
-            <url>https://papermc.io/repo/repository/maven-public/</url>
-        </repository>
-        <repository>
-            <id>minecraft-libraries</id>
-            <name>Minecraft Libraries</name>
-            <url>https://libraries.minecraft.net</url>
-        </repository>
-        <repository>
-            <id>apache.snapshots</id>
-            <name>Apache Development Snapshot Repository</name>
-            <url>https://repository.apache.org/content/repositories/snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <name>Jitpack Repository</name>
-            <url>https://jitpack.io</url>
-        </repository>
-        <repository>
-            <id>playpro</id>
-            <url>https://maven.playpro.com</url>
-        </repository>
-        <repository>
-            <id>codemc</id>
-            <url>https://repo.codemc.org/repository/maven-public/</url>
-            <layout>default</layout>
-        </repository>
-        <repository>
-            <id>typesafe</id>
-            <url>https://repo.typesafe.com/typesafe/maven-releases/</url>
-            <layout>default</layout>
-        </repository>
-    </repositories>
+  <repositories>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>maven-snapshots</id>
-            <url>https://repository.apache.org/content/repositories/snapshots/</url>
-        </pluginRepository>
-    </pluginRepositories>
+    <repository>
+      <id>cucumbery</id>
+      <url>https://cucumbery.com/repository/</url>
+    </repository>
 
-    <dependencies>
-        <dependency>
-            <groupId>io.papermc.paper</groupId>
-            <artifactId>paper-api</artifactId>
-            <version>1.19.2-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.json/json -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20210307</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.10.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>2.17.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.17.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.MilkBowl</groupId>
-            <artifactId>VaultAPI</artifactId>
-            <version>1.7</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.jho5245.cucumbery</groupId>
-            <artifactId>Cucumbery</artifactId>
-            <version>1.1.1-dev-22260-183214</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.coreprotect</groupId>
-            <artifactId>coreprotect</artifactId>
-            <version>20.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.koca2000</groupId>
-            <artifactId>NoteBlockAPI</artifactId>
-            <version>1.6.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <!--dependency>
-      <groupId>dev.jorel.CommandAPI</groupId>
-      <artifactId>commandapi-shade</artifactId>
-      <version>6.0.5</version>
-    </dependency>
+    <repository>
+      <id>papermc</id>
+      <name>PaperMC Repository</name>
+      <url>https://papermc.io/repo/repository/maven-public/</url>
+    </repository>
+
+    <repository>
+      <id>minecraft-libraries</id>
+      <name>Minecraft Libraries</name>
+      <url>https://libraries.minecraft.net</url>
+    </repository>
+
+    <repository>
+      <id>apache.snapshots</id>
+      <name>Apache Development Snapshot Repository</name>
+      <url>https://repository.apache.org/content/repositories/snapshots</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+
+    <repository>
+      <id>jitpack.io</id>
+      <name>Jitpack Repository</name>
+      <url>https://jitpack.io</url>
+    </repository>
+
+    <repository>
+      <id>playpro</id>
+      <url>https://maven.playpro.com</url>
+    </repository>
+
+    <repository>
+      <id>codemc</id>
+      <url>https://repo.codemc.org/repository/maven-public/</url>
+      <layout>default</layout>
+    </repository>
+
+    <repository>
+      <id>typesafe</id>
+      <url>https://repo.typesafe.com/typesafe/maven-releases/</url>
+      <layout>default</layout>
+    </repository>
+
+  </repositories>
+
+  <pluginRepositories>
+
+    <pluginRepository>
+      <id>maven-snapshots</id>
+      <url>https://repository.apache.org/content/repositories/snapshots/</url>
+    </pluginRepository>
+
+  </pluginRepositories>
+
+  <dependencies>
+
     <dependency>
-      <groupId>de.tr7zw</groupId>
-      <artifactId>item-nbt-api</artifactId>
-      <version>2.8.0</version>
-    </dependency-->
-        <!-- https://mvnrepository.com/artifact/org.hyperic/sigar -->
-        <dependency>
-            <groupId>com.profesorfalken</groupId>
-            <artifactId>jSensors</artifactId>
-            <version>2.2.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.hyperic/sigar -->
-        <!--dependency>
-      <groupId>org.hyperic</groupId>
-      <artifactId>sigar</artifactId>
-      <version>1.6.4</version>
-    </dependency-->
+      <groupId>io.papermc.paper</groupId>
+      <artifactId>paper-api</artifactId>
+      <version>1.19.2-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
 
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.13</version>
-        </dependency>
-        <!-- mvnrepository.com/artifact/org.apache.httpcomponents/httpmime -->
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpmime</artifactId>
-            <version>4.5.13</version>
-        </dependency>
+    <!-- https://mvnrepository.com/artifact/org.json/json -->
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20210307</version>
+    </dependency>
 
-    </dependencies>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.10.0</version>
+      <scope>provided</scope>
+    </dependency>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <outputDirectory>packages</outputDirectory>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.0</version>
-                <executions>
-                    <execution>
-                        <id>shade</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF</exclude>
-                                        <exclude>META-INF/**</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <relocations>
-                        <relocation>
-                            <pattern>org.json.json</pattern>
-                        </relocation>
-                    </relocations>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>2.17.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.17.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.MilkBowl</groupId>
+      <artifactId>VaultAPI</artifactId>
+      <version>1.7</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.jho5245.cucumbery</groupId>
+      <artifactId>Cucumbery</artifactId>
+      <version>1.1.1-dev-22260-183214</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>net.coreprotect</groupId>
+      <artifactId>coreprotect</artifactId>
+      <version>20.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.koca2000</groupId>
+      <artifactId>NoteBlockAPI</artifactId>
+      <version>1.6.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!--dependency>
+  <groupId>dev.jorel.CommandAPI</groupId>
+  <artifactId>commandapi-shade</artifactId>
+  <version>6.0.5</version>
+  </dependency>
+  <dependency>
+  <groupId>de.tr7zw</groupId>
+  <artifactId>item-nbt-api</artifactId>
+  <version>2.8.0</version>
+  </dependency-->
+
+    <!-- https://mvnrepository.com/artifact/org.hyperic/sigar -->
+    <dependency>
+      <groupId>com.profesorfalken</groupId>
+      <artifactId>jSensors</artifactId>
+      <version>2.2.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.hyperic/sigar -->
+    <!--dependency>
+  <groupId>org.hyperic</groupId>
+  <artifactId>sigar</artifactId>
+  <version>1.6.4</version>
+  </dependency-->
+
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.5.13</version>
+    </dependency>
+
+    <!-- mvnrepository.com/artifact/org.apache.httpcomponents/httpmime -->
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpmime</artifactId>
+      <version>4.5.13</version>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.2.0</version>
+        <configuration>
+          <outputDirectory>packages</outputDirectory>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.3.0</version>
+        <executions>
+          <execution>
+            <id>shade</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF</exclude>
+                    <exclude>META-INF/**</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <relocations>
+            <relocation>
+              <pattern>org.json.json</pattern>
+            </relocation>
+          </relocations>
+        </configuration>
+      </plugin>
+
+    </plugins>
+
+  </build>
+
 </project>

@@ -12,8 +12,8 @@
     "@wany/crypto": "^1.0.1",
     "@wany/date": "^1.0.3",
     "@wany/logger": "^1.0.8",
-    "@wany/request": "^1.0.6",
-    "jszip": "^3.9.1",
+    "form-data": "^4.0.0",
+    "jszip": "^3.10.1",
     "yaml": "^2.0.1"
   }
 }
