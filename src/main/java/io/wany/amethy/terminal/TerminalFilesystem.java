@@ -23,7 +23,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import io.wany.amethy.modules.Console;
-import io.wany.amethy.modules.network.HTTPRequest;
+import io.wany.modules.network.HTTPRequest;
 
 public class TerminalFilesystem {
 

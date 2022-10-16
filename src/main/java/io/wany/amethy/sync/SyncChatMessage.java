@@ -1,7 +1,5 @@
 package io.wany.amethy.sync;
 
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 
 import com.google.gson.JsonObject;

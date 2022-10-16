@@ -1,4 +1,4 @@
-package io.wany.amethy.modules.network;
+package io.wany.modules.network;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -16,7 +16,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import io.wany.amethy.modules.EventEmitter;
+import io.wany.modules.EventEmitter;
 
 public class WebSocketClient extends EventEmitter {
 

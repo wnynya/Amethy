@@ -4,9 +4,9 @@ import java.sql.SQLException;
 
 import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.Console;
-import io.wany.amethy.modules.network.MySQLClient;
-import io.wany.amethy.modules.network.MySQLConfig;
-import io.wany.amethy.modules.network.MySQLResult;
+import io.wany.modules.network.MySQLClient;
+import io.wany.modules.network.MySQLConfig;
+import io.wany.modules.network.MySQLResult;
 
 public class Database {
 

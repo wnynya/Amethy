@@ -35,7 +35,7 @@ public class SyncPlayer {
           CHANNEL + "." + uuid.toString());
       if (isonline != null && isonline.equals("true")) {
         kicked.add(uuid);
-        player.kick(Message.of("동기화동시접속펑 근대이거뜨면망한거임"));
+        player.kick(Message.of("플레이어 정보 동기화 중 오류가 발생하였습니다. 서버에 재 접속하여 주십시오."));
         return;
       }
       updateOnline(player, true);

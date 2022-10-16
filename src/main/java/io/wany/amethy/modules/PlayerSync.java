@@ -12,8 +12,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import com.google.gson.JsonObject;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.modules.network.HTTPRequest;
 import io.wany.amethy.sync.JsonPlayer;
+import io.wany.modules.network.HTTPRequest;
 
 public class PlayerSync {
 

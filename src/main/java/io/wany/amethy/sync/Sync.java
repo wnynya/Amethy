@@ -10,7 +10,7 @@ import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.Console;
 import io.wany.amethy.modules.Crypto;
 import io.wany.amethy.modules.amethy.Database;
-import io.wany.amethy.modules.network.MySQLResult;
+import io.wany.modules.network.MySQLResult;
 
 public class Sync {
 

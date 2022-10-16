@@ -16,10 +16,10 @@ import org.bukkit.Bukkit;
 import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.Config;
 import io.wany.amethy.modules.Console;
-import io.wany.amethy.modules.network.HTTPRequest;
-import io.wany.amethy.modules.network.WebSocketClient;
-import io.wany.amethy.modules.network.WebSocketClientOptions;
 import io.wany.amethy.terminal.TerminalConsole.Log;
+import io.wany.modules.network.HTTPRequest;
+import io.wany.modules.network.WebSocketClient;
+import io.wany.modules.network.WebSocketClientOptions;
 
 public class Terminal {
 

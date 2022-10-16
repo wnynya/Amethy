@@ -1,9 +1,22 @@
-package io.wany.amethy.modules;
+package io.wany.modules;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class Promise {
+
+  /*
+   * 
+   * return new Promise((resolve, reject) -> {
+   * try {
+   * // run async task
+   * resolve.accept('ok');
+   * } catch (Exception e) {
+   * reject.accept(e);
+   * }
+   * });
+   * 
+   */
 
   private BiConsumer<Consumer<Object>, Consumer<Object>> task;
   private Consumer<Object> thenConsumer;

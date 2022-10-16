@@ -1,4 +1,4 @@
-package io.wany.amethy.modules.network;
+package io.wany.modules.network;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -16,9 +16,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import io.wany.amethy.modules.EventEmitter;
-import io.wany.amethy.modules.network.HTTPRequestOptions.Method;
-import io.wany.amethy.modules.network.HTTPRequestOptions.ResponseType;;
+import io.wany.modules.EventEmitter;
+import io.wany.modules.network.HTTPRequestOptions.Method;
+import io.wany.modules.network.HTTPRequestOptions.ResponseType;;
 
 public class HTTPRequest extends EventEmitter {
 

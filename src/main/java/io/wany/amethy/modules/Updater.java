@@ -1,7 +1,7 @@
 package io.wany.amethy.modules;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.modules.network.HTTPRequest;
+import io.wany.modules.network.HTTPRequest;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;

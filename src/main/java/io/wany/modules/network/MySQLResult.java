@@ -1,4 +1,4 @@
-package io.wany.amethy.modules.network;
+package io.wany.modules.network;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

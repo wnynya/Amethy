@@ -55,6 +55,10 @@ commands:
     permission: amethy.command.bungeeteleport
     aliases: [btp, gtp, tpb]
 
+  bungeesend:
+    permission: amethy.command.bungeesend
+    aliases: [bsend, asend]
+
   list:
     description: 'Show list of online players'
     usage: '/<command>'

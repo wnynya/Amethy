@@ -8,8 +8,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.Console;
 import io.wany.amethy.modules.Message;
-import io.wany.amethy.modules.network.MySQLClient;
-import io.wany.amethy.modules.network.MySQLConfig;
+import io.wany.modules.network.MySQLClient;
+import io.wany.modules.network.MySQLConfig;
 
 import java.sql.ResultSet;
 import java.sql.Statement;

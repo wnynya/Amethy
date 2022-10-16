@@ -17,7 +17,6 @@ import io.wany.amethy.commands.*;
 import io.wany.amethy.itemonworld.ItemOnWorld;
 import io.wany.amethy.listeners.*;
 import io.wany.amethy.modules.Config;
-import io.wany.amethy.modules.PlayerSync;
 import io.wany.amethy.modules.ServerPropertiesSorter;
 import io.wany.amethy.modules.StopServer;
 import io.wany.amethy.modules.Updater;
@@ -82,6 +81,7 @@ public class Amethy extends JavaPlugin {
     registerCommand("amethy", new AmethyCommand(), new AmethyTabCompleter());
 
     registerCommand("wandedit", new WandEditCommand(), new WandEditTabCompleter());
+    registerCommand("bungeeteleport", new BungeeTeleportCommand(), new AmethyTabCompleter());
 
     registerCommand("exit", new ExitCommand(), new AmethyTabCompleter());
     registerCommand("drop", new DropCommand(), new AmethyTabCompleter());
@@ -122,6 +122,12 @@ public class Amethy extends JavaPlugin {
     ServerPropertiesSorter.onEnable();
 
     StopServer.onEnable();
+
+    try {
+      this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
   }
 

@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import io.wany.amethy.Amethy;
+import io.wany.amethy.commands.BungeeTeleportCommand;
 import io.wany.amethy.modules.Console;
 import io.wany.amethy.modules.Message;
 import io.wany.amethy.modules.PlayerSync;
@@ -32,6 +33,7 @@ public class PlayerJoin implements Listener {
     updatePlayerJoin(event);
     Sync.onPlayerJoin(event);
     Wand.onPlayerJoin(event);
+    BungeeTeleportCommand.onPlayerJoin(event);
   }
 
   private void chatPlayerJoinMessage(PlayerJoinEvent event) {
