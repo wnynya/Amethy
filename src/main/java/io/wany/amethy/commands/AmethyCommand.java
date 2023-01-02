@@ -3,36 +3,19 @@ package io.wany.amethy.commands;
 import io.wany.amethy.Amethy;
 import io.wany.amethy.gui.Menu;
 import io.wany.amethy.modules.Console;
-import io.wany.amethy.modules.Crypto;
 import io.wany.amethy.modules.Message;
-import io.wany.amethy.modules.PlayerSync;
 import io.wany.amethy.modules.PluginLoader;
 import io.wany.amethy.modules.Updater;
 import io.wany.amethy.modules.Updater.Version;
-import io.wany.amethy.sync.JsonPlayer;
-import io.wany.amethy.sync.Sync;
-import io.wany.amethy.sync.SyncChat;
 import io.wany.amethy.terminal.Terminal;
-import io.wany.modules.Promise;
-import io.wany.modules.network.MySQLClient;
-import io.wany.modules.network.MySQLConfig;
-import io.wany.modules.network.MySQLResult;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.util.Enumeration;
-import java.util.concurrent.ExecutionException;
 
 import com.google.gson.JsonObject;
-import com.jho5245.cucumbery.custom.customeffect.TypeBuilder;
 
-import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class AmethyCommand implements CommandExecutor {
@@ -127,19 +110,6 @@ public class AmethyCommand implements CommandExecutor {
         }
       }
 
-      case "explosion" -> {
-        if (!sender.hasPermission("amethy.explosion")) {
-          return true;
-        }
-
-        float power = 0f;
-        boolean setFire = false;
-        boolean breakBlocks = true;
-        Entity source = sender instanceof Entity ? (Entity) sender : null;
-
-        return true;
-      }
-
       case "menu", "m" -> {
         if (!sender.hasPermission("amethy.menu")) {
           return true;
@@ -164,179 +134,6 @@ public class AmethyCommand implements CommandExecutor {
         return true;
       }
 
-      case "test" -> {
-        try {
-          SyncChat.testChat("testmessage");
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-        return true;
-      }
-
-      /*
-       * case "update", "u" -> {
-       * if (!sender.hasPermission("amethy.update")) {
-       * return true;
-       * }
-       * 
-       * ExecutorService e = Executors.newFixedThreadPool(1);
-       * e.submit(() -> {
-       * 
-       * boolean silent = false;
-       * boolean force = false;
-       * if (args.length > 1) {
-       * for (String str : args) {
-       * if (str.equalsIgnoreCase("-silent") || str.equalsIgnoreCase("-s")) {
-       * silent = true;
-       * }
-       * if (str.equalsIgnoreCase("-force") || str.equalsIgnoreCase("-f")) {
-       * force = true;
-       * }
-       * }
-       * }
-       * 
-       * long s = System.currentTimeMillis();
-       * Updater.Version version = null;
-       * if (!silent) {
-       * Message.info(sender, Amethy.PREFIX + "Check latest " + Amethy.COLOR +
-       * Updater.defaultUpdater.getChannelName() + "&r version . . . ");
-       * }
-       * try {
-       * version = Updater.defaultUpdater.getLatestVersion();
-       * }
-       * catch (Updater.NotFoundException exception) {
-       * Message.warn(sender, Amethy.PREFIX +
-       * "&eError on updater/check: Build Not Found");
-       * }
-       * catch (Updater.InternalServerErrorException exception) {
-       * Message.warn(sender, Amethy.PREFIX +
-       * "&eError on updater/check: Internal Server Error");
-       * }
-       * catch (SocketTimeoutException exception) {
-       * Message.warn(sender, Amethy.PREFIX + "&eError on updater/check: Timed Out");
-       * }
-       * catch (IOException exception) {
-       * Message.warn(sender, Amethy.PREFIX + "&eError on updater/check: IO");
-       * }
-       * catch (ParseException exception) {
-       * Message.warn(sender, Amethy.PREFIX +
-       * "&eError on updater/check: Data Parse Failed");
-       * }
-       * catch (Exception e1) {
-       * Message.warn(sender, Amethy.PREFIX + "&eError on updater/check: Unknown");
-       * }
-       * 
-       * if (version != null) {
-       * 
-       * if (Amethy.PLUGIN.getDescription().getVersion().equals(version.name) &&
-       * !force) {
-       * if (!silent) {
-       * Message.info(sender, Amethy.PREFIX + "Already latest version " + Amethy.COLOR
-       * + Amethy.PLUGIN.getDescription().getVersion() + "");
-       * }
-       * }
-       * else {
-       * 
-       * if (Amethy.PLUGIN.getDescription().getVersion().equals(version.name)) {
-       * if (!silent) {
-       * Message.info(sender, Amethy.PREFIX + "Already latest version " + Amethy.COLOR
-       * + Amethy.PLUGIN.getDescription().getVersion() +
-       * "&r, but it forces to update");
-       * }
-       * }
-       * else {
-       * if (!silent) {
-       * Message.info(sender, Amethy.PREFIX + "Found new latest version " +
-       * Amethy.COLOR + version.name);
-       * }
-       * }
-       * 
-       * if (!silent) {
-       * Message.info(sender, Amethy.PREFIX + "Downloading file . . . ");
-       * }
-       * try {
-       * version.download();
-       * }
-       * catch (SecurityException exception) {
-       * Message.warn(sender, Amethy.PREFIX + "&eError on updater/download: Denied");
-       * version = null;
-       * }
-       * catch (FileNotFoundException exception) {
-       * Message.warn(sender, Amethy.PREFIX +
-       * "&eError on updater/download: File Not Found");
-       * version = null;
-       * }
-       * catch (IOException exception) {
-       * Message.warn(sender, Amethy.PREFIX + "&eError on updater/download: IO");
-       * version = null;
-       * }
-       * catch (Exception e1) {
-       * Message.warn(sender, Amethy.PREFIX + "&eError on updater/download: Unknown");
-       * version = null;
-       * }
-       * 
-       * if (version != null) {
-       * if (!silent) {
-       * Message.info(sender, Amethy.PREFIX + "Update plugin . . . ");
-       * }
-       * try {
-       * version.update();
-       * }
-       * catch (IOException exception) {
-       * Message.warn(sender, Amethy.PREFIX + "&eError on updater/update: IO");
-       * version = null;
-       * }
-       * catch (Exception e1) {
-       * Message.warn(sender, Amethy.PREFIX + "&eError on updater/update: Unknown");
-       * version = null;
-       * }
-       * 
-       * if (version != null) {
-       * long e1 = System.currentTimeMillis();
-       * 
-       * if (!silent) {
-       * Message.info(sender, Amethy.PREFIX + "Update Success " + Amethy.COLOR +
-       * Amethy.PLUGIN.getDescription().getVersion() + "&r => " + Amethy.COLOR +
-       * version.name + "&r &7(" + (e1 - s) + "ms)");
-       * }
-       * }
-       * 
-       * }
-       * 
-       * }
-       * 
-       * }
-       * 
-       * });
-       * 
-       * return true;
-       * }
-       * 
-       * case "menu", "m" -> {
-       * if (!sender.hasPermission("amethy.menu")) {
-       * return true;
-       * }
-       * if (!(sender instanceof Player player)) {
-       * return true;
-       * }
-       * 
-       * Menu.show(player, Menu.Main.inventory(player));
-       * return true;
-       * }
-       */
-
-      case "colortest" -> {
-        if (!sender.hasPermission("amethy.test")) {
-          return true;
-        }
-
-        sender.sendMessage(Message.of("&00000&11111&22222&33333&44444&55555&66666&77777"));
-        sender.sendMessage(Message.of("&88888&99999&AAAAA&BBBBB&CCCCC&DDDDD&EEEEE&FFFFF"));
-        sender.sendMessage(Message.of("&lllll&r&mmmmm&r&nnnnn&r&ooooo&r&kkkkk&r&rrrrr"));
-        sender.sendMessage(Message.of("#FF0000;#####00FF00;#####0000FF;####"));
-        return true;
-      }
-
       default -> {
         sender.sendMessage(Message.commandErrorTranslatable("command.unknown.argument"));
         sender.sendMessage(Message.commandErrorArgsComponent(label, args, 0));
@@ -345,12 +142,6 @@ public class AmethyCommand implements CommandExecutor {
 
     }
 
-  }
-
-  public static Promise test() {
-    return new Promise((resolve, reject) -> {
-      resolve.accept(200);
-    });
   }
 
 }

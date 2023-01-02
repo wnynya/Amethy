@@ -35,7 +35,7 @@ import io.wany.amethy.wand.command.WandEditTabCompleter;
  * Amethy
  * https://amethy.wany.io
  * 
- * ©2022 Wany <sung@wany.io> (https://wany.io)
+ * ©2021 - 2023 Wany <sung@wany.io> (https://wany.io)
  *
  */
 public class Amethy extends JavaPlugin {
@@ -81,14 +81,15 @@ public class Amethy extends JavaPlugin {
     registerCommand("amethy", new AmethyCommand(), new AmethyTabCompleter());
 
     registerCommand("wandedit", new WandEditCommand(), new WandEditTabCompleter());
-    registerCommand("bungeeteleport", new BungeeTeleportCommand(), new AmethyTabCompleter());
 
+    registerCommand("bungeeteleport", new BungeeTeleportCommand(), new AmethyTabCompleter());
+    registerCommand("closeinvenrory", new CloseinventoryCommand(), new AmethyTabCompleter());
+    registerCommand("drop", new DropCommand(), new AmethyTabCompleter());
     registerCommand("exit", new ExitCommand(), new AmethyTabCompleter());
     registerCommand("drop", new DropCommand(), new AmethyTabCompleter());
     registerCommand("lid", new LidCommand(), new AmethyTabCompleter());
-    registerCommand("toggledownfall", new ToggledownfallCommand(), new AmethyTabCompleter());
-    registerCommand("closeinvenrory", new CloseinventoryCommand(), new AmethyTabCompleter());
     registerCommand("list", new ListCommand(), new AmethyTabCompleter());
+    registerCommand("toggledownfall", new ToggledownfallCommand(), new AmethyTabCompleter());
 
     registerEvent(new PlayerJoin());
     registerEvent(new PlayerQuit());
