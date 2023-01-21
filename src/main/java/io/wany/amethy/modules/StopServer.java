@@ -11,6 +11,7 @@ import java.util.concurrent.Executors;
 import org.bukkit.Bukkit;
 
 import io.wany.amethy.Amethy;
+import net.kyori.adventure.text.Component;
 
 public class StopServer {
 
@@ -35,7 +36,7 @@ public class StopServer {
             h = "0" + h;
           }
           if (m.length() == 1) {
-            m = "0" + s;
+            m = "0" + m;
           }
           if (s.length() == 1) {
             s = "0" + s;
@@ -54,12 +55,16 @@ public class StopServer {
             Bukkit.broadcast(Message.of("10초 후 서버가 재시작됩니다."));
           }
           if (time.equals(("05:00:00"))) {
-            Bukkit.getOnlinePlayers().forEach(player -> {
-              player.kick(Message.of("서버가 재시작됩니다."));
-            });
+            Bukkit.getScheduler().runTaskLater(Amethy.PLUGIN, () -> {
+              Bukkit.getOnlinePlayers().forEach(player -> {
+                player.kick(Message.of("서버가 재시작됩니다."));
+              });
+            }, 0);
           }
           if (time.equals(("05:00:02"))) {
-            System.exit(0);
+            Bukkit.getScheduler().runTaskLater(Amethy.PLUGIN, () -> {
+              Bukkit.shutdown();
+            }, 0);
           }
         }
       }, 0, 1000);
