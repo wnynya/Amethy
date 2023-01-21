@@ -105,7 +105,7 @@ async function main() {
     const p = fs.createReadStream(parsed.path);
 
     const form = new FormData();
-
+    /**awfawfwafwaf */
     form.append('name', config.name);
     form.append('version', parsed.version);
     form.append('apiVersion', parsed.apiVersion);
