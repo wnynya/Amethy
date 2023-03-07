@@ -1,7 +1,7 @@
 package io.wany.amethy.supports.vault;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.modules.Console;
+import io.wany.amethy.modulesmc.Console;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -48,17 +48,17 @@ public class VaultSupport implements Listener {
   @EventHandler
   private void onServiceChange(ServiceRegisterEvent event) {
     if (event.getProvider().getService() == Chat.class) {
-      if (Amethy.CONFIG.getBoolean("vault-support.chat.enable")) {
+      if (Amethy.YAMLCONFIG.getBoolean("vault-support.chat.enable")) {
         loadChat();
       }
     }
     if (event.getProvider().getService() == Economy.class) {
-      if (Amethy.CONFIG.getBoolean("vault-support.economy.enable")) {
+      if (Amethy.YAMLCONFIG.getBoolean("vault-support.economy.enable")) {
         loadEconomy();
       }
     }
     if (event.getProvider().getService() == Permission.class) {
-      if (Amethy.CONFIG.getBoolean("vault-support.economy.enable")) {
+      if (Amethy.YAMLCONFIG.getBoolean("vault-support.economy.enable")) {
         loadPermission();
       }
     }
@@ -124,7 +124,7 @@ public class VaultSupport implements Listener {
   }
 
   public static void onEnable() {
-    if (!Amethy.CONFIG.getBoolean(NAME.toLowerCase() + "-support.enable")) {
+    if (!Amethy.YAMLCONFIG.getBoolean(NAME.toLowerCase() + "-support.enable")) {
       Console.debug(PREFIX + NAME + "-Support Disabled");
       return;
     }
@@ -146,13 +146,13 @@ public class VaultSupport implements Listener {
 
     // VaultEconomySync.onEnable();
 
-    if (Amethy.CONFIG.getBoolean("vault-support.chat.enable")) {
+    if (Amethy.YAMLCONFIG.getBoolean("vault-support.chat.enable")) {
       loadChat();
     }
-    if (Amethy.CONFIG.getBoolean("vault-support.permission.enable")) {
+    if (Amethy.YAMLCONFIG.getBoolean("vault-support.permission.enable")) {
       loadEconomy();
     }
-    if (Amethy.CONFIG.getBoolean("vault-support.economy.enable")) {
+    if (Amethy.YAMLCONFIG.getBoolean("vault-support.economy.enable")) {
       loadPermission();
     }
   }

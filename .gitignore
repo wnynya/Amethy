@@ -2,7 +2,7 @@
 /dependency-reduced-pom.xml
 /.vscode
 /repository
-/packages-bot/node_modules
-/packages-bot/package-lock.json
-/packages-bot/config.json
+/packages-bot
 /packages
+/amerep
+/test

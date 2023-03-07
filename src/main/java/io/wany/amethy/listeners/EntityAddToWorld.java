@@ -20,7 +20,7 @@ public class EntityAddToWorld implements Listener {
   }
 
   private static void fixPrimedTNTVelocity(EntityAddToWorldEvent event) {
-    if (!Amethy.CONFIG.getBoolean("event.tntPrimed.fixVelocity")) {
+    if (!Amethy.YAMLCONFIG.getBoolean("event.tntPrimed.fixVelocity")) {
       return;
     }
     Entity entity = event.getEntity();

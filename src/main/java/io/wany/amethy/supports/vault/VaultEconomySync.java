@@ -6,10 +6,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.modules.Console;
-import io.wany.amethy.modules.Message;
-import io.wany.modules.network.MySQLClient;
-import io.wany.modules.network.MySQLConfig;
+import io.wany.amethy.modules.network.MySQLClient;
+import io.wany.amethy.modules.network.MySQLConfig;
+import io.wany.amethy.modulesmc.Console;
+import io.wany.amethy.modulesmc.Message;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -65,7 +65,8 @@ public class VaultEconomySync {
    * 
    * public static void onEnable() {
    * 
-   * if (!Amethy.CONFIG.getBoolean("vault-support.economy.database-sync.enable"))
+   * if
+   * (!Amethy.YAMLCONFIG.getBoolean("vault-support.economy.database-sync.enable"))
    * {
    * return;
    * }
@@ -74,15 +75,15 @@ public class VaultEconomySync {
    * ENABLED = true;
    * 
    * MySQLConfig databaseConfig = new MySQLConfig(
-   * Amethy.CONFIG.getString("vault-support.economy.database-sync.hostname"),
-   * Amethy.CONFIG.getInt("vault-support.economy.database-sync.port"),
-   * Amethy.CONFIG.getString("vault-support.economy.database-sync.username"),
-   * Amethy.CONFIG.getString("vault-support.economy.database-sync.password"),
-   * Amethy.CONFIG.getString("vault-support.economy.database-sync.database"));
+   * Amethy.YAMLCONFIG.getString("vault-support.economy.database-sync.hostname"),
+   * Amethy.YAMLCONFIG.getInt("vault-support.economy.database-sync.port"),
+   * Amethy.YAMLCONFIG.getString("vault-support.economy.database-sync.username"),
+   * Amethy.YAMLCONFIG.getString("vault-support.economy.database-sync.password"),
+   * Amethy.YAMLCONFIG.getString("vault-support.economy.database-sync.database"));
    * database = new MySQLClient("amethy-vault-economy-sync", databaseConfig);
    * 
    * tableName =
-   * Amethy.CONFIG.getString("vault-support.economy.database-sync.table");
+   * Amethy.YAMLCONFIG.getString("vault-support.economy.database-sync.table");
    * 
    * try {
    * statement = database.getStatement();

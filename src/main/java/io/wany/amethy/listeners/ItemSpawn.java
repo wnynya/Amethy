@@ -5,7 +5,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ItemSpawnEvent;
 
-import io.wany.amethy.itemonworld.ItemOnWorld;
+import io.wany.amethy.modules.itemonworld.ItemOnWorld;
 
 public class ItemSpawn implements Listener {
 

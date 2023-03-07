@@ -5,7 +5,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.modules.Console;
+import io.wany.amethy.modulesmc.Console;
 
 public class SyncVaultEconomy {
 
@@ -33,12 +33,12 @@ public class SyncVaultEconomy {
   }
 
   public static void onEnable() {
-    if (!Amethy.CONFIG.getBoolean("sync.vault.economy.enable")) {
+    if (!Amethy.YAMLCONFIG.getBoolean("sync.vault.economy.enable")) {
       Console.debug(Sync.PREFIX + "Vault Economy 동기화 &c비활성화됨");
       return;
     }
 
-    CHANNEL = Amethy.CONFIG.getString("sync.vault.economy.channel");
+    CHANNEL = Amethy.YAMLCONFIG.getString("sync.vault.economy.channel");
     CHANNEL = CHANNEL.replaceAll("[^a-z0-9_-]", "");
     if (CHANNEL.length() <= 0) {
       Console.warn(Sync.PREFIX + "Vault Economy 동기화 채널 값이 잘못 설정되었거나 확인할 수 없습니다. 기능이 비활성화됩니다.");

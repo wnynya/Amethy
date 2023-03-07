@@ -1,7 +1,7 @@
 package io.wany.amethy.st;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.modules.Message;
+import io.wany.amethy.modulesmc.Message;
 import net.kyori.adventure.text.Component;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;

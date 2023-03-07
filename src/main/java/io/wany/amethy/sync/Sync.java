@@ -7,10 +7,10 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import io.wany.amethy.Amethy;
-import io.wany.amethy.modules.Console;
-import io.wany.amethy.modules.Crypto;
-import io.wany.amethy.modules.amethy.Database;
-import io.wany.modules.network.MySQLResult;
+import io.wany.amethy.modules.network.MySQLResult;
+import io.wany.amethy.modulesmc.Console;
+import io.wany.amethy.modulesmc.Crypto;
+import io.wany.amethy.modulesmc.amethy.Database;
 
 public class Sync {
 
@@ -82,7 +82,7 @@ public class Sync {
   }
 
   public static void onEnable() {
-    if (!Amethy.CONFIG.getBoolean("sync.enable")) {
+    if (!Amethy.YAMLCONFIG.getBoolean("sync.enable")) {
       Console.debug(PREFIX + "동기화 &c비활성화됨");
       return;
     }
@@ -121,6 +121,7 @@ public class Sync {
   }
 
   public static void onDisable() {
+    SyncPlayer.onDisable();
     SyncChat.onDisable();
   }
 

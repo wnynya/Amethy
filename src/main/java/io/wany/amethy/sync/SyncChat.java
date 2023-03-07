@@ -12,10 +12,10 @@ import org.bukkit.entity.Player;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import io.wany.amethy.Amethy;
-import io.wany.amethy.modules.Console;
-import io.wany.amethy.modules.Message;
-import io.wany.amethy.modules.amethy.Database;
-import io.wany.modules.network.MySQLResult;
+import io.wany.amethy.modules.network.MySQLResult;
+import io.wany.amethy.modulesmc.Console;
+import io.wany.amethy.modulesmc.Message;
+import io.wany.amethy.modulesmc.amethy.Database;
 import net.kyori.adventure.text.Component;
 
 public class SyncChat {
@@ -120,7 +120,7 @@ public class SyncChat {
   }
 
   protected static void onEnable() {
-    if (!Amethy.CONFIG.getBoolean("sync.chat.enable")) {
+    if (!Amethy.YAMLCONFIG.getBoolean("sync.chat.enable")) {
       Console.debug(Sync.PREFIX + "채팅 동기화 &c비활성화됨");
       return;
     }
@@ -147,7 +147,7 @@ public class SyncChat {
       return;
     }
 
-    CHANNEL = Amethy.CONFIG.getString("sync.chat.channel");
+    CHANNEL = Amethy.YAMLCONFIG.getString("sync.chat.channel");
     CHANNEL = CHANNEL.replaceAll("[^a-z0-9_-]", "");
     if (CHANNEL.length() <= 0) {
       Console.warn(Sync.PREFIX + "채팅 동기화 채널 값이 잘못 설정되었거나 확인할 수 없습니다. 기능이 비활성화됩니다.");
@@ -155,7 +155,7 @@ public class SyncChat {
     }
     Console.debug(Sync.PREFIX + "채팅 동기화 채널: " + CHANNEL);
 
-    SERVER = Amethy.CONFIG.getString("server.name");
+    SERVER = Amethy.YAMLCONFIG.getString("server.name");
     if (SERVER.length() <= 0) {
       Console.warn(Sync.PREFIX + "서버 이름 값이 잘못 설정되었거나 확인할 수 없습니다. 채팅 동기화 기능이 비활성화됩니다.");
       return;

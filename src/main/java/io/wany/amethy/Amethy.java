@@ -1,7 +1,6 @@
 package io.wany.amethy;
 
 import java.io.File;
-import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -14,21 +13,20 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.wany.amethy.commands.*;
-import io.wany.amethy.itemonworld.ItemOnWorld;
 import io.wany.amethy.listeners.*;
-import io.wany.amethy.modules.Config;
 import io.wany.amethy.modules.ServerPropertiesSorter;
-import io.wany.amethy.modules.StopServer;
-import io.wany.amethy.modules.Updater;
-import io.wany.amethy.modules.amethy.Database;
+import io.wany.amethy.modules.YamlConfig;
+import io.wany.amethy.modules.itemonworld.ItemOnWorld;
+import io.wany.amethy.modules.wand.Wand;
+import io.wany.amethy.modules.wand.command.WandEditCommand;
+import io.wany.amethy.modules.wand.command.WandEditTabCompleter;
+import io.wany.amethy.modulesmc.StopServer;
+import io.wany.amethy.modulesmc.amethy.Database;
 import io.wany.amethy.supports.coreprotect.CoreProtectSupport;
 import io.wany.amethy.supports.cucumbery.CucumberySupport;
 import io.wany.amethy.supports.vault.VaultSupport;
 import io.wany.amethy.sync.Sync;
-import io.wany.amethy.terminal.Terminal;
-import io.wany.amethy.wand.Wand;
-import io.wany.amethy.wand.command.WandEditCommand;
-import io.wany.amethy.wand.command.WandEditTabCompleter;
+import io.wany.amethyst.Json;
 
 /**
  *
@@ -42,28 +40,44 @@ public class Amethy extends JavaPlugin {
 
   public static Amethy PLUGIN;
 
-  public static final String COLOR = "#D2B0DD;";
-  public static final String PREFIX = COLOR + "&l[Amethy]:&r ";
-  public static final String PREFIX_CONSOLE = "[Amethy] ";
+  public static final String NAME = "Amethy";
+  public static final String PREFIX = "§l§x§d§2§b§0§d§d[" + NAME + "]:§r ";
+  public static final String PREFIX_CONSOLE = "[" + NAME + "] ";
   public static final UUID UUID = java.util.UUID.fromString("00000000-0000-0000-0000-000000000000");
-  public static final String API = "https://api.wany.io/amethy";
-  public static final int CONFIG_VERSION = 100;
+  protected static final boolean ISRELOAD = Bukkit.getWorlds().size() != 0;
 
-  public static boolean DEBUG = false;
-  public static boolean NIGHT = false;
-
-  public static FileConfiguration CONFIG;
+  public static String VERSION;
   public static File FILE;
-  public static File DIR;
   public static File PLUGINS_DIR;
   public static File SERVER_DIR;
+  public static Json CONFIG;
+  public static boolean DEBUG = false;
+  protected static String UID = "";
+  protected static String KEY = "";
+
+  public static final int YAMLCONFIG_VERSION = 100;
+  public static FileConfiguration YAMLCONFIG;
 
   @Override
   public void onLoad() {
 
     PLUGIN = this;
-    CONFIG = Config.onLoad();
-    Terminal.onLoad();
+
+    VERSION = PLUGIN.getDescription().getVersion();
+    FILE = PLUGIN.getFile().getAbsoluteFile();
+    PLUGINS_DIR = FILE.getParentFile();
+    SERVER_DIR = PLUGINS_DIR.getParentFile();
+
+    CONFIG = new Json(PLUGINS_DIR.toPath().resolve("Amethy/amethy.json").toFile());
+
+    if (CONFIG.has("debug")) {
+      DEBUG = CONFIG.getBoolean("debug");
+    } else {
+      CONFIG.set("debug", false);
+    }
+
+    YAMLCONFIG = YamlConfig.onLoad();
+
     Database.onLoad();
 
   }
@@ -71,17 +85,8 @@ public class Amethy extends JavaPlugin {
   @Override
   public void onEnable() {
 
-    Terminal.onEnable();
-
-    Sync.onEnable();
-
-    Wand.onEnable();
-    ItemOnWorld.onEnable();
-
     registerCommand("amethy", new AmethyCommand(), new AmethyTabCompleter());
-
     registerCommand("wandedit", new WandEditCommand(), new WandEditTabCompleter());
-
     registerCommand("bungeeteleport", new BungeeTeleportCommand(), new AmethyTabCompleter());
     registerCommand("closeinvenrory", new CloseinventoryCommand(), new AmethyTabCompleter());
     registerCommand("drop", new DropCommand(), new AmethyTabCompleter());
@@ -110,19 +115,17 @@ public class Amethy extends JavaPlugin {
     registerEvent(new PluginEnable());
     registerEvent(new PluginDisable());
 
+    Sync.onEnable();
+    Wand.onEnable();
+    ItemOnWorld.onEnable();
     VaultSupport.onEnable();
     CucumberySupport.onEnable();
     CoreProtectSupport.onEnable();
 
-    FILE = this.getFile();
-    DIR = this.getDataFolder().getAbsoluteFile();
-    PLUGINS_DIR = new File(this.getDataFolder().getAbsoluteFile().getParent());
-    SERVER_DIR = new File(new File(this.getDataFolder().getAbsoluteFile().getParent()).getParent());
+    ServerPropertiesSorter.onEnable();
+    StopServer.onEnable();
 
     Updater.onEnable();
-    ServerPropertiesSorter.onEnable();
-
-    StopServer.onEnable();
 
     try {
       this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -141,28 +144,23 @@ public class Amethy extends JavaPlugin {
     CucumberySupport.onDisable();
     CoreProtectSupport.onDisable();
 
-    Updater.onDisable();
-
     Sync.onDisable();
 
     Database.onDisable();
 
-    Terminal.onDisable();
-
     StopServer.onDisable();
+
+    Updater.onDisable();
 
   }
 
   public void registerCommand(String cmd, CommandExecutor exc, TabCompleter tab) {
-    Map<String, Map<String, Object>> map = PLUGIN.getDescription().getCommands();
-    if (map.containsKey(cmd)) {
-      PluginCommand pc = this.getCommand(cmd);
-      if (pc == null) {
-        return;
-      }
-      pc.setExecutor(exc);
-      pc.setTabCompleter(tab);
+    PluginCommand pc = this.getCommand(cmd);
+    if (pc == null) {
+      return;
     }
+    pc.setExecutor(exc);
+    pc.setTabCompleter(tab);
   }
 
   public void registerEvent(Listener l) {

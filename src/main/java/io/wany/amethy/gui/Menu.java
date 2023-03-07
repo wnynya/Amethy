@@ -10,10 +10,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import io.wany.amethy.modules.Console;
-import io.wany.amethy.modules.Message;
-import io.wany.amethy.modules.minecraft.ItemTool;
-import io.wany.amethy.modules.minecraft.Skull;
+import io.wany.amethy.modulesmc.Console;
+import io.wany.amethy.modulesmc.Message;
+import io.wany.amethy.modulesmc.minecraft.ItemTool;
+import io.wany.amethy.modulesmc.minecraft.Skull;
 import io.wany.amethy.supports.cucumbery.CucumberySupport;
 
 import java.util.List;

@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.modules.Message;
+import io.wany.amethy.modulesmc.Message;
 
 public class BungeeTeleportCommand implements CommandExecutor {
 

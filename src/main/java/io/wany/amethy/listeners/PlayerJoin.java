@@ -11,12 +11,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import io.wany.amethy.Amethy;
 import io.wany.amethy.commands.BungeeTeleportCommand;
-import io.wany.amethy.modules.Console;
-import io.wany.amethy.modules.Message;
-import io.wany.amethy.modules.PlayerSync;
+import io.wany.amethy.modules.wand.Wand;
+import io.wany.amethy.modulesmc.Console;
+import io.wany.amethy.modulesmc.Message;
 import io.wany.amethy.supports.cucumbery.CucumberySupport;
 import io.wany.amethy.sync.Sync;
-import io.wany.amethy.wand.Wand;
 
 import java.util.HashMap;
 
@@ -37,14 +36,14 @@ public class PlayerJoin implements Listener {
   }
 
   private void chatPlayerJoinMessage(PlayerJoinEvent event) {
-    if (!Amethy.CONFIG.getBoolean("event.join.msg.normal.chat.enable")) {
+    if (!Amethy.YAMLCONFIG.getBoolean("event.join.msg.normal.chat.enable")) {
       return;
     }
     Player player = event.getPlayer();
-    String format = Amethy.CONFIG.getString("event.join.msg.normal.chat.format");
+    String format = Amethy.YAMLCONFIG.getString("event.join.msg.normal.chat.format");
     if (changeJoinPlayers.containsKey(player.getName())
-        && Amethy.CONFIG.getBoolean("event.join.msg.change.chat.enable")) {
-      format = Amethy.CONFIG.getString("event.join.msg.change.chat.format");
+        && Amethy.YAMLCONFIG.getBoolean("event.join.msg.change.chat.enable")) {
+      format = Amethy.YAMLCONFIG.getString("event.join.msg.change.chat.format");
       format = format.replace("{fromserver}", changeJoinPlayers.get(player.getName()));
       changeJoinPlayers.remove(player.getName());
     }
@@ -53,26 +52,26 @@ public class PlayerJoin implements Listener {
   }
 
   private void consolePlayerJoinMessage(PlayerJoinEvent event) {
-    if (!Amethy.CONFIG.getBoolean("event.join.msg.normal.console.enable")) {
+    if (!Amethy.YAMLCONFIG.getBoolean("event.join.msg.normal.console.enable")) {
       return;
     }
     Player player = event.getPlayer();
-    String format = Amethy.CONFIG.getString("event.join.msg.normal.console.format");
+    String format = Amethy.YAMLCONFIG.getString("event.join.msg.normal.console.format");
     format = Message.effect(format);
     Console.log(Message.stringify(Message.formatPlayer(player, format)));
   }
 
   private void playPlayerJoinSound(PlayerJoinEvent event) {
-    if (!Amethy.CONFIG.getBoolean("event.join.sound.enable")) {
+    if (!Amethy.YAMLCONFIG.getBoolean("event.join.sound.enable")) {
       return;
     }
     Player player = event.getPlayer();
-    Sound sound = Sound.valueOf(Amethy.CONFIG.getString("event.join.sound.sound"));
-    SoundCategory soundCategory = SoundCategory.valueOf(Amethy.CONFIG.getString("event.join.sound.soundCategory"));
-    float volume = (float) Amethy.CONFIG.getDouble("event.join.sound.volume");
-    float pitch = (float) Amethy.CONFIG.getDouble("event.join.sound.pitch");
+    Sound sound = Sound.valueOf(Amethy.YAMLCONFIG.getString("event.join.sound.sound"));
+    SoundCategory soundCategory = SoundCategory.valueOf(Amethy.YAMLCONFIG.getString("event.join.sound.soundCategory"));
+    float volume = (float) Amethy.YAMLCONFIG.getDouble("event.join.sound.volume");
+    float pitch = (float) Amethy.YAMLCONFIG.getDouble("event.join.sound.pitch");
 
-    if (Amethy.CONFIG.getBoolean("event.join.sound.targetPlayer")) {
+    if (Amethy.YAMLCONFIG.getBoolean("event.join.sound.targetPlayer")) {
       for (Player p : Bukkit.getOnlinePlayers()) {
         p.playSound(p.getLocation(), sound, soundCategory, volume, pitch);
       }
@@ -87,8 +86,8 @@ public class PlayerJoin implements Listener {
 
   private void updatePlayerJoin(PlayerJoinEvent event) {
     Player player = event.getPlayer();
-    if (Amethy.CONFIG.getBoolean("event.join.list.enable")) {
-      String format = Amethy.CONFIG.getString("event.join.list.format");
+    if (Amethy.YAMLCONFIG.getBoolean("event.join.list.enable")) {
+      String format = Amethy.YAMLCONFIG.getString("event.join.list.format");
       format = Message.effect(format);
       player.playerListName(Message.formatPlayer(player, format));
     }

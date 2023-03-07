@@ -21,26 +21,21 @@
 
   <repositories>
 
+    <!-- Wanyne Amethy Repo -->
     <repository>
-      <id>cucumbery</id>
-      <url>https://cucumbery.com/repository/</url>
+      <id>amethy</id>
+      <url>https://api.wany.io/amethy/repository/maven</url>
     </repository>
 
+    <!-- Paper Repo -->
     <repository>
       <id>papermc</id>
-      <name>PaperMC Repository</name>
-      <url>https://papermc.io/repo/repository/maven-public/</url>
+      <url>https://repo.papermc.io/repository/maven-public/</url>
     </repository>
 
-    <repository>
-      <id>minecraft-libraries</id>
-      <name>Minecraft Libraries</name>
-      <url>https://libraries.minecraft.net</url>
-    </repository>
-
+    <!-- Amache Snapshots -->
     <repository>
       <id>apache.snapshots</id>
-      <name>Apache Development Snapshot Repository</name>
       <url>https://repository.apache.org/content/repositories/snapshots</url>
       <releases>
         <enabled>false</enabled>
@@ -50,23 +45,39 @@
       </snapshots>
     </repository>
 
+    <!-- Cucumbery Repo -->
+    <repository>
+      <id>cucumbery</id>
+      <url>https://cucumbery.com/repository/</url>
+    </repository>
+
+    <!-- Sk89q Repo (WorldEdit, WorldGuard) -->
+    <repository>
+      <id>sk89q-repo</id>
+      <url>https://maven.enginehub.org/repo/</url>
+    </repository>
+
+    <!-- Jitpack Repo (Vault) -->
     <repository>
       <id>jitpack.io</id>
       <name>Jitpack Repository</name>
       <url>https://jitpack.io</url>
     </repository>
 
+    <!-- Playpro Repo -->
     <repository>
       <id>playpro</id>
       <url>https://maven.playpro.com</url>
     </repository>
 
+    <!-- CodeMC Repo -->
     <repository>
       <id>codemc</id>
       <url>https://repo.codemc.org/repository/maven-public/</url>
       <layout>default</layout>
     </repository>
 
+    <!-- Typesafe Repo -->
     <repository>
       <id>typesafe</id>
       <url>https://repo.typesafe.com/typesafe/maven-releases/</url>
@@ -86,6 +97,14 @@
 
   <dependencies>
 
+    <!-- Amethyst -->
+    <dependency>
+      <groupId>io.wany.amethyst</groupId>
+      <artifactId>Amethyst</artifactId>
+      <version>0.8.1</version>
+    </dependency>
+
+    <!-- Paper -->
     <dependency>
       <groupId>io.papermc.paper</groupId>
       <artifactId>paper-api</artifactId>
@@ -93,13 +112,7 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.json/json -->
-    <dependency>
-      <groupId>org.json</groupId>
-      <artifactId>json</artifactId>
-      <version>20210307</version>
-    </dependency>
-
+    <!-- Apache Commons -->
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
@@ -107,20 +120,15 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- Plugin: Cucumbery -->
     <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-api</artifactId>
-      <version>2.17.1</version>
+      <groupId>com.jho5245.cucumbery</groupId>
+      <artifactId>Cucumbery</artifactId>
+      <version>1.1.1-dev-23066-003733</version>
       <scope>provided</scope>
     </dependency>
 
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>2.17.1</version>
-      <scope>provided</scope>
-    </dependency>
-
+    <!-- Plugin: Vault -->
     <dependency>
       <groupId>com.github.MilkBowl</groupId>
       <artifactId>VaultAPI</artifactId>
@@ -128,13 +136,7 @@
       <scope>provided</scope>
     </dependency>
 
-    <dependency>
-      <groupId>com.jho5245.cucumbery</groupId>
-      <artifactId>Cucumbery</artifactId>
-      <version>1.1.1-dev-22260-183214</version>
-      <scope>provided</scope>
-    </dependency>
-
+    <!-- Plugin: CoreProtect -->
     <dependency>
       <groupId>net.coreprotect</groupId>
       <artifactId>coreprotect</artifactId>
@@ -142,50 +144,12 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- Plugin: NoteBlockAPI -->
     <dependency>
       <groupId>com.github.koca2000</groupId>
       <artifactId>NoteBlockAPI</artifactId>
       <version>1.6.1</version>
       <scope>provided</scope>
-    </dependency>
-
-    <!--dependency>
-  <groupId>dev.jorel.CommandAPI</groupId>
-    <artifactId>commandapi-shade</artifactId>
-  <version>6.0.5</version>
-  </dependency>
-    <dependency>
-  <groupId>de.tr7zw</groupId>
-  <artifactId>item-nbt-api</artifactId>
-    <version>2.8.0</version>
-  </dependency-->
-
-    <!-- https://mvnrepository.com/artifact/org.hyperic/sigar -->
-    <dependency>
-      <groupId>com.profesorfalken</groupId>
-      <artifactId>jSensors</artifactId>
-      <version>2.2.1</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.hyperic/sigar -->
-    <!--dependency>
-  <groupId>org.hyperic</groupId>
-  <artifactId>sigar</artifactId>
-    <version>1.6.4</version>
-  </dependency-->
-
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
-      <version>4.5.13</version>
-    </dependency>
-
-    <!-- mvnrepository.com/artifact/org.apache.httpcomponents/httpmime -->
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpmime</artifactId>
-      <version>4.5.13</version>
     </dependency>
 
   </dependencies>
@@ -230,7 +194,7 @@
         <configuration>
           <relocations>
             <relocation>
-              <pattern>org.json.json</pattern>
+              <pattern>io.wany.amethyst</pattern>
             </relocation>
           </relocations>
         </configuration>

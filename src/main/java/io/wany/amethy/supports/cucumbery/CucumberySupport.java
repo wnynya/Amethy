@@ -14,8 +14,8 @@ import org.bukkit.plugin.Plugin;
 import io.wany.amethy.Amethy;
 import io.wany.amethy.commands.AmethyTabCompleter;
 import io.wany.amethy.commands.MenuCommand;
-import io.wany.amethy.modules.Config;
-import io.wany.amethy.modules.Console;
+import io.wany.amethy.modules.YamlConfig;
+import io.wany.amethy.modulesmc.Console;
 
 import java.io.File;
 
@@ -42,15 +42,15 @@ public class CucumberySupport {
     if (!ENABLE || !EXIST) {
       return;
     }
-    if (!Amethy.CONFIG.getBoolean("cucumbery-support.default-userdata.enable")) {
+    if (!Amethy.YAMLCONFIG.getBoolean("cucumbery-support.default-userdata.enable")) {
       return;
     }
     File file = new File(PLUGIN.getDataFolder() + "/data/UserData/" + player.getUniqueId() + ".yml");
     if (!file.exists()) {
       return;
     }
-    Config config = new Config(file);
-    ConfigurationSection configurationSection = Amethy.CONFIG
+    YamlConfig config = new YamlConfig(file);
+    ConfigurationSection configurationSection = Amethy.YAMLCONFIG
         .getConfigurationSection("cucumbery-support.default-userdata.userdata");
     if (configurationSection == null) {
       return;
@@ -66,7 +66,7 @@ public class CucumberySupport {
     }
   }
 
-  public static Config getUserDataConfig(Player player) {
+  public static YamlConfig getUserDataConfig(Player player) {
     /*
      * if (Variable.userData.containsKey(player.getUniqueId())) {
      * return new Config(Variable.userData.get(player.getUniqueId()));
@@ -76,7 +76,7 @@ public class CucumberySupport {
      * Config(CustomConfig.getPlayerConfig(player.getUniqueId()).getFile());
      * }
      */
-    return new Config(CustomConfig.getPlayerConfig(player.getUniqueId()).getFile());
+    return new YamlConfig(CustomConfig.getPlayerConfig(player.getUniqueId()).getFile());
   }
 
   public static void overrideCucumberyMenuCommand() {
@@ -140,6 +140,7 @@ public class CucumberySupport {
   }
 
   public static void onPluginEnable(PluginEnableEvent event) {
+    recoverCucumberyMenuCommand();
     if (!ENABLE) {
       return;
     }
@@ -181,7 +182,7 @@ public class CucumberySupport {
   }
 
   public static void onEnable() {
-    if (!Amethy.CONFIG.getBoolean(NAME.toLowerCase() + "-support.enable")) {
+    if (!Amethy.YAMLCONFIG.getBoolean(NAME.toLowerCase() + "-support.enable")) {
       Console.debug(PREFIX + NAME + "-Support Disabled");
       return;
     }

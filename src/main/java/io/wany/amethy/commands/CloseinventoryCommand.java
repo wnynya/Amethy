@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.jetbrains.annotations.NotNull;
 
-import io.wany.amethy.modules.Message;
+import io.wany.amethy.modulesmc.Message;
 
 public class CloseinventoryCommand implements CommandExecutor {
 

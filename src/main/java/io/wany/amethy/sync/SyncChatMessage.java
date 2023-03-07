@@ -4,8 +4,8 @@ import org.bukkit.Bukkit;
 
 import com.google.gson.JsonObject;
 
-import io.wany.amethy.modules.Crypto;
-import io.wany.amethy.modules.Message;
+import io.wany.amethy.modulesmc.Crypto;
+import io.wany.amethy.modulesmc.Message;
 import net.kyori.adventure.text.Component;
 
 public class SyncChatMessage {

@@ -22,10 +22,10 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import io.wany.amethy.modules.Config;
-import io.wany.amethy.modules.Message;
-import io.wany.amethy.modules.minecraft.ItemTool;
-import io.wany.amethy.modules.minecraft.Skull;
+import io.wany.amethy.modules.YamlConfig;
+import io.wany.amethy.modulesmc.Message;
+import io.wany.amethy.modulesmc.minecraft.ItemTool;
+import io.wany.amethy.modulesmc.minecraft.Skull;
 import io.wany.amethy.supports.cucumbery.CucumberySupport;
 
 import java.util.List;
@@ -152,7 +152,7 @@ public class CucumberySupportMenu {
       public static Inventory inventory(Player player) {
         Inventory inventory = Bukkit.createInventory(null, 45, title);
 
-        Config userDataConfig = CucumberySupport.getUserDataConfig(player);
+        YamlConfig userDataConfig = CucumberySupport.getUserDataConfig(player);
 
         // 공중에서-폭죽-발사
         Menu.booleanStateButton(userDataConfig.getBoolean("공중에서-폭죽-발사"), inventory, 10,
@@ -181,7 +181,7 @@ public class CucumberySupportMenu {
         event.setCancelled(true);
         Player player = (Player) event.getWhoClicked();
 
-        Config userDataConfig = CucumberySupport.getUserDataConfig(player);
+        YamlConfig userDataConfig = CucumberySupport.getUserDataConfig(player);
 
         int slot = event.getSlot();
         switch (slot) {
@@ -211,7 +211,7 @@ public class CucumberySupportMenu {
       public static Inventory inventory(Player player) {
         Inventory inventory = Bukkit.createInventory(null, 45, title);
 
-        Config userDataConfig = CucumberySupport.getUserDataConfig(player);
+        YamlConfig userDataConfig = CucumberySupport.getUserDataConfig(player);
 
         // 입장-소리-들음
         Menu.booleanStateButton(userDataConfig.getBoolean("입장-소리-들음"), inventory, 1,
@@ -266,7 +266,7 @@ public class CucumberySupportMenu {
         event.setCancelled(true);
         Player player = (Player) event.getWhoClicked();
 
-        Config userDataConfig = CucumberySupport.getUserDataConfig(player);
+        YamlConfig userDataConfig = CucumberySupport.getUserDataConfig(player);
 
         int slot = event.getSlot();
         switch (slot) {
@@ -321,7 +321,7 @@ public class CucumberySupportMenu {
       public static Inventory inventory(Player player) {
         Inventory inventory = Bukkit.createInventory(null, 45, title);
 
-        Config userDataConfig = CucumberySupport.getUserDataConfig(player);
+        YamlConfig userDataConfig = CucumberySupport.getUserDataConfig(player);
 
         // 아이템-주울때-액션바-띄움
         Menu.booleanStateButton(userDataConfig.getBoolean("아이템-주울때-액션바-띄움"), inventory, 10,
@@ -372,7 +372,7 @@ public class CucumberySupportMenu {
         event.setCancelled(true);
         Player player = (Player) event.getWhoClicked();
 
-        Config userDataConfig = CucumberySupport.getUserDataConfig(player);
+        YamlConfig userDataConfig = CucumberySupport.getUserDataConfig(player);
 
         int slot = event.getSlot();
         switch (slot) {
@@ -423,7 +423,7 @@ public class CucumberySupportMenu {
       public static Inventory inventory(Player player) {
         Inventory inventory = Bukkit.createInventory(null, 45, title);
 
-        Config userDataConfig = CucumberySupport.getUserDataConfig(player);
+        YamlConfig userDataConfig = CucumberySupport.getUserDataConfig(player);
 
         // 픽블록으로-소리-블록-음높이-복사
         Menu.booleanStateButton(userDataConfig.getBoolean("픽블록으로-소리-블록-음높이-복사"), inventory, 10,
@@ -478,7 +478,7 @@ public class CucumberySupportMenu {
         event.setCancelled(true);
         Player player = (Player) event.getWhoClicked();
 
-        Config userDataConfig = CucumberySupport.getUserDataConfig(player);
+        YamlConfig userDataConfig = CucumberySupport.getUserDataConfig(player);
 
         int slot = event.getSlot();
         switch (slot) {
@@ -521,7 +521,7 @@ public class CucumberySupportMenu {
       public static Inventory inventory(Player player) {
         Inventory inventory = Bukkit.createInventory(null, 45, title);
 
-        Config userDataConfig = CucumberySupport.getUserDataConfig(player);
+        YamlConfig userDataConfig = CucumberySupport.getUserDataConfig(player);
 
         // 플러그인-개발-디버그-메시지-띄움
         Menu.booleanStateButton(userDataConfig.getBoolean("플러그인-개발-디버그-메시지-띄움"), inventory, 1,
@@ -576,7 +576,7 @@ public class CucumberySupportMenu {
         event.setCancelled(true);
         Player player = (Player) event.getWhoClicked();
 
-        Config userDataConfig = CucumberySupport.getUserDataConfig(player);
+        YamlConfig userDataConfig = CucumberySupport.getUserDataConfig(player);
 
         int slot = event.getSlot();
         switch (slot) {
@@ -634,7 +634,7 @@ public class CucumberySupportMenu {
       public static Inventory inventory(Player player) {
         Inventory inventory = Bukkit.createInventory(null, 45, title);
 
-        Config userDataConfig = CucumberySupport.getUserDataConfig(player);
+        YamlConfig userDataConfig = CucumberySupport.getUserDataConfig(player);
 
         // 입장-소리-재생
         Menu.booleanStateButton(userDataConfig.getBoolean("입장-소리-재생"), inventory, 1,
@@ -700,7 +700,7 @@ public class CucumberySupportMenu {
         event.setCancelled(true);
         Player player = (Player) event.getWhoClicked();
 
-        Config userDataConfig = CucumberySupport.getUserDataConfig(player);
+        YamlConfig userDataConfig = CucumberySupport.getUserDataConfig(player);
 
         int slot = event.getSlot();
         switch (slot) {

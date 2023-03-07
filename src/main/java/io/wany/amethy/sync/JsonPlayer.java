@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.google.gson.JsonObject;
 
-import io.wany.amethy.modules.Message;
+import io.wany.amethy.modulesmc.Message;
 
 public class JsonPlayer {
 

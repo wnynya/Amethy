@@ -6,7 +6,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import io.wany.amethy.modules.Message;
+import io.wany.amethy.modulesmc.Message;
 
 public class PlayerMove implements Listener {
 

@@ -7,7 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import io.wany.amethy.modules.Message;
+import io.wany.amethy.modulesmc.Message;
 import io.wany.amethy.supports.vault.VaultSupport;
 
 import java.util.ArrayList;

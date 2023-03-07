@@ -22,7 +22,7 @@ public class EntityDeath implements Listener {
   }
 
   public static void playMonsterKilledByPlayerSound(EntityDeathEvent event) {
-    if (!Amethy.CONFIG.getBoolean("event.monsterDeath.killer.sound.enable")) {
+    if (!Amethy.YAMLCONFIG.getBoolean("event.monsterDeath.killer.sound.enable")) {
       return;
     }
     LivingEntity entity = event.getEntity();
@@ -33,11 +33,11 @@ public class EntityDeath implements Listener {
     if (killer == null) {
       return;
     }
-    Sound sound = Sound.valueOf(Amethy.CONFIG.getString("event.monsterDeath.killer.sound.sound"));
+    Sound sound = Sound.valueOf(Amethy.YAMLCONFIG.getString("event.monsterDeath.killer.sound.sound"));
     SoundCategory soundCategory = SoundCategory
-        .valueOf(Amethy.CONFIG.getString("event.monsterDeath.killer.sound.soundCategory"));
-    float volume = (float) Amethy.CONFIG.getDouble("event.monsterDeath.killer.sound.volume");
-    float pitch = (float) Amethy.CONFIG.getDouble("event.monsterDeath.killer.sound.pitch");
+        .valueOf(Amethy.YAMLCONFIG.getString("event.monsterDeath.killer.sound.soundCategory"));
+    float volume = (float) Amethy.YAMLCONFIG.getDouble("event.monsterDeath.killer.sound.volume");
+    float pitch = (float) Amethy.YAMLCONFIG.getDouble("event.monsterDeath.killer.sound.pitch");
     killer.playSound(killer.getLocation(), sound, soundCategory, volume, pitch);
   }
 

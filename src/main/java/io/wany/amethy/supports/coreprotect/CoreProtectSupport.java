@@ -8,7 +8,7 @@ import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.modules.Console;
+import io.wany.amethy.modulesmc.Console;
 
 public class CoreProtectSupport {
 
@@ -85,7 +85,7 @@ public class CoreProtectSupport {
   }
 
   public static void onEnable() {
-    if (!Amethy.CONFIG.getBoolean(NAME.toLowerCase() + "-support.enable")) {
+    if (!Amethy.YAMLCONFIG.getBoolean(NAME.toLowerCase() + "-support.enable")) {
       Console.debug(PREFIX + NAME + "-Support Disabled");
       return;
     }
