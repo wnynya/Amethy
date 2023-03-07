@@ -23,7 +23,7 @@ public class ListCommand implements CommandExecutor {
     int max = Bukkit.getMaxPlayers();
     HashMap<String, List<Player>> groupPlayers = new HashMap<>();
 
-    if (VaultSupport.EXIST && VaultSupport.CHAT != null && VaultSupport.CHAT.getGroups().length > 0) {
+    if (VaultSupport.SUPPORT.isEnabled() && VaultSupport.CHAT != null && VaultSupport.CHAT.getGroups().length > 0) {
       sender.sendMessage(Component.translatable("commands.list.players").args(Message.parse("§r" + current),
           Message.parse("§r" + max), Message.parse("")));
       for (Player player : onlinePlayers) {

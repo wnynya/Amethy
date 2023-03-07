@@ -1,4 +1,4 @@
-package io.wany.amethy.sync;
+package io.wany.amethy.modules.sync;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,12 +12,13 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.modulesmc.Console;
+import io.wany.amethy.modules.database.DatabaseSyncMap;
+import io.wany.amethy.Console;
 import io.wany.amethy.modulesmc.Message;
+import io.wany.amethyst.Json;
 
 public class SyncPlayer {
 
@@ -42,17 +43,14 @@ public class SyncPlayer {
         return;
       }
       UUID uuid = player.getUniqueId();
-      String value = Sync.get(
-          NAMESPACE(),
-          SyncPlayer.CHANNEL + "." + uuid.toString());
-      if (value == null) {
+      Json data = DatabaseSyncMap.get("sync." + NAMESPACE() + "." + uuid.toString());
+      if (data == null) {
         return;
       }
-      JsonObject object = JsonParser.parseString(value).getAsJsonObject();
-      player.setHealth(object.get("health").getAsDouble());
-      player.setHealthScale(object.get("healthscale").getAsDouble());
-      player.setFoodLevel(object.get("foodlevel").getAsInt());
-      player.setExhaustion(object.get("exhaution").getAsFloat());
+      player.setHealth(data.getDouble("health"));
+      player.setHealthScale(data.getDouble("healthscale"));
+      player.setFoodLevel(data.getInt("foodlevel"));
+      player.setExhaustion(data.getFloat("exhaution"));
     }
 
     @Override
@@ -61,15 +59,12 @@ public class SyncPlayer {
         return;
       }
       UUID uuid = player.getUniqueId();
-      JsonObject object = new JsonObject();
-      object.addProperty("health", player.getHealth());
-      object.addProperty("healthscale", player.getHealthScale());
-      object.addProperty("foodlevel", player.getFoodLevel());
-      object.addProperty("exhaution", player.getExhaustion());
-      Sync.set(
-          NAMESPACE(),
-          SyncPlayer.CHANNEL + "." + uuid.toString(),
-          object.toString());
+      Json data = new Json();
+      data.set("health", player.getHealth());
+      data.set("healthscale", player.getHealthScale());
+      data.set("foodlevel", player.getFoodLevel());
+      data.set("exhaution", player.getExhaustion());
+      DatabaseSyncMap.set("sync." + NAMESPACE() + "." + uuid.toString(), data);
     }
 
   };
@@ -96,15 +91,12 @@ public class SyncPlayer {
         return;
       }
       UUID uuid = player.getUniqueId();
-      String value = Sync.get(
-          NAMESPACE(),
-          SyncPlayer.CHANNEL + "." + uuid.toString());
-      if (value == null) {
+      Json data = DatabaseSyncMap.get("sync." + NAMESPACE() + "." + uuid.toString());
+      if (data == null) {
         return;
       }
-      JsonObject object = JsonParser.parseString(value).getAsJsonObject();
-      player.setExp(object.get("exp").getAsFloat());
-      player.setLevel(object.get("level").getAsInt());
+      player.setExp(data.getFloat("exp"));
+      player.setLevel(data.getInt("level"));
     }
 
     @Override
@@ -113,13 +105,10 @@ public class SyncPlayer {
         return;
       }
       UUID uuid = player.getUniqueId();
-      JsonObject object = new JsonObject();
-      object.addProperty("exp", player.getExp());
-      object.addProperty("level", player.getLevel());
-      Sync.set(
-          NAMESPACE(),
-          SyncPlayer.CHANNEL + "." + uuid.toString(),
-          object.toString());
+      Json data = new Json();
+      data.set("exp", player.getExp());
+      data.set("level", player.getLevel());
+      DatabaseSyncMap.set("sync." + NAMESPACE() + "." + uuid.toString(), data);
     }
 
   };
@@ -148,9 +137,7 @@ public class SyncPlayer {
         return;
       }
       UUID uuid = player.getUniqueId();
-      String value = Sync.get(
-          NAMESPACE(),
-          SyncPlayer.CHANNEL + "." + uuid.toString());
+      String value = DatabaseSyncMap.getString("sync." + NAMESPACE() + "." + uuid.toString());
       JsonArray array;
       if (value == null) {
         array = inventories.get(uuid);
@@ -168,10 +155,7 @@ public class SyncPlayer {
       }
       UUID uuid = player.getUniqueId();
       JsonArray array = JsonInventory.jsonify(player.getInventory());
-      Sync.set(
-          NAMESPACE(),
-          SyncPlayer.CHANNEL + "." + uuid.toString(),
-          array.toString());
+      DatabaseSyncMap.set("sync." + NAMESPACE() + "." + uuid.toString(), array.toString());
     }
 
     @Override
@@ -210,9 +194,7 @@ public class SyncPlayer {
         return;
       }
       UUID uuid = player.getUniqueId();
-      String value = Sync.get(
-          NAMESPACE(),
-          SyncPlayer.CHANNEL + "." + uuid.toString());
+      String value = DatabaseSyncMap.getString("sync." + NAMESPACE() + "." + uuid.toString());
       if (value == null) {
         return;
       }
@@ -227,10 +209,7 @@ public class SyncPlayer {
       }
       UUID uuid = player.getUniqueId();
       JsonArray array = JsonInventory.jsonify(player.getEnderChest());
-      Sync.set(
-          NAMESPACE(),
-          SyncPlayer.CHANNEL + "." + uuid.toString(),
-          array.toString());
+      DatabaseSyncMap.set("sync." + NAMESPACE() + "." + uuid.toString(), array.toString());
     }
 
     @Override
@@ -246,7 +225,7 @@ public class SyncPlayer {
 
   };
   static {
-    syncPlayerObjects.add(syncPlayerInventory);
+    syncPlayerObjects.add(syncPlayerEnderChest);
   }
 
   // 플레이어 포션 효과 (이펙트) 동기화
@@ -254,7 +233,7 @@ public class SyncPlayer {
 
     @Override
     public String NAMESPACE() {
-      return "player.effects";
+      return "player.potioneffects";
     }
 
     @Override
@@ -268,9 +247,7 @@ public class SyncPlayer {
         return;
       }
       UUID uuid = player.getUniqueId();
-      String value = Sync.get(
-          NAMESPACE(),
-          SyncPlayer.CHANNEL + "." + uuid.toString());
+      String value = DatabaseSyncMap.getString("sync." + NAMESPACE() + "." + uuid.toString());
       if (value == null) {
         return;
       }
@@ -285,10 +262,7 @@ public class SyncPlayer {
       }
       UUID uuid = player.getUniqueId();
       JsonArray array = JsonPotionEffects.jsonify(player);
-      Sync.set(
-          NAMESPACE(),
-          SyncPlayer.CHANNEL + "." + uuid.toString(),
-          array.toString());
+      DatabaseSyncMap.set("sync." + NAMESPACE() + "." + uuid.toString(), array.toString());
     }
 
   };
@@ -315,9 +289,7 @@ public class SyncPlayer {
         return;
       }
       UUID uuid = player.getUniqueId();
-      String value = Sync.get(
-          NAMESPACE(),
-          SyncPlayer.CHANNEL + "." + uuid.toString());
+      String value = DatabaseSyncMap.getString("sync." + NAMESPACE() + "." + uuid.toString());
       if (value == null) {
         return;
       }
@@ -331,15 +303,53 @@ public class SyncPlayer {
       }
       UUID uuid = player.getUniqueId();
       String string = StringCucumberyEffects.stringify(player);
-      Sync.set(
-          NAMESPACE(),
-          SyncPlayer.CHANNEL + "." + uuid.toString(),
-          string);
+      DatabaseSyncMap.set("sync." + NAMESPACE() + "." + uuid.toString(), string);
     }
 
   };
   static {
-    syncPlayerObjects.add(syncPlayerEffect);
+    syncPlayerObjects.add(syncPlayerCucumberyCustomEffect);
+  }
+
+  // 큐컴버리 유저 데이터 동기화
+  private static SyncPlayerObject syncPlayerCucumberyUserData = new SyncPlayerObject() {
+
+    @Override
+    public String NAMESPACE() {
+      return "player.cucumberyuserdata";
+    }
+
+    @Override
+    public String NAME() {
+      return "큐컴버리 유저 데이터";
+    }
+
+    @Override
+    public void select(Player player) {
+      if (!ENABLED()) {
+        return;
+      }
+      UUID uuid = player.getUniqueId();
+      String value = DatabaseSyncMap.getString("sync." + NAMESPACE() + "." + uuid.toString());
+      if (value == null) {
+        return;
+      }
+      StringCucumberyUserdata.apply(value, player);
+    }
+
+    @Override
+    public void update(Player player) {
+      if (!ENABLED()) {
+        return;
+      }
+      UUID uuid = player.getUniqueId();
+      String string = StringCucumberyUserdata.stringify(player);
+      DatabaseSyncMap.set("sync." + NAMESPACE() + "." + uuid.toString(), string);
+    }
+
+  };
+  static {
+    syncPlayerObjects.add(syncPlayerCucumberyUserData);
   }
 
   protected static boolean ENABLED = false;
@@ -359,9 +369,7 @@ public class SyncPlayer {
     Bukkit.getScheduler().runTaskLater(Amethy.PLUGIN, () -> {
 
       UUID uuid = player.getUniqueId();
-      String isonline = Sync.get(
-          "player.isonline",
-          CHANNEL + "." + uuid.toString());
+      String isonline = DatabaseSyncMap.getString("sync." + "player.isonline" + "." + uuid.toString());
       if (isonline != null && isonline.equals("true")) {
         kicked.add(uuid);
         player.kick(Message.of("플레이어 정보 동기화 중 오류가 발생하였습니다. 서버에 다시 접속하여 주십시오."));
@@ -401,28 +409,24 @@ public class SyncPlayer {
     }
 
     UUID uuid = player.getUniqueId();
-    Sync.set(
-        "player.isonline",
-        CHANNEL + "." + uuid.toString(),
-        isonline + "");
+    DatabaseSyncMap.set("sync." + "player.isonline" + "." + uuid.toString(), isonline + "");
   }
 
   protected static void onEnable() {
     if (!Amethy.YAMLCONFIG.getBoolean("sync.player.enable")) {
-      Console.debug(Sync.PREFIX + "플레이어 정보 동기화 &c비활성화됨");
+      Console.debug(Sync.PREFIX + "플레이어 정보 동기화 §c비활성화됨");
       return;
     }
 
-    CHANNEL = Amethy.YAMLCONFIG.getString("sync.player.channel");
-    CHANNEL = CHANNEL.replaceAll("[^a-z0-9_-]", "");
-    if (CHANNEL.length() <= 0) {
-      Console.warn(Sync.PREFIX + "플레이어 정보 동기화 채널 값이 잘못 설정되었거나 확인할 수 없습니다. 기능이 비활성화됩니다.");
+    if (!DatabaseSyncMap.ENABLED) {
+      Console.warn(Sync.PREFIX + "데이터베이스 연결을 확인할 수 없습니다. 기능이 비활성화됩니다.");
+      Console.debug(Sync.PREFIX + "플레이어 정보 동기화 §c비활성화됨");
       return;
     }
-    Console.debug(Sync.PREFIX + "플레이어 정보 동기화 채널: " + CHANNEL);
 
     ENABLED = true;
-    Console.debug(Sync.PREFIX + "플레이어 정보 동기화 &a활성화됨");
+    Console.debug(Sync.PREFIX + "플레이어 정보 동기화 §a활성화됨");
+
     for (SyncPlayerObject object : syncPlayerObjects) {
       object.onEnable();
     }
@@ -435,6 +439,7 @@ public class SyncPlayer {
         object.onDisable(player);
       }
     }
+
     for (SyncPlayerObject object : syncPlayerObjects) {
       object.onDisable();
     }

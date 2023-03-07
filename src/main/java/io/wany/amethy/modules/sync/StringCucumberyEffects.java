@@ -1,4 +1,4 @@
-package io.wany.amethy.sync;
+package io.wany.amethy.modules.sync;
 
 import java.io.File;
 import java.io.StringReader;

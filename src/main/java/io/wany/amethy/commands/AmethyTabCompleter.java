@@ -8,6 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import io.wany.amethyst.EventEmitter;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,15 +17,15 @@ import java.util.List;
 
 public class AmethyTabCompleter implements TabCompleter {
 
-  public static List<String> autoComplete(List<String> list, String arg) {
+  private static List<String> autoComplete(List<String> list, String arg) {
     if (!arg.equalsIgnoreCase("")) {
-      List<String> listA = new ArrayList<>();
+      List<String> filtered = new ArrayList<>();
       for (String value : list) {
         if (value.toLowerCase().contains(arg.toLowerCase())) {
-          listA.add(value);
+          filtered.add(value);
         }
       }
-      return sort(listA);
+      return sort(filtered);
     }
     return sort(list);
   }
@@ -33,7 +35,15 @@ public class AmethyTabCompleter implements TabCompleter {
     return list;
   }
 
-  public static void usedFlags(String[] args, int commandArgsLength, List<String> list) {
+  private static List<String> listOf(String... args) {
+    List<String> list = new ArrayList<String>();
+    for (String arg : args) {
+      list.add(arg);
+    }
+    return list;
+  }
+
+  private static void usedFlags(String[] args, int commandArgsLength, List<String> list) {
     int n = 0;
     for (String arg : args) {
       if (n >= commandArgsLength) {
@@ -63,108 +73,84 @@ public class AmethyTabCompleter implements TabCompleter {
 
       case "amethy" -> {
 
+        // amethy ?
         if (args.length == 1) {
           List<String> list = new ArrayList<>();
-          if (sender.hasPermission("amethy.version")) {
+          if (sender.hasPermission("amethy.command.version")) {
             list.add("version");
           }
-          if (sender.hasPermission("amethy.reload")) {
+          if (sender.hasPermission("amethy.command.reload")) {
             list.add("reload");
           }
-          if (sender.hasPermission("amethy.update")) {
+          if (sender.hasPermission("amethy.command.debug")) {
+            list.add("debug");
+          }
+          if (sender.hasPermission("amethy.command.updater.update")) {
             list.add("update");
           }
-          if (sender.hasPermission("amethy.menu")) {
-            list.add("menu");
+          if (sender.hasPermission("amethy.command.updater")) {
+            list.add("updater");
           }
-          if (sender.hasPermission("amethy.terminal")) {
-            list.add("terminal");
-          }
-          if (sender.hasPermission("amethy.explosion")) {
-            list.add("explosion");
-          }
-
           return autoComplete(list, args[args.length - 1]);
         }
 
+        // amethy [0] ?
         args[0] = args[0].toLowerCase();
-
         switch (args[0].toLowerCase()) {
 
-          case "update", "u" -> {
-            if (!sender.hasPermission("amethy.update")) {
+          case "debug": {
+            if (!sender.hasPermission("amethy.command.debug")) {
+              return Collections.emptyList();
+            }
+            // amethy debug ?
+            if (args.length == 2) {
+              List<String> list = listOf("enable", "disable");
+              return autoComplete(list, args[args.length - 1]);
+            } else {
+              return Collections.emptyList();
+            }
+          }
+
+          case "update": {
+            if (!sender.hasPermission("amethy.command.updater.update")) {
               return Collections.emptyList();
             }
             int commandArgsLength = 1;
             // flags
-            List<String> flags = List.of("-silent", "-force");
+            List<String> flags = listOf("-force");
             if (args.length <= commandArgsLength + flags.size()) {
               List<String> list = new ArrayList<>(flags);
               usedFlags(args, commandArgsLength, list);
               return autoComplete(list, args[args.length - 1]);
             }
+            return Collections.emptyList();
           }
 
-          case "menu", "m" -> {
-            if (!sender.hasPermission("amethy.menu")) {
+          case "updater": {
+            if (!sender.hasPermission("amethy.command.updater")) {
               return Collections.emptyList();
             }
-          }
-
-          case "system", "s" -> {
-            if (!sender.hasPermission("amethy.system")) {
-              return Collections.emptyList();
-            }
+            // amethy updater ?
             if (args.length == 2) {
-              List<String> list = new ArrayList<>();
-              if (sender.hasPermission("amethy.system.info")) {
-                list.add("info");
-              }
-              if (sender.hasPermission("amethy.system.java")) {
-                list.add("java");
-              }
-              if (sender.hasPermission("amethy.system.processor")) {
-                list.add("processor");
-              }
-              if (sender.hasPermission("amethy.system.graphic")) {
-                list.add("graphic");
-              }
-              if (sender.hasPermission("amethy.system.disk")) {
-                list.add("disk");
-              }
-              if (sender.hasPermission("amethy.system.gc")) {
-                list.add("gc");
-              }
-
+              List<String> list = listOf("channel", "automation");
               return autoComplete(list, args[args.length - 1]);
             }
-            switch (args[1].toLowerCase()) {
-
-              case "gc" -> {
-                int commandArgsLength = 2;
-                // flags
-                List<String> flags = List.of("-silent");
-                if (args.length <= commandArgsLength + flags.size()) {
-                  List<String> list = new ArrayList<>(flags);
-                  usedFlags(args, commandArgsLength, list);
-                  return autoComplete(list, args[args.length - 1]);
-                }
+            // amethy updater [1] ?
+            else if (args.length == 3) {
+              // amethy updater channel ?
+              if (args[1].toLowerCase().equals("channel")) {
+                List<String> list = listOf("release", "dev");
+                return autoComplete(list, args[args.length - 1]);
               }
-
-            }
-          }
-
-          case "explosion" -> {
-            if (!sender.hasPermission("amethy.explosion")) {
+              // amethy updater automation ?
+              else if (args[1].toLowerCase().equals("automation")) {
+                List<String> list = listOf("enable", "disable");
+                return autoComplete(list, args[args.length - 1]);
+              } else {
+                return Collections.emptyList();
+              }
+            } else {
               return Collections.emptyList();
-            }
-            if (args.length == 2) {
-              List<String> list = new ArrayList<>(List.of(args[1]));
-              return autoComplete(list, args[args.length - 1]);
-            }
-            if (args.length == 3) {
-              List<String> list = Arrays.asList("normal", "fire", "unbreak");
-              return autoComplete(list, args[args.length - 1]);
             }
           }
 

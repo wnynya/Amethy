@@ -16,16 +16,16 @@ import io.wany.amethy.commands.*;
 import io.wany.amethy.listeners.*;
 import io.wany.amethy.modules.ServerPropertiesSorter;
 import io.wany.amethy.modules.YamlConfig;
+import io.wany.amethy.modules.database.Database;
 import io.wany.amethy.modules.itemonworld.ItemOnWorld;
+import io.wany.amethy.modules.sync.Sync;
 import io.wany.amethy.modules.wand.Wand;
 import io.wany.amethy.modules.wand.command.WandEditCommand;
 import io.wany.amethy.modules.wand.command.WandEditTabCompleter;
-import io.wany.amethy.modulesmc.StopServer;
-import io.wany.amethy.modulesmc.amethy.Database;
 import io.wany.amethy.supports.coreprotect.CoreProtectSupport;
 import io.wany.amethy.supports.cucumbery.CucumberySupport;
+import io.wany.amethy.supports.essentials.EssentialsSupport;
 import io.wany.amethy.supports.vault.VaultSupport;
-import io.wany.amethy.sync.Sync;
 import io.wany.amethyst.Json;
 
 /**
@@ -40,8 +40,8 @@ public class Amethy extends JavaPlugin {
 
   public static Amethy PLUGIN;
 
-  public static final String NAME = "Amethy";
-  public static final String PREFIX = "§l§x§d§2§b§0§d§d[" + NAME + "]:§r ";
+  public static final String NAME = "아메시";
+  public static final String PREFIX = "§x§d§2§b§0§d§d§l[" + NAME + "]:§r ";
   public static final String PREFIX_CONSOLE = "[" + NAME + "] ";
   public static final UUID UUID = java.util.UUID.fromString("00000000-0000-0000-0000-000000000000");
   protected static final boolean ISRELOAD = Bukkit.getWorlds().size() != 0;
@@ -58,6 +58,7 @@ public class Amethy extends JavaPlugin {
   public static final int YAMLCONFIG_VERSION = 100;
   public static FileConfiguration YAMLCONFIG;
 
+  @SuppressWarnings("deprecation")
   @Override
   public void onLoad() {
 
@@ -115,17 +116,17 @@ public class Amethy extends JavaPlugin {
     registerEvent(new PluginEnable());
     registerEvent(new PluginDisable());
 
-    Sync.onEnable();
-    Wand.onEnable();
-    ItemOnWorld.onEnable();
     VaultSupport.onEnable();
     CucumberySupport.onEnable();
     CoreProtectSupport.onEnable();
-
-    ServerPropertiesSorter.onEnable();
-    StopServer.onEnable();
+    EssentialsSupport.onEnable();
 
     Updater.onEnable();
+    Sync.onEnable();
+    Wand.onEnable();
+    ItemOnWorld.onEnable();
+
+    ServerPropertiesSorter.onEnable();
 
     try {
       this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -138,19 +139,14 @@ public class Amethy extends JavaPlugin {
   @Override
   public void onDisable() {
 
+    Updater.onDisable();
+    Sync.onDisable();
     Wand.onDisable();
 
-    VaultSupport.onDisable();
     CucumberySupport.onDisable();
     CoreProtectSupport.onDisable();
 
-    Sync.onDisable();
-
     Database.onDisable();
-
-    StopServer.onDisable();
-
-    Updater.onDisable();
 
   }
 

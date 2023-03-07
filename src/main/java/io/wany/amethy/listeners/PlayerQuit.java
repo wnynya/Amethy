@@ -10,10 +10,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import io.wany.amethy.Amethy;
+import io.wany.amethy.modules.sync.Sync;
 import io.wany.amethy.modules.wand.Wand;
 import io.wany.amethy.modulesmc.Console;
 import io.wany.amethy.modulesmc.Message;
-import io.wany.amethy.sync.Sync;
 
 import java.util.HashMap;
 
