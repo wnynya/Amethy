@@ -2,8 +2,8 @@ package io.wany.amethy.listeners;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import io.wany.amethy.Amethy;
+import io.wany.amethy.modules.Message;
 import io.wany.amethy.modules.sync.Sync;
-import io.wany.amethy.modulesmc.Message;
 import net.kyori.adventure.text.Component;
 
 import java.util.concurrent.ExecutorService;
@@ -26,12 +26,15 @@ public class PlayerChat implements Listener {
   }
 
   private static void setPlayerChatRenderer(AsyncChatEvent event) {
-    if (!Amethy.YAMLCONFIG.getBoolean("event.chat.msg.normal.chat.enable")) {
+    if (!Amethy.YAMLCONFIG.getBoolean("event.chat.msg.normal.enable")) {
       return;
     }
 
-    Component component = Message.formatPlayerChat(event.getPlayer(), event.message(),
-        Amethy.YAMLCONFIG.getString("event.chat.msg.normal.chat.format"));
+    Component component = Message.formatAsyncPlayerChat(
+        Amethy.YAMLCONFIG.getString("event.chat.msg.normal.format"),
+        event.getPlayer(),
+        event.message());
+
     ExecutorService e = Executors.newSingleThreadExecutor();
     e.submit(() -> {
       Bukkit.broadcast(component);
@@ -44,6 +47,7 @@ public class PlayerChat implements Listener {
     if (!Amethy.YAMLCONFIG.getBoolean("event.chat.sound.enable")) {
       return;
     }
+
     Sound sound = Sound.valueOf(Amethy.YAMLCONFIG.getString("event.chat.sound.sound"));
     SoundCategory soundCategory = SoundCategory.valueOf(Amethy.YAMLCONFIG.getString("event.chat.sound.soundCategory"));
     float volume = (float) Amethy.YAMLCONFIG.getDouble("event.chat.sound.volume");

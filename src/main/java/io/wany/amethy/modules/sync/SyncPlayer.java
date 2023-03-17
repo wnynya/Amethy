@@ -18,11 +18,13 @@ import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.database.DatabaseSyncMap;
 import io.wany.amethy.Console;
 import io.wany.amethy.modulesmc.Message;
+import io.wany.amethy.supports.cucumbery.CucumberySupport;
+import io.wany.amethy.supports.cucumbery.sync.SyncCucumberyPlayer;
 import io.wany.amethyst.Json;
 
 public class SyncPlayer {
 
-  private static List<SyncPlayerObject> syncPlayerObjects = new ArrayList<>();
+  public static List<SyncPlayerObject> OBJECTS = new ArrayList<>();
 
   // 플레이어 체력 동기화
   private static SyncPlayerObject syncPlayerHealth = new SyncPlayerObject() {
@@ -69,7 +71,7 @@ public class SyncPlayer {
 
   };
   static {
-    syncPlayerObjects.add(syncPlayerHealth);
+    OBJECTS.add(syncPlayerHealth);
   }
 
   // 플레이어 경험치 (레벨) 동기화
@@ -113,7 +115,7 @@ public class SyncPlayer {
 
   };
   static {
-    syncPlayerObjects.add(syncPlayerExperience);
+    OBJECTS.add(syncPlayerExperience);
   }
 
   // 플레이어 인벤토리 동기화
@@ -170,7 +172,7 @@ public class SyncPlayer {
 
   };
   static {
-    syncPlayerObjects.add(syncPlayerInventory);
+    OBJECTS.add(syncPlayerInventory);
   }
 
   // 플레이어 엔더 상자 동기화
@@ -225,7 +227,7 @@ public class SyncPlayer {
 
   };
   static {
-    syncPlayerObjects.add(syncPlayerEnderChest);
+    OBJECTS.add(syncPlayerEnderChest);
   }
 
   // 플레이어 포션 효과 (이펙트) 동기화
@@ -267,89 +269,7 @@ public class SyncPlayer {
 
   };
   static {
-    syncPlayerObjects.add(syncPlayerEffect);
-  }
-
-  // 큐컴버리 커스텀 이펙트 동기화
-  private static SyncPlayerObject syncPlayerCucumberyCustomEffect = new SyncPlayerObject() {
-
-    @Override
-    public String NAMESPACE() {
-      return "player.cucumberycustomeffects";
-    }
-
-    @Override
-    public String NAME() {
-      return "큐컴버리 커스텀 이펙트";
-    }
-
-    @Override
-    public void select(Player player) {
-      if (!ENABLED()) {
-        return;
-      }
-      UUID uuid = player.getUniqueId();
-      String value = DatabaseSyncMap.getString("sync." + NAMESPACE() + "." + uuid.toString());
-      if (value == null) {
-        return;
-      }
-      StringCucumberyEffects.apply(value, player);
-    }
-
-    @Override
-    public void update(Player player) {
-      if (!ENABLED()) {
-        return;
-      }
-      UUID uuid = player.getUniqueId();
-      String string = StringCucumberyEffects.stringify(player);
-      DatabaseSyncMap.set("sync." + NAMESPACE() + "." + uuid.toString(), string);
-    }
-
-  };
-  static {
-    syncPlayerObjects.add(syncPlayerCucumberyCustomEffect);
-  }
-
-  // 큐컴버리 유저 데이터 동기화
-  private static SyncPlayerObject syncPlayerCucumberyUserData = new SyncPlayerObject() {
-
-    @Override
-    public String NAMESPACE() {
-      return "player.cucumberyuserdata";
-    }
-
-    @Override
-    public String NAME() {
-      return "큐컴버리 유저 데이터";
-    }
-
-    @Override
-    public void select(Player player) {
-      if (!ENABLED()) {
-        return;
-      }
-      UUID uuid = player.getUniqueId();
-      String value = DatabaseSyncMap.getString("sync." + NAMESPACE() + "." + uuid.toString());
-      if (value == null) {
-        return;
-      }
-      StringCucumberyUserdata.apply(value, player);
-    }
-
-    @Override
-    public void update(Player player) {
-      if (!ENABLED()) {
-        return;
-      }
-      UUID uuid = player.getUniqueId();
-      String string = StringCucumberyUserdata.stringify(player);
-      DatabaseSyncMap.set("sync." + NAMESPACE() + "." + uuid.toString(), string);
-    }
-
-  };
-  static {
-    syncPlayerObjects.add(syncPlayerCucumberyUserData);
+    OBJECTS.add(syncPlayerEffect);
   }
 
   protected static boolean ENABLED = false;
@@ -378,7 +298,7 @@ public class SyncPlayer {
 
       updateOnline(player, true);
 
-      for (SyncPlayerObject object : syncPlayerObjects) {
+      for (SyncPlayerObject object : OBJECTS) {
         object.onPlayerJoin(event);
       }
     }, 20L);
@@ -398,7 +318,7 @@ public class SyncPlayer {
       return;
     }
 
-    for (SyncPlayerObject object : syncPlayerObjects) {
+    for (SyncPlayerObject object : OBJECTS) {
       object.onPlayerQuit(event);
     }
   }
@@ -427,7 +347,11 @@ public class SyncPlayer {
     ENABLED = true;
     Console.debug(Sync.PREFIX + "플레이어 정보 동기화 §a활성화됨");
 
-    for (SyncPlayerObject object : syncPlayerObjects) {
+    if (CucumberySupport.isEnabled()) {
+      SyncCucumberyPlayer.onEnable();
+    }
+
+    for (SyncPlayerObject object : OBJECTS) {
       object.onEnable();
     }
   }
@@ -435,12 +359,12 @@ public class SyncPlayer {
   protected static void onDisable() {
     for (Player player : Bukkit.getOnlinePlayers()) {
       updateOnline(player, false);
-      for (SyncPlayerObject object : syncPlayerObjects) {
+      for (SyncPlayerObject object : OBJECTS) {
         object.onDisable(player);
       }
     }
 
-    for (SyncPlayerObject object : syncPlayerObjects) {
+    for (SyncPlayerObject object : OBJECTS) {
       object.onDisable();
     }
   }

@@ -53,6 +53,7 @@ public class Sync {
     SyncPlayer.onEnable();
     SyncChat.onEnable();
     SyncVaultEconomy.onEnable();
+    SyncConnection.onEnable();
 
   }
 

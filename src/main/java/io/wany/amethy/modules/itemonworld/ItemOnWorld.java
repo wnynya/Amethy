@@ -4,6 +4,7 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import com.jho5245.cucumbery.util.no_groups.Method;
 
+import org.apache.logging.log4j.core.config.plugins.Plugin;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -13,7 +14,9 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -51,7 +54,13 @@ public class ItemOnWorld {
     this(new ItemStack(material, amount), skulls);
   }
 
+  @SuppressWarnings("deprecation")
   private void onPlayerInteractEvent(PlayerInteractEvent event) {
+    if (event.isCancelled()
+        || event.useInteractedBlock() == Event.Result.DENY
+        || event.useItemInHand() == Event.Result.DENY) {
+      return;
+    }
     Player player = event.getPlayer();
     Block block = event.getClickedBlock();
     if (!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
@@ -119,6 +128,12 @@ public class ItemOnWorld {
     if (!targetBlock.getType().equals(Material.AIR)) {
       return;
     }
+    BlockPlaceEvent be = new BlockPlaceEvent(targetBlock, targetBlock.getState(), targetBlock, event.getItem(), player,
+        true);
+    Bukkit.getPluginManager().callEvent(be);
+    if (be.isCancelled()) {
+      return;
+    }
     event.setCancelled(true);
     if (player.getGameMode().equals(GameMode.SURVIVAL)) {
       if (itemStack.getAmount() - this.itemStack.getAmount() <= 0) {
@@ -175,7 +190,7 @@ public class ItemOnWorld {
     ItemStack drop = new ItemStack(this.itemStack.getType());
     drop.setAmount(this.itemStack.getAmount() * itemStack.getAmount());
     item.setItemStack(drop);
-    if (CucumberySupport.LOADED) {
+    if (CucumberySupport.isEnabled()) {
       Method.updateItem(item);
     }
     // event.getLocation().getWorld().dropItem(event.getLocation(), drop);

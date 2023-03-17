@@ -9,6 +9,14 @@ public class EssentialsSupport {
 
   public static PluginSupport SUPPORT;
 
+  public static boolean isEnabled() {
+    if (SUPPORT == null) {
+      return false;
+    } else {
+      return SUPPORT.isEnabled();
+    }
+  }
+
   public static void onEnable() {
     if (!Amethy.YAMLCONFIG.getBoolean("essentials-support.enable")) {
       Console.log("에센셜을 지지하지 않습니다.");

@@ -127,7 +127,7 @@ public class LidCommand implements CommandExecutor {
       if (!(sender instanceof Player player)) {
         block = Bukkit.getWorlds().get(0).getSpawnLocation().getBlock();
       } else {
-        block = player.getTargetBlock(10);
+        block = player.getTargetBlockExact(10);
       }
     }
 

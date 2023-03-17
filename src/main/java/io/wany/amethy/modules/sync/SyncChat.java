@@ -1,16 +1,17 @@
 package io.wany.amethy.modules.sync;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import io.wany.amethy.Amethy;
 import io.wany.amethy.Console;
 import io.wany.amethy.modules.database.DatabaseSyncEvent;
-import io.wany.amethy.modulesmc.Message;
+import io.wany.amethy.modules.Message;
 import io.wany.amethyst.Json;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 
 public class SyncChat {
 
@@ -27,7 +28,7 @@ public class SyncChat {
     Json data = new Json();
     data.set("uuid", player.getUniqueId().toString());
     data.set("name", player.getName());
-    data.set("displayName", GsonComponentSerializer.gson().serialize(player.displayName()));
+    data.set("displayName", Message.stringify(player.displayName()));
     data.set("message", Message.stringify(message));
 
     DatabaseSyncEvent.emit("sync/chat", data);
@@ -35,11 +36,27 @@ public class SyncChat {
 
   private static void databasePlayerChat(DatabaseSyncEvent event) {
     Json data = event.getValue();
-    Bukkit.broadcast(Message.of(
-        "[" + event.getServer() + "] ",
-        GsonComponentSerializer.gson().deserialize(data.getString("displayName")),
-        ": ",
-        data.getString("message")));
+
+    Component component = Message.formatDatabaseSyncPlayerChat(
+        Amethy.YAMLCONFIG.getString("event.chat.msg.sync.format"),
+        event.getServer(),
+        Message.parse(data.getString("displayName")),
+        Message.parse(data.getString("message")));
+
+    Bukkit.broadcast(component);
+
+    if (!Amethy.YAMLCONFIG.getBoolean("event.chat.sound.enable")) {
+      return;
+    }
+
+    Sound sound = Sound.valueOf(Amethy.YAMLCONFIG.getString("event.chat.sound.sound"));
+    SoundCategory soundCategory = SoundCategory.valueOf(Amethy.YAMLCONFIG.getString("event.chat.sound.soundCategory"));
+    float volume = (float) Amethy.YAMLCONFIG.getDouble("event.chat.sound.volume");
+    float pitch = (float) Amethy.YAMLCONFIG.getDouble("event.chat.sound.pitch");
+
+    Bukkit.getOnlinePlayers().forEach((p) -> {
+      p.playSound(p.getLocation(), sound, soundCategory, volume, pitch);
+    });
   }
 
   protected static void onEnable() {

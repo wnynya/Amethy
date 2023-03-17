@@ -1,4 +1,4 @@
-package io.wany.amethy.modules.sync;
+package io.wany.amethy.supports.cucumbery.sync;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -13,8 +13,8 @@ import io.wany.amethy.Amethy;
 public class StringCucumberyUserdata {
 
   public static String stringify(Player player) {
-    File file = new File(
-        Amethy.PLUGINS_DIR + "/Cucumbery/data/UserData/" + player.getUniqueId().toString() + ".yml");
+    Initializer.saveUserData(player.getUniqueId());
+    File file = new File(Amethy.PLUGINS_DIR + "/Cucumbery/data/UserData/" + player.getUniqueId().toString() + ".yml");
     try {
       return Files.readString(file.toPath());
     } catch (Exception e) {
@@ -24,19 +24,18 @@ public class StringCucumberyUserdata {
   }
 
   public static void apply(String string, Player player) {
-    File file = new File(
-        Amethy.PLUGINS_DIR + "/Cucumbery/data/UserData/" + player.getUniqueId().toString() + ".yml");
+    File file = new File(Amethy.PLUGINS_DIR + "/Cucumbery/data/UserData/" + player.getUniqueId().toString() + ".yml");
     try {
       file.delete();
       file.createNewFile();
       FileWriter myWriter = new FileWriter(file);
       myWriter.write(string);
       myWriter.close();
+      Initializer.loadPlayerConfig(player);
     } catch (Exception e) {
       e.printStackTrace();
       return;
     }
-    Initializer.loadPlayerConfig(player);
   }
 
 }

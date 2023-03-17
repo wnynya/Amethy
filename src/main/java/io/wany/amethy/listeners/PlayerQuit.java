@@ -11,9 +11,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.sync.Sync;
+import io.wany.amethy.modules.sync.SyncConnection;
 import io.wany.amethy.modules.wand.Wand;
-import io.wany.amethy.modulesmc.Console;
-import io.wany.amethy.modulesmc.Message;
+import io.wany.amethy.modules.Message;
 
 import java.util.HashMap;
 
@@ -24,44 +24,29 @@ public class PlayerQuit implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onPlayerQuit(PlayerQuitEvent event) {
     chatPlayerQuitMessage(event);
-    consolePlayerQuitMessage(event);
     playPlayerQuitSound(event);
-    chatPlayerChangeQuitMessage(event);
-    consolePlayerChangeQuitMessage(event);
     Wand.onPlayerQuit(event);
     Sync.onPlayerQuit(event);
   }
 
   private void chatPlayerQuitMessage(PlayerQuitEvent event) {
-    if (!Amethy.YAMLCONFIG.getBoolean("event.quit.msg.normal.chat.enable")) {
+    if (!Amethy.YAMLCONFIG.getBoolean("event.quit.msg.enable")) {
       return;
     }
-    Player player = event.getPlayer();
-    String format = Amethy.YAMLCONFIG.getString("event.quit.msg.normal.chat.format");
-    if (changeQuitPlayers.containsKey(player.getName())
-        && Amethy.YAMLCONFIG.getBoolean("event.quit.msg.change.chat.enable")) {
-      format = Amethy.YAMLCONFIG.getString("event.quit.msg.change.chat.format");
-      format = format.replace("{gotoserver}", changeQuitPlayers.get(player.getName()));
-      changeQuitPlayers.remove(player.getName());
-    }
-    format = Message.effect(format);
-    event.quitMessage(Message.formatPlayer(player, format));
-  }
 
-  private void consolePlayerQuitMessage(PlayerQuitEvent event) {
-    if (!Amethy.YAMLCONFIG.getBoolean("event.quit.msg.normal.console.enable")) {
-      return;
-    }
-    Player player = event.getPlayer();
-    String format = Amethy.YAMLCONFIG.getString("event.quit.msg.normal.console.format");
-    format = Message.effect(format);
-    Console.log(Message.stringify(Message.formatPlayer(player, format)));
+    String format = Amethy.YAMLCONFIG.getString("event.quit.msg.format");
+
+    event.quitMessage((format.equals("null") || SyncConnection.ENABLED) ? null
+        : Message.formatPlayer(
+            format,
+            event.getPlayer()));
   }
 
   private void playPlayerQuitSound(PlayerQuitEvent event) {
-    if (!Amethy.YAMLCONFIG.getBoolean("event.quit.sound.enable")) {
+    if (!Amethy.YAMLCONFIG.getBoolean("event.quit.sound.enable") || SyncConnection.ENABLED) {
       return;
     }
+
     Sound sound = Sound.valueOf(Amethy.YAMLCONFIG.getString("event.quit.sound.sound"));
     SoundCategory soundCategory = SoundCategory.valueOf(Amethy.YAMLCONFIG.getString("event.quit.sound.soundCategory"));
     float volume = (float) Amethy.YAMLCONFIG.getDouble("event.quit.sound.volume");
@@ -70,14 +55,6 @@ public class PlayerQuit implements Listener {
     for (Player p : Bukkit.getOnlinePlayers()) {
       p.playSound(p.getLocation(), sound, soundCategory, volume, pitch);
     }
-  }
-
-  private void chatPlayerChangeQuitMessage(PlayerQuitEvent event) {
-
-  }
-
-  private void consolePlayerChangeQuitMessage(PlayerQuitEvent event) {
-
   }
 
 }

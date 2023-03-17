@@ -111,15 +111,14 @@ public class Amethy extends JavaPlugin {
     registerEvent(new BlockExplode());
     registerEvent(new EntityAddToWorld());
     registerEvent(new ItemSpawn());
-    registerEvent(new InventoryClick());
     registerEvent(new EntityDeath());
     registerEvent(new PluginEnable());
     registerEvent(new PluginDisable());
 
-    VaultSupport.onEnable();
     CucumberySupport.onEnable();
-    CoreProtectSupport.onEnable();
+    VaultSupport.onEnable();
     EssentialsSupport.onEnable();
+    CoreProtectSupport.onEnable();
 
     Updater.onEnable();
     Sync.onEnable();
@@ -143,7 +142,6 @@ public class Amethy extends JavaPlugin {
     Sync.onDisable();
     Wand.onDisable();
 
-    CucumberySupport.onDisable();
     CoreProtectSupport.onDisable();
 
     Database.onDisable();

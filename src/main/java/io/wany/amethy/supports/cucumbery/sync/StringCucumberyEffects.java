@@ -1,4 +1,4 @@
-package io.wany.amethy.modules.sync;
+package io.wany.amethy.supports.cucumbery.sync;
 
 import java.io.File;
 import java.io.StringReader;

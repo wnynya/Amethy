@@ -64,14 +64,8 @@ event:
 
     # 서버 접속 시 플레이어 입장 메시지를 설정합니다.
     msg:
-      normal: # 일반적인 서버 접속 시
-        chat: # 채팅
-          enable: true
-          format: '&r{prefix}&r{displayname}&r{suffix}&r &7&ljoined the game'
-      change: # 서버 변경 시 (채팅 동기화 설정 필요)
-        chat: # 채팅
-          enable: true
-          format: '&r{prefix}&r{displayname}&r{suffix}&r &7&ljoined from &r#D2B0DD;{fromserver}'
+      enable: true
+      format: '&r{prefix}&r{displayname}&r{suffix}&r &7&ljoined the game'
 
     # 서버 접속 시 모든 플레이어에게 재생될 사운드를 설정합니다.
     sound:
@@ -82,22 +76,12 @@ event:
       pitch: 1.0
       targetPlayer: false # 접속하는 당사자 플레이어에게도 사운드가 들릴 지 설정합니다.
 
-    # 플레이어가 접속할 때 플레이어를 지정된 스폰 위치로 이동시킬 지 설정합니다.
-    moveToSpawn:
-      enable: false
-
   #===== 플레이어 서버 퇴장 이벤트
   quit:
     # 서버 퇴장시 플레이어 퇴장 메시지를 설정합니다.
     msg:
-      normal: # 일반적인 서버 퇴장 시
-        chat: # 채팅
-          enable: true
-          format: '&r{prefix}&r{displayname}&r{suffix}&r &7&lleft the game'
-      change: # 서버 변경 시 (채팅 동기화 설정 필요)
-        chat: # 채팅
-          enable: true
-          format: '&r{prefix}&r{displayname}&r{suffix}&r &7&lleft for &r#D2B0DD;{gotoserver}'
+      enable: true
+      format: '&r{prefix}&r{displayname}&r{suffix}&r &7&lleft the game'
 
     # 서버 퇴장 시 모든 플레이어에게 재생될 사운드를 설정합니다.
     sound:
@@ -112,16 +96,10 @@ event:
     # 플레이어가 채팅할 때 채팅 형식을 설정합니다.
     msg:
       normal: # 일반적인 채팅 시
-        chat:
-          enable: true
-          format: '&r<{prefix}&r{displayname}&r{suffix}&r> &r{message}'
+        enable: true
+        format: '&r<{prefix}&r{displayname}&r{suffix}&r> &r{message}'
       sync: # 채널 연결 채팅 시 (채팅 동기화 설정 필요)
-        chat:
-          enable: false
-          format: '&r&7[{server}] &r<{prefix}&r{name}&r{suffix}&r> &r{message}'
-        console:
-          enable: false
-          format: '&r[{server}] &r<{prefix}&r{name}&r{suffix}&r> &r{message}'
+        format: '&r[{server}] &r<{name}&r> &r{message}'
 
     # 플레이어가 채팅할 때 텍스트 효과를 적용할 지 설정합니다. Permission: amethy.event.chat.effect
     effect:
@@ -178,7 +156,7 @@ sync:
 
   #===== 플레이어 정보 동기화 (데이터베이스 사용 설정 필요)
   player:
-    enable: false
+    enable: true
     health: true # 플레이어 체력 (하트, 허기 등)
     experience: true # 플레이어 경험치
     inventory: true # 플레이어 인벤토리
@@ -190,11 +168,15 @@ sync:
   #===== Valut 플러그인 동기화 (데이터베이스 사용 설정 필요)
   vault:
     economy: # Valut 플러그인 Economy
-      enable: false
+      enable: true
 
   #===== 채팅 동기화 (데이터베이스 사용 설정 필요)
   chat:
-    enable: false
+    enable: true
+
+  #===== 커넥션 동기화 (데이터베이스 사용 설정 필요)
+  connection:
+    enable: true
 
   #===== 현실 동기화
   realworld:
@@ -386,7 +368,7 @@ bungeecord-support:
 
 #===== Vault 플러그인 연동 지원
 vault-support:
-  enable: true
+  enable: false
   # 채팅 모듈
   # 채팅 및 서버 입 퇴장 이벤트 시 플레이어 {prefix} 및 {suffix} 연동을 위해 필요합니다
   chat:
@@ -400,7 +382,7 @@ vault-support:
 
 #===== Cucumbery 플러그인 연동 지원
 cucumbery-support:
-  enable: true
+  enable: false
   override-menu:
     enable: true
   default-userdata:
@@ -488,7 +470,7 @@ cucumbery-support:
 
 #===== CoreProtect 플러그인 지원
 coreprotect-support:
-  enable: true
+  enable: false
 
 #===== NoteBlockAPI 플러그인 지원
 noteblockapi-support:

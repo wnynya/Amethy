@@ -84,13 +84,13 @@ public class SyncVaultEconomy {
       return;
     }
 
-    if (!VaultSupport.SUPPORT.isEnabled()) {
+    if (!VaultSupport.isEnabled()) {
       Console.warn(Sync.PREFIX + "Vault 플러그인 연동을 확인할 수 없습니다. 기능이 비활성화됩니다.");
       Console.debug(Sync.PREFIX + "Vault Economy 동기화 §c비활성화됨");
       return;
     }
 
-    if (!EssentialsSupport.SUPPORT.isEnabled()) {
+    if (!EssentialsSupport.isEnabled()) {
       Console.warn(Sync.PREFIX + "Essentials 플러그인 연동을 확인할 수 없습니다. 기능이 비활성화됩니다.");
       Console.debug(Sync.PREFIX + "Vault Economy 동기화 §c비활성화됨");
       return;
