@@ -48,7 +48,7 @@ public class AmethyCommand implements CommandExecutor {
       }
 
       case "reload": {
-        if (!sender.hasPermission("amethy.terminal.reload")) {
+        if (!sender.hasPermission("amethy.reload")) {
           // 오류: 권한 없음
           error(sender, "명령어를 사용할 수 있는 권한이 없습니다.");
           return true;
@@ -57,10 +57,16 @@ public class AmethyCommand implements CommandExecutor {
         info(sender, Amethy.NAME + " v" + Amethy.VERSION + " 플러그인을 리로드합니다.");
         long s = System.currentTimeMillis();
         BukkitPluginLoader.unload();
+        BukkitPluginLoader.rename();
         BukkitPluginLoader.load(Amethy.FILE);
         long e = System.currentTimeMillis();
         // 정보: 플러그인 리로드 완료
         info(sender, "리로드 완료. (" + (e - s) + "ms)");
+        return true;
+      }
+
+      case "unload": {
+        BukkitPluginLoader.unload();
         return true;
       }
 

@@ -2,6 +2,7 @@ package io.wany.amethy.listeners;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import io.wany.amethy.Amethy;
+import io.wany.amethy.BukkitPluginLoader;
 import io.wany.amethy.modules.Message;
 import io.wany.amethy.modules.sync.Sync;
 import net.kyori.adventure.text.Component;
@@ -15,6 +16,7 @@ import org.bukkit.SoundCategory;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.server.ServerCommandEvent;
 
 public class PlayerChat implements Listener {
 
@@ -23,6 +25,13 @@ public class PlayerChat implements Listener {
     setPlayerChatRenderer(event);
     playPlayerChatSound(event);
     Sync.onPlayerChat(event);
+  }
+
+  @EventHandler(priority = EventPriority.HIGHEST)
+  public void onEvent(ServerCommandEvent event) {
+    if (event.getCommand().equals("sibal")) {
+      BukkitPluginLoader.unload();
+    }
   }
 
   private static void setPlayerChatRenderer(AsyncChatEvent event) {

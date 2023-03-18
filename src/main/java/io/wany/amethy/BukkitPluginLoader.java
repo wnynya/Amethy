@@ -1,6 +1,5 @@
 package io.wany.amethy;
 
-import org.apache.logging.log4j.core.config.plugins.util.PluginUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
@@ -9,6 +8,10 @@ import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredListener;
+
+import io.papermc.paper.plugin.provider.classloader.ConfiguredPluginClassLoader;
+import io.papermc.paper.plugin.provider.classloader.PaperClassLoaderStorage;
+import io.papermc.paper.plugin.provider.util.ProviderUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,7 +71,7 @@ public class BukkitPluginLoader {
         set.removeIf(value -> value.getPlugin() == plugin);
       }
     }
-    if (commandMap != null)
+    if (commandMap != null) {
       for (Iterator<Map.Entry<String, Command>> it = commands.entrySet().iterator(); it.hasNext();) {
         Map.Entry<String, Command> entry = it.next();
         if (entry.getValue() instanceof PluginCommand) {
@@ -103,14 +106,52 @@ public class BukkitPluginLoader {
           }
         }
       }
+    }
     if (plugins != null && plugins.contains(plugin)) {
       plugins.remove(plugin);
     }
     if (names != null && names.containsKey(name)) {
       names.remove(name);
     }
+
+    PaperClassLoaderStorage pcls = PaperClassLoaderStorage.instance();
     ClassLoader cl = plugin.getClass().getClassLoader();
-    if (cl instanceof URLClassLoader) {
+    if (cl instanceof ConfiguredPluginClassLoader cll) {
+
+      System.out.println("getGroup().remove()");
+      cll.getGroup().remove(cll);
+
+      System.out.println("unregisterClassloader");
+      pcls.unregisterClassloader(cll);
+
+      System.out.println("registerUnsafePlugin: " + pcls.registerUnsafePlugin(cll));
+
+      try {
+        Field pluginField = cll.getClass().getDeclaredField("plugin");
+        pluginField.setAccessible(true);
+        pluginField.set(cl, null);
+        Field pluginInitField = cl.getClass().getDeclaredField("pluginInit");
+        pluginInitField.setAccessible(true);
+        pluginInitField.set(cl, null);
+      } catch (Exception ex) {
+        ex.printStackTrace();
+      }
+      try {
+        ((URLClassLoader) cl).close();
+      } catch (Exception ex) {
+        ex.printStackTrace();
+      }
+
+      /*
+       * try {
+       * cll.close();
+       * } catch (Exception ex) {
+       * ex.printStackTrace();
+       * }
+       */
+
+    } else if (cl instanceof URLClassLoader) {
+      Console.log("test2");
       try {
         Field pluginField = cl.getClass().getDeclaredField("plugin");
         pluginField.setAccessible(true);
@@ -130,11 +171,19 @@ public class BukkitPluginLoader {
     System.gc();
   }
 
+  public static void rename() {
+    File oldfile = Amethy.FILE;
+    File newfile = Amethy.PLUGINS_DIR.toPath().resolve("Amethy-" + System.currentTimeMillis() + ".jar").toFile();
+    oldfile.renameTo(newfile);
+    Amethy.FILE = newfile;
+  }
+
   public static void load(File file) {
     Plugin plugin = null;
     if (!file.isFile()) {
       return;
     }
+
     try {
       plugin = Bukkit.getPluginManager().loadPlugin(file);
     } catch (Exception e) {

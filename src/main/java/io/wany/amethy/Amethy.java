@@ -151,8 +151,10 @@ public class Amethy extends JavaPlugin {
   public void registerCommand(String cmd, CommandExecutor exc, TabCompleter tab) {
     PluginCommand pc = this.getCommand(cmd);
     if (pc == null) {
+      System.out.println(cmd + " 명령어 등록에 실패했다");
       return;
     }
+    System.out.println(cmd + " 명령어 등록에 성공했다 :)");
     pc.setExecutor(exc);
     pc.setTabCompleter(tab);
   }

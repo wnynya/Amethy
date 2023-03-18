@@ -1,0 +1,9 @@
+name: Amethy
+version: 1.19-dev
+main: io.wany.amethy.Amethy
+
+description: Amethy
+
+api-version: '1.19'
+bootstrapper: io.wany.amethy.AmethyBootstrap
+loader: io.wany.amethy.AmethyPluginLoader

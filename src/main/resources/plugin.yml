@@ -6,7 +6,8 @@ description: Amethy
 author: Wany
 website: https://amethy.wany.io
 
-api-version: 1.18
+api-version: '1.19'
+
 softdepend: [CoreProtect, Cucumbery, Vault, Essentials]
 loadbefore:
   - CoreProtect
