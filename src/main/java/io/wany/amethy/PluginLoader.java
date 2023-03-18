@@ -1,7 +1,5 @@
 package io.wany.amethy;
 
-import io.papermc.paper.plugin.provider.classloader.ConfiguredPluginClassLoader;
-import io.papermc.paper.plugin.provider.classloader.PaperClassLoaderStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
@@ -17,7 +15,7 @@ import java.net.URLClassLoader;
 import java.util.*;
 
 @SuppressWarnings("all")
-public class BukkitPluginLoader {
+public class PluginLoader {
 
   public static void unload() {
     Plugin plugin = Amethy.PLUGIN;
@@ -138,10 +136,10 @@ public class BukkitPluginLoader {
       names.remove(name);
     }
 
-    PaperClassLoaderStorage pcls = PaperClassLoaderStorage.instance();
+    //PaperClassLoaderStorage pcls = PaperClassLoaderStorage.instance();
     ClassLoader cl = plugin.getClass().getClassLoader();
 
-    if (cl instanceof ConfiguredPluginClassLoader ccl) {
+    /*if (cl instanceof ConfiguredPluginClassLoader ccl) {
       // For Paper
       try {
         Field pluginField = cl.getClass().getDeclaredField("plugin");
@@ -161,8 +159,7 @@ public class BukkitPluginLoader {
         ex.printStackTrace();
       }
 
-    } else if (cl instanceof URLClassLoader) {
-      Console.log("test2");
+    } else */if (cl instanceof URLClassLoader) {
       try {
         Field pluginField = cl.getClass().getDeclaredField("plugin");
         pluginField.setAccessible(true);
@@ -179,14 +176,8 @@ public class BukkitPluginLoader {
         ex.printStackTrace();
       }
     }
-    System.gc();
-  }
 
-  public static void rename() {
-    File oldfile = Amethy.FILE;
-    File newfile = Amethy.PLUGINS_DIR.toPath().resolve("Amethy-" + System.currentTimeMillis() + ".jar").toFile();
-    oldfile.renameTo(newfile);
-    Amethy.FILE = newfile;
+    System.gc();
   }
 
   // For Paper, bootstrapper will inhibit plugin from loading

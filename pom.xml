@@ -7,7 +7,7 @@
 
   <groupId>io.wany.amethy</groupId>
   <artifactId>Amethy</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.0-dev</version>
 
   <name>Amethy</name>
   <url>https://amethy.wany.io</url>
@@ -21,13 +21,13 @@
 
   <repositories>
 
-    <!-- Wanyne Amethy Repo -->
+    <!-- repo:wanyne-amethy -->
     <repository>
       <id>amethy</id>
       <url>https://api.wany.io/amethy/repository/maven</url>
     </repository>
 
-    <!-- Spigot Repo -->
+    <!-- PaperMC Repo -->
     <repository>
       <id>papermc</id>
       <url>https://repo.papermc.io/repository/maven-public/</url>
@@ -93,14 +93,14 @@
 
   <dependencies>
 
-    <!-- Amethyst (Wanyne Amethy Repo) -->
+    <!-- amethyst (repo:wanyne-amethy) -->
     <dependency>
       <groupId>io.wany.amethyst</groupId>
       <artifactId>Amethyst</artifactId>
       <version>0.8.1</version>
     </dependency>
 
-    <!-- Spigot (Spigot Repo) -->
+    <!-- paper (repo:papermc) -->
     <dependency>
       <groupId>io.papermc.paper</groupId>
       <artifactId>paper-api</artifactId>
@@ -185,18 +185,10 @@
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.2.0</version>
-        <configuration>
-          <outputDirectory>packages</outputDirectory>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.3.0</version>
         <executions>
+
           <execution>
             <id>shade</id>
             <phase>package</phase>
@@ -215,13 +207,19 @@
               </filters>
             </configuration>
           </execution>
+
         </executions>
+
         <configuration>
+
           <relocations>
+
             <relocation>
               <pattern>io.wany.amethyst</pattern>
             </relocation>
+
           </relocations>
+
         </configuration>
       </plugin>
 

@@ -1,16 +1,6 @@
-/target
-/dependency-reduced-pom.xml
-/.vscode
-/repository
-/packages-bot
-/packages
-/amerep
-/test
-/server
-
-# IntelliJ
 /.idea
 *.iml
-
-# Internal libraries
-/lib
+/target
+/dependency-reduced-pom.xml
+/amerep-bot/node_modules
+/amerep-bot/config/config.json

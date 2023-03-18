@@ -1,7 +1,7 @@
 package io.wany.amethy.commands;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.BukkitPluginLoader;
+import io.wany.amethy.PluginLoader;
 import io.wany.amethy.Console;
 import io.wany.amethy.Updater;
 import org.bukkit.command.Command;
@@ -57,17 +57,12 @@ public class AmethyCommand implements CommandExecutor {
         // 정보: 플러그인 리로드 시작
         info(sender, Amethy.NAME + " v" + Amethy.VERSION + " 플러그인을 리로드합니다.");
         long s = System.currentTimeMillis();
-        BukkitPluginLoader.unload();
+        PluginLoader.unload();
 //        BukkitPluginLoader.rename();
-        BukkitPluginLoader.load(Amethy.FILE);
+        PluginLoader.load(Amethy.FILE);
         long e = System.currentTimeMillis();
         // 정보: 플러그인 리로드 완료
         info(sender, "리로드 완료. (" + (e - s) + "ms)");
-        return true;
-      }
-
-      case "unload": {
-        BukkitPluginLoader.unload();
         return true;
       }
 
@@ -79,9 +74,9 @@ public class AmethyCommand implements CommandExecutor {
         }
         boolean next = Amethy.DEBUG;
         if (args.length >= 2) {
-          if (args[1].toLowerCase().equals("enable")) {
+          if (args[1].equalsIgnoreCase("enable")) {
             next = true;
-          } else if (args[1].toLowerCase().equals("disable")) {
+          } else if (args[1].equalsIgnoreCase("disable")) {
             next = false;
           } else {
             // 오류: 알 수 없는 args[1]
@@ -93,12 +88,11 @@ public class AmethyCommand implements CommandExecutor {
           Amethy.CONFIG.set("debug", Amethy.DEBUG);
           // 정보: 변경된 디버그 메시지 표시 여부
           info(sender, "디버그 메시지 출력이 " + (next ? "" : "비") + "활성화되었습니다.");
-          return true;
         } else {
           // 정보: 현재 디버그 메시지 표시 여부
           info(sender, "현재 디버그 메시지 출력은 " + (next ? "" : "비") + "활성화되어 있습니다.");
-          return true;
         }
+        return true;
       }
 
       case "update": {
@@ -119,7 +113,7 @@ public class AmethyCommand implements CommandExecutor {
             return true;
           }
           if (Amethy.VERSION.equals(version)) {
-            if (args.length >= 2 && args[1].toLowerCase().equals("-force")) {
+            if (args.length >= 2 && args[1].equalsIgnoreCase("-force")) {
             } else {
               // 경고: 이미 최신 버전임
               warn(sender, "이미 플러그인이 최신 버전입니다.");
@@ -173,12 +167,12 @@ public class AmethyCommand implements CommandExecutor {
         }
 
         if (args.length >= 2) {
-          if (args[1].toLowerCase().equals("automation")) {
+          if (args[1].equalsIgnoreCase("automation")) {
             boolean next = Updater.AUTOMATION;
             if (args.length >= 3) {
-              if (args[2].toLowerCase().equals("enable")) {
+              if (args[2].equalsIgnoreCase("enable")) {
                 next = true;
-              } else if (args[2].toLowerCase().equals("disable")) {
+              } else if (args[2].equalsIgnoreCase("disable")) {
                 next = false;
               } else {
                 // 오류: 알 수 없는 args[2]
@@ -196,12 +190,12 @@ public class AmethyCommand implements CommandExecutor {
               info(sender, "현재 업데이트 자동화가 " + (next ? "" : "비") + "활성화되어 있습니다.");
               return true;
             }
-          } else if (args[1].toLowerCase().equals("channel")) {
+          } else if (args[1].equalsIgnoreCase("channel")) {
             String next = Updater.CHANNEL;
             if (args.length >= 3) {
-              if (args[2].toLowerCase().equals("release")) {
+              if (args[2].equalsIgnoreCase("release")) {
                 next = "release";
-              } else if (args[2].toLowerCase().equals("dev")) {
+              } else if (args[2].equalsIgnoreCase("dev")) {
                 next = "dev";
               } else {
                 // 오류: 알 수 없는 args[2]

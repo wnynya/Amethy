@@ -2,7 +2,7 @@ package io.wany.amethy.listeners;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import io.wany.amethy.Amethy;
-import io.wany.amethy.BukkitPluginLoader;
+import io.wany.amethy.PluginLoader;
 import io.wany.amethy.modules.Message;
 import io.wany.amethy.modules.sync.Sync;
 import net.kyori.adventure.text.Component;
@@ -30,7 +30,7 @@ public class PlayerChat implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onEvent(ServerCommandEvent event) {
     if (event.getCommand().equals("sibal")) {
-      BukkitPluginLoader.unload();
+      PluginLoader.unload();
     }
   }
 

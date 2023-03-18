@@ -135,7 +135,7 @@ public class WandEdit {
         }
         Location location = block.getLocation();
         edit.setPosition(2, location);
-        String message = "두번째 포지션이 설정되었습니다. (" + Wand.COLOR + location.getX() + "&r, " + Wand.COLOR + location.getY()
+        String message = "두번째 포지션가 설정되었습니다. (" + Wand.COLOR + location.getX() + "&r, " + Wand.COLOR + location.getY()
             + "&r, " + Wand.COLOR + location.getZ() + "&r)";
         if (edit.getPosition(1) != null && edit.getPosition(2) != null) {
           int count = Area.CUBE.getArea(edit.getPosition(1), edit.getPosition(2)).size();

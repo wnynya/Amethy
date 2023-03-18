@@ -124,7 +124,7 @@ public class Amethy extends JavaPlugin {
     CoreProtectSupport.onEnable();
 
     Updater.onEnable();
-    Sync.onEnable();
+    //Sync.onEnable();
     Wand.onEnable();
     ItemOnWorld.onEnable();
 
@@ -142,7 +142,7 @@ public class Amethy extends JavaPlugin {
   public void onDisable() {
 
     Updater.onDisable();
-    Sync.onDisable();
+    //Sync.onDisable();
     Wand.onDisable();
 
     CoreProtectSupport.onDisable();
