@@ -4,18 +4,19 @@ import io.wany.amethy.Amethy;
 import io.wany.amethy.BukkitPluginLoader;
 import io.wany.amethy.Console;
 import io.wany.amethy.Updater;
-import java.io.File;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class AmethyCommand implements CommandExecutor {
 
-  public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+  public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
 
     if (args.length == 0) {
       // 오류: args[0] 필요
@@ -57,7 +58,7 @@ public class AmethyCommand implements CommandExecutor {
         info(sender, Amethy.NAME + " v" + Amethy.VERSION + " 플러그인을 리로드합니다.");
         long s = System.currentTimeMillis();
         BukkitPluginLoader.unload();
-        BukkitPluginLoader.rename();
+//        BukkitPluginLoader.rename();
         BukkitPluginLoader.load(Amethy.FILE);
         long e = System.currentTimeMillis();
         // 정보: 플러그인 리로드 완료
