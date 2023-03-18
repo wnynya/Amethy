@@ -4,11 +4,11 @@ import java.io.File;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.PluginCommand;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.*;
+import org.bukkit.command.defaults.PluginsCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -77,6 +77,7 @@ public class Amethy extends JavaPlugin {
       CONFIG.set("debug", false);
     }
 
+    System.out.println("loading yaml config");
     YAMLCONFIG = YamlConfig.onLoad();
 
     Database.onLoad();
@@ -115,6 +116,7 @@ public class Amethy extends JavaPlugin {
     registerEvent(new PluginEnable());
     registerEvent(new PluginDisable());
 
+    System.out.println("Loading cucumbery support");
     CucumberySupport.onEnable();
     VaultSupport.onEnable();
     EssentialsSupport.onEnable();
@@ -149,14 +151,31 @@ public class Amethy extends JavaPlugin {
   }
 
   public void registerCommand(String cmd, CommandExecutor exc, TabCompleter tab) {
-    PluginCommand pc = this.getCommand(cmd);
-    if (pc == null) {
+    PluginCommand pc;
+    CommandMap cmdMap = Bukkit.getCommandMap();
+    String prefix = this.getName().toLowerCase();
+
+    try {
+      var clazz = Class.forName("org.bukkit.command.PluginCommand");
+      var constr = clazz.getDeclaredConstructor(String.class, Plugin.class);
+      constr.setAccessible(true);
+      pc = (PluginCommand) constr.newInstance(cmd, this);
+    } catch (Exception e) {
       System.out.println(cmd + " 명령어 등록에 실패했다");
+      e.printStackTrace();
       return;
     }
-    System.out.println(cmd + " 명령어 등록에 성공했다 :)");
+
     pc.setExecutor(exc);
     pc.setTabCompleter(tab);
+    cmdMap.register(pc.getName(), prefix, pc);
+
+    // todo This fails to register aliases. Needs fix
+    for (String alias : pc.getAliases()) {
+      cmdMap.register(alias, prefix, pc);
+    }
+
+    System.out.println(cmd + " 명령어 등록에 성공했다 :)");
   }
 
   public void registerEvent(Listener l) {
