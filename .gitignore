@@ -1,11 +1,16 @@
 /target
 /dependency-reduced-pom.xml
 /.vscode
-/.idea
 /repository
 /packages-bot
 /packages
 /amerep
 /test
 /server
+
+# IntelliJ
+/.idea
 *.iml
+
+# Internal libraries
+/lib

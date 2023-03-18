@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
-import org.bukkit.command.defaults.PluginsCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -47,6 +46,7 @@ public class Amethy extends JavaPlugin {
   protected static final boolean ISRELOAD = Bukkit.getWorlds().size() != 0;
 
   public static String VERSION;
+  public static boolean PAPER_MODE;
   public static File FILE;
   public static File PLUGINS_DIR;
   public static File SERVER_DIR;
@@ -80,6 +80,7 @@ public class Amethy extends JavaPlugin {
     System.out.println("loading yaml config");
     YAMLCONFIG = YamlConfig.onLoad();
 
+    assignServerType();
     Database.onLoad();
 
   }
@@ -147,40 +148,51 @@ public class Amethy extends JavaPlugin {
     CoreProtectSupport.onDisable();
 
     Database.onDisable();
-
   }
 
   public void registerCommand(String cmd, CommandExecutor exc, TabCompleter tab) {
-    PluginCommand pc;
-    CommandMap cmdMap = Bukkit.getCommandMap();
-    String prefix = this.getName().toLowerCase();
+    PluginCommand pc = null;
 
-    try {
-      var clazz = Class.forName("org.bukkit.command.PluginCommand");
-      var constr = clazz.getDeclaredConstructor(String.class, Plugin.class);
-      constr.setAccessible(true);
-      pc = (PluginCommand) constr.newInstance(cmd, this);
-    } catch (Exception e) {
-      System.out.println(cmd + " 명령어 등록에 실패했다");
-      e.printStackTrace();
-      return;
+    if (true) {
+      pc = this.getCommand(cmd);
+    } else {
+      // This code is preserved to prepare future where paper-plugin.yml became mandatory
+      CommandMap cmdMap = Bukkit.getCommandMap();
+      String prefix = this.getName().toLowerCase();
+
+      try {
+        var clazz = Class.forName("org.bukkit.command.PluginCommand");
+        var constr = clazz.getDeclaredConstructor(String.class, Plugin.class);
+        constr.setAccessible(true);
+        pc = (PluginCommand) constr.newInstance(cmd, this);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      cmdMap.register(pc.getName(), prefix, pc);
+
+      // this fails to register alias! Needs fix
+      for (String alias : pc.getAliases()) {
+        cmdMap.register(alias, prefix, pc);
+      }
+      // ----- END OF PRESERVED CODE ----- //
     }
 
-    pc.setExecutor(exc);
-    pc.setTabCompleter(tab);
-    cmdMap.register(pc.getName(), prefix, pc);
-
-    // todo This fails to register aliases. Needs fix
-    for (String alias : pc.getAliases()) {
-      cmdMap.register(alias, prefix, pc);
+    if (pc != null) {
+      pc.setExecutor(exc);
+      pc.setTabCompleter(tab);
+    } else {
+      System.out.printf("Failed to load command: %s", cmd);
     }
-
-    System.out.println(cmd + " 명령어 등록에 성공했다 :)");
   }
 
   public void registerEvent(Listener l) {
     PluginManager pm = Bukkit.getServer().getPluginManager();
     pm.registerEvents(l, this);
+  }
+
+  private void assignServerType() {
+    String version = Bukkit.getServer().getVersion().toLowerCase();
+    PAPER_MODE = version.contains("paper") || version.contains("pufferfish");
   }
 
 }
