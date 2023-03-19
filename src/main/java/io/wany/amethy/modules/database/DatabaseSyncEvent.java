@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.Console;
+import io.wany.amethy.console;
 import io.wany.amethyst.EventEmitter;
 import io.wany.amethyst.Json;
 import io.wany.amethyst.network.MySQLResult;
@@ -59,7 +59,7 @@ public class DatabaseSyncEvent {
 
   public static void on(String event, Consumer<Object[]> consumer) {
     eventEmitter.on(event, consumer);
-    Console.debug(Database.PREFIX + "이벤트 리스너 등록됨: " + event);
+    console.debug(Database.PREFIX + "이벤트 리스너 등록됨: " + event);
   }
 
   public static void emit(String event, Json value) {
@@ -140,7 +140,7 @@ public class DatabaseSyncEvent {
 
   public static void onLoad() {
     if (!Amethy.YAMLCONFIG.getBoolean("database.sync.event.enable")) {
-      Console.debug(Database.PREFIX + "동기화 이벤트 §c비활성화됨");
+      console.debug(Database.PREFIX + "동기화 이벤트 §c비활성화됨");
       return;
     }
 
@@ -149,19 +149,19 @@ public class DatabaseSyncEvent {
     try {
       MySQLResult result = Database.query("SHOW TABLES LIKE '" + TABLE + "'");
       if (result.getString(0, "TABLE_NAME") == null) {
-        Console.log(Database.PREFIX + "데이터베이스에서 " + TABLE
+        console.log(Database.PREFIX + "데이터베이스에서 " + TABLE
             + " 테이블을 찾을 수 없습니다. 테이블을 생성합니다.");
         create();
       }
     } catch (SQLException e) {
-      Console.warn(Database.PREFIX + "테이블 확인 중 오류가 발생하였습니다.");
-      Console.debug(Database.PREFIX + "동기화 이벤트 §c비활성화됨");
+      console.warn(Database.PREFIX + "테이블 확인 중 오류가 발생하였습니다.");
+      console.debug(Database.PREFIX + "동기화 이벤트 §c비활성화됨");
       e.printStackTrace();
       return;
     }
 
     ENABLED = true;
-    Console.debug(Database.PREFIX + "동기화 이벤트 §a활성화됨");
+    console.debug(Database.PREFIX + "동기화 이벤트 §a활성화됨");
 
     onLoadExecutor.submit(() -> {
       onLoadTimer100m.schedule(new TimerTask() {

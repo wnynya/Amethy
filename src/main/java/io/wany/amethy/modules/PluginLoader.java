@@ -1,5 +1,6 @@
-package io.wany.amethy;
+package io.wany.amethy.modules;
 
+import io.wany.amethy.Amethy;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
@@ -17,10 +18,13 @@ import java.util.*;
 @SuppressWarnings("all")
 public class PluginLoader {
 
-  public static void unload() {
-    Plugin plugin = Amethy.PLUGIN;
-    // May not be compatible with Spigot
-    String name = (Amethy.PAPER_MODE) ? plugin.getPluginMeta().getName().toLowerCase(Locale.ENGLISH) : plugin.getName();
+  /**
+   * Unload plugin
+   *
+   * @param plugin Plugin
+   */
+  public static void unload(Plugin plugin) {
+
     // commandwrap
     PluginManager pluginManager = Bukkit.getPluginManager();
     SimpleCommandMap commandMap = null;
@@ -30,13 +34,19 @@ public class PluginLoader {
     Map<Event, SortedSet<RegisteredListener>> listeners = null;
     boolean reloadlisteners = true;
 
+    // Unload plugin from PluginManager
     if (pluginManager != null) {
+
       pluginManager.disablePlugin(plugin);
+
       try {
-        if (Amethy.PAPER_MODE) {
+
+        // When using Paper API
+        if (Amethy.PAPERAPI) {
           // For Paper, PaperPluginManagerImpl implements PluginManager
           // todo inject listeners (perhaps PaperEventManager does the thing)
           Field paperPluginManagerField = Bukkit.getPluginManager().getClass().getDeclaredField("paperPluginManager");
+
           // io.papermc.paper.plugin.manager.PaperPluginManagerImpl
           Object pluginManagerImpl = paperPluginManagerField.get(Bukkit.getPluginManager());
           Field instanceManagerField = pluginManagerImpl.getClass().getDeclaredField("instanceManager");
@@ -58,7 +68,10 @@ public class PluginLoader {
           names = (Map<String, Plugin>) lookupNamesField.get(instanceManager);
           commandMap = (SimpleCommandMap) commandMapField.get(instanceManager);
           commands = (Map<String, Command>) knownCommandsField.get(commandMap);
-        } else {
+        }
+
+        // When using Bukkit (Spigot) API
+        else {
           // For Spigot, SimplePluginManager implements PluginManager
           Field pluginsField = Bukkit.getPluginManager().getClass().getDeclaredField("plugins");
           pluginsField.setAccessible(true);
@@ -71,7 +84,8 @@ public class PluginLoader {
             Field listenersField = Bukkit.getPluginManager().getClass().getDeclaredField("listeners");
             listenersField.setAccessible(true);
             listeners = (Map<Event, SortedSet<RegisteredListener>>) listenersField.get(pluginManager);
-          } catch (Exception e) {
+          }
+          catch (Exception e) {
             reloadlisteners = false;
           }
           Field commandMapField = Bukkit.getPluginManager().getClass().getDeclaredField("commandMap");
@@ -81,30 +95,38 @@ public class PluginLoader {
           knownCommandsField.setAccessible(true);
           commands = (Map<String, Command>) knownCommandsField.get(commandMap);
         }
-      } catch (Exception e) {
+
+      }
+      catch (Exception e) {
         e.printStackTrace();
       }
+
     }
 
+    // Remove listeners
     if (listeners != null && reloadlisteners) {
       for (SortedSet<RegisteredListener> set : listeners.values()) {
         set.removeIf(value -> value.getPlugin() == plugin);
       }
     }
 
+    // Remove commands
     if (commandMap != null) {
-      for (Iterator<Map.Entry<String, Command>> it = commands.entrySet().iterator(); it.hasNext();) {
+
+      for (Iterator<Map.Entry<String, Command>> it = commands.entrySet().iterator(); it.hasNext(); ) {
         Map.Entry<String, Command> entry = it.next();
+
         if (entry.getValue() instanceof PluginCommand) {
           PluginCommand c = (PluginCommand) entry.getValue();
           if (c.getPlugin() == plugin) {
             c.unregister(commandMap);
             it.remove();
           }
-        } else {
+        }
+
+        else {
           try {
-            Field pluginField = Arrays.stream(entry.getValue().getClass().getDeclaredFields())
-                    .filter(field -> Plugin.class.isAssignableFrom(field.getType())).findFirst().orElse(null);
+            Field pluginField = Arrays.stream(entry.getValue().getClass().getDeclaredFields()).filter(field -> Plugin.class.isAssignableFrom(field.getType())).findFirst().orElse(null);
             if (pluginField != null) {
               Plugin owningPlugin;
               try {
@@ -114,11 +136,13 @@ public class PluginLoader {
                   entry.getValue().unregister(commandMap);
                   it.remove();
                 }
-              } catch (Exception e) {
+              }
+              catch (Exception e) {
                 e.printStackTrace();
               }
             }
-          } catch (Exception e) {
+          }
+          catch (Exception e) {
             e.printStackTrace();
             if (e.getMessage().equalsIgnoreCase("zip file closed")) {
               entry.getValue().unregister(commandMap);
@@ -126,21 +150,50 @@ public class PluginLoader {
             }
           }
         }
+
       }
+
     }
 
+    // Remove plugin
     if (plugins != null && plugins.contains(plugin)) {
       plugins.remove(plugin);
     }
+
+    // Remove name
+    String name = (Amethy.PAPERAPI) ? plugin.getPluginMeta().getName().toLowerCase(Locale.ENGLISH) : plugin.getName();
     if (names != null && names.containsKey(name)) {
       names.remove(name);
     }
 
-    //PaperClassLoaderStorage pcls = PaperClassLoaderStorage.instance();
+    // PaperClassLoaderStorage pcls = PaperClassLoaderStorage.instance();
     ClassLoader cl = plugin.getClass().getClassLoader();
 
-    /*if (cl instanceof ConfiguredPluginClassLoader ccl) {
-      // For Paper
+    /*
+     * if (cl instanceof ConfiguredPluginClassLoader ccl) {
+     * // For Paper
+     * try {
+     * Field pluginField = cl.getClass().getDeclaredField("plugin");
+     * pluginField.setAccessible(true);
+     * pluginField.set(cl, null);
+     * Field pluginInitField = cl.getClass().getDeclaredField("pluginInit");
+     * pluginInitField.setAccessible(true);
+     * pluginInitField.set(cl, null);
+     * } catch (Exception ex) {
+     * ex.printStackTrace();
+     * }
+     *
+     * try {
+     * ((URLClassLoader) cl).close();
+     * System.gc();
+     * } catch (Exception ex) {
+     * ex.printStackTrace();
+     * }
+     *
+     * } else
+     */
+
+    if (cl instanceof URLClassLoader) {
       try {
         Field pluginField = cl.getClass().getDeclaredField("plugin");
         pluginField.setAccessible(true);
@@ -148,31 +201,14 @@ public class PluginLoader {
         Field pluginInitField = cl.getClass().getDeclaredField("pluginInit");
         pluginInitField.setAccessible(true);
         pluginInitField.set(cl, null);
-      } catch (Exception ex) {
-        ex.printStackTrace();
       }
-
-      try {
-        ((URLClassLoader) cl).close();
-        System.gc();
-      } catch (Exception ex) {
-        ex.printStackTrace();
-      }
-
-    } else */if (cl instanceof URLClassLoader) {
-      try {
-        Field pluginField = cl.getClass().getDeclaredField("plugin");
-        pluginField.setAccessible(true);
-        pluginField.set(cl, null);
-        Field pluginInitField = cl.getClass().getDeclaredField("pluginInit");
-        pluginInitField.setAccessible(true);
-        pluginInitField.set(cl, null);
-      } catch (Exception ex) {
+      catch (Exception ex) {
         ex.printStackTrace();
       }
       try {
         ((URLClassLoader) cl).close();
-      } catch (Exception ex) {
+      }
+      catch (Exception ex) {
         ex.printStackTrace();
       }
     }
@@ -180,6 +216,11 @@ public class PluginLoader {
     System.gc();
   }
 
+  /**
+   * Load plugin
+   *
+   * @param file Plugin file
+   */
   // For Paper, bootstrapper will inhibit plugin from loading
   // For Paper, paper-plugin.yml will inhibit plugin from loading at runtime
   public static void load(File file) {
@@ -191,14 +232,19 @@ public class PluginLoader {
     try {
       file.setReadable(true);
       plugin = Bukkit.getPluginManager().loadPlugin(file);
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       e.printStackTrace();
     }
+
     if (plugin == null) {
       return;
     }
+
     plugin.onLoad();
+
     Bukkit.getPluginManager().enablePlugin(plugin);
   }
 
 }
+

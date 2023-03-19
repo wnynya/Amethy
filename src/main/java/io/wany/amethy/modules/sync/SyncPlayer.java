@@ -16,7 +16,7 @@ import com.google.gson.JsonParser;
 
 import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.database.DatabaseSyncMap;
-import io.wany.amethy.Console;
+import io.wany.amethy.console;
 import io.wany.amethy.modulesmc.Message;
 import io.wany.amethy.supports.cucumbery.CucumberySupport;
 import io.wany.amethy.supports.cucumbery.sync.SyncCucumberyPlayer;
@@ -334,18 +334,18 @@ public class SyncPlayer {
 
   protected static void onEnable() {
     if (!Amethy.YAMLCONFIG.getBoolean("sync.player.enable")) {
-      Console.debug(Sync.PREFIX + "플레이어 정보 동기화 §c비활성화됨");
+      console.debug(Sync.PREFIX + "플레이어 정보 동기화 §c비활성화됨");
       return;
     }
 
     if (!DatabaseSyncMap.ENABLED) {
-      Console.warn(Sync.PREFIX + "데이터베이스 연결을 확인할 수 없습니다. 기능이 비활성화됩니다.");
-      Console.debug(Sync.PREFIX + "플레이어 정보 동기화 §c비활성화됨");
+      console.warn(Sync.PREFIX + "데이터베이스 연결을 확인할 수 없습니다. 기능이 비활성화됩니다.");
+      console.debug(Sync.PREFIX + "플레이어 정보 동기화 §c비활성화됨");
       return;
     }
 
     ENABLED = true;
-    Console.debug(Sync.PREFIX + "플레이어 정보 동기화 §a활성화됨");
+    console.debug(Sync.PREFIX + "플레이어 정보 동기화 §a활성화됨");
 
     if (CucumberySupport.isEnabled()) {
       SyncCucumberyPlayer.onEnable();

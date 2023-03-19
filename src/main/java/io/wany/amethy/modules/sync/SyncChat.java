@@ -7,9 +7,9 @@ import org.bukkit.entity.Player;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import io.wany.amethy.Amethy;
-import io.wany.amethy.Console;
+import io.wany.amethy.console;
 import io.wany.amethy.modules.database.DatabaseSyncEvent;
-import io.wany.amethy.modules.Message;
+import io.wany.amethy.modules.MsgUtil;
 import io.wany.amethyst.Json;
 import net.kyori.adventure.text.Component;
 
@@ -28,8 +28,8 @@ public class SyncChat {
     Json data = new Json();
     data.set("uuid", player.getUniqueId().toString());
     data.set("name", player.getName());
-    data.set("displayName", Message.stringify(player.displayName()));
-    data.set("message", Message.stringify(message));
+    data.set("displayName", MsgUtil.stringify(player.displayName()));
+    data.set("message", MsgUtil.stringify(message));
 
     DatabaseSyncEvent.emit("sync/chat", data);
   }
@@ -37,11 +37,11 @@ public class SyncChat {
   private static void databasePlayerChat(DatabaseSyncEvent event) {
     Json data = event.getValue();
 
-    Component component = Message.formatDatabaseSyncPlayerChat(
+    Component component = MsgUtil.formatDatabaseSyncPlayerChat(
         Amethy.YAMLCONFIG.getString("event.chat.msg.sync.format"),
         event.getServer(),
-        Message.parse(data.getString("displayName")),
-        Message.parse(data.getString("message")));
+        MsgUtil.parse(data.getString("displayName")),
+        MsgUtil.parse(data.getString("message")));
 
     Bukkit.broadcast(component);
 
@@ -61,18 +61,18 @@ public class SyncChat {
 
   protected static void onEnable() {
     if (!Amethy.YAMLCONFIG.getBoolean("sync.chat.enable")) {
-      Console.debug(Sync.PREFIX + "채팅 동기화 §c비활성화됨");
+      console.debug(Sync.PREFIX + "채팅 동기화 §c비활성화됨");
       return;
     }
 
     if (!DatabaseSyncEvent.ENABLED) {
-      Console.warn(Sync.PREFIX + "데이터베이스 연결을 확인할 수 없습니다. 기능이 비활성화됩니다.");
-      Console.debug(Sync.PREFIX + "채팅 동기화 §c비활성화됨");
+      console.warn(Sync.PREFIX + "데이터베이스 연결을 확인할 수 없습니다. 기능이 비활성화됩니다.");
+      console.debug(Sync.PREFIX + "채팅 동기화 §c비활성화됨");
       return;
     }
 
     ENABLED = true;
-    Console.debug(Sync.PREFIX + "채팅 동기화 §a활성화됨");
+    console.debug(Sync.PREFIX + "채팅 동기화 §a활성화됨");
 
     DatabaseSyncEvent.on("sync/chat", (args) -> {
       databasePlayerChat((DatabaseSyncEvent) args[0]);

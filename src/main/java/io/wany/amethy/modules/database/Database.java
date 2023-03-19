@@ -3,7 +3,7 @@ package io.wany.amethy.modules.database;
 import java.sql.SQLException;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.Console;
+import io.wany.amethy.console;
 import io.wany.amethyst.network.MySQLClient;
 import io.wany.amethyst.network.MySQLConfig;
 import io.wany.amethyst.network.MySQLResult;
@@ -33,21 +33,21 @@ public class Database {
 
   public static void onLoad() {
     if (!Amethy.YAMLCONFIG.getBoolean("database.enable")) {
-      Console.debug(PREFIX + "데이터베이스 연결 §c비활성화됨");
+      console.debug(PREFIX + "데이터베이스 연결 §c비활성화됨");
       return;
     }
 
     SERVER = Amethy.YAMLCONFIG.getString("server.name");
     if (SERVER.length() <= 0) {
-      Console.warn(PREFIX + "서버 이름 값이 잘못 설정되었거나 확인할 수 없습니다. 데이터베이스 기능이 §c비활성화§r됩니다.");
+      console.warn(PREFIX + "서버 이름 값이 잘못 설정되었거나 확인할 수 없습니다. 데이터베이스 기능이 §c비활성화§r됩니다.");
       return;
     }
-    Console.debug(PREFIX + "서버 이름: " + SERVER);
+    console.debug(PREFIX + "서버 이름: " + SERVER);
 
-    Console.debug(PREFIX + "데이터베이스 연결 §a활성화됨");
+    console.debug(PREFIX + "데이터베이스 연결 §a활성화됨");
     TABLE_PREFIX = Amethy.YAMLCONFIG.getString("database.mysql.tableprefix");
     try {
-      Console.debug(PREFIX + "데이터베이스 연결 중...");
+      console.debug(PREFIX + "데이터베이스 연결 중...");
       MySQLConfig cfg = new MySQLConfig(
           Amethy.YAMLCONFIG.getString("database.mysql.host"),
           Amethy.YAMLCONFIG.getInt("database.mysql.port"),
@@ -56,11 +56,11 @@ public class Database {
           Amethy.YAMLCONFIG.getString("database.mysql.database"));
       client = new MySQLClient("amethy", cfg);
       ENABLED = true;
-      Console.debug(PREFIX + "데이터베이스 연결됨");
+      console.debug(PREFIX + "데이터베이스 연결됨");
     } catch (SQLException e) {
-      Console.warn(PREFIX + "데이터베이스 연결 실패");
+      console.warn(PREFIX + "데이터베이스 연결 실패");
       e.printStackTrace();
-      Console.debug(PREFIX + "데이터베이스 연결 §c비활성화됨");
+      console.debug(PREFIX + "데이터베이스 연결 §c비활성화됨");
       return;
     }
 
@@ -84,7 +84,7 @@ public class Database {
 
     try {
       client.close();
-      Console.debug(PREFIX + "데이터베이스 연결 종료");
+      console.debug(PREFIX + "데이터베이스 연결 종료");
     } catch (SQLException e) {
     }
   }

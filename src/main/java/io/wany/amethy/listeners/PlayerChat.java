@@ -2,8 +2,8 @@ package io.wany.amethy.listeners;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import io.wany.amethy.Amethy;
-import io.wany.amethy.PluginLoader;
-import io.wany.amethy.modules.Message;
+import io.wany.amethy.modules.PluginLoader;
+import io.wany.amethy.modules.MsgUtil;
 import io.wany.amethy.modules.sync.Sync;
 import net.kyori.adventure.text.Component;
 
@@ -39,7 +39,7 @@ public class PlayerChat implements Listener {
       return;
     }
 
-    Component component = Message.formatAsyncPlayerChat(
+    Component component = MsgUtil.formatAsyncPlayerChat(
         Amethy.YAMLCONFIG.getString("event.chat.msg.normal.format"),
         event.getPlayer(),
         event.message());

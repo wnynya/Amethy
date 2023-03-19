@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.Console;
+import io.wany.amethy.console;
 
 import java.io.File;
 import java.util.List;
@@ -173,8 +173,8 @@ public class YamlConfig {
     Amethy.PLUGIN.getConfig().options().copyDefaults(true);
     Amethy.PLUGIN.saveDefaultConfig();
     if (config.getInt("version") != Amethy.YAMLCONFIG_VERSION) {
-      Console.warn("플러그인 콘피그 버전이 맞지 않습니다. 플러그인이 정상적으로 작동하지 않을 수 있습니다.");
-      Console.warn("필요 버전: " + Amethy.YAMLCONFIG_VERSION + ", 감지된 버전: " + config.getInt("version"));
+      console.warn("플러그인 콘피그 버전이 맞지 않습니다. 플러그인이 정상적으로 작동하지 않을 수 있습니다.");
+      console.warn("필요 버전: " + Amethy.YAMLCONFIG_VERSION + ", 감지된 버전: " + config.getInt("version"));
     }
     return config;
   }

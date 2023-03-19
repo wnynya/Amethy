@@ -13,7 +13,7 @@ import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.sync.Sync;
 import io.wany.amethy.modules.sync.SyncConnection;
 import io.wany.amethy.modules.wand.Wand;
-import io.wany.amethy.modules.Message;
+import io.wany.amethy.modules.MsgUtil;
 
 import java.util.HashMap;
 
@@ -37,7 +37,7 @@ public class PlayerQuit implements Listener {
     String format = Amethy.YAMLCONFIG.getString("event.quit.msg.format");
 
     event.quitMessage((format.equals("null") || SyncConnection.ENABLED) ? null
-        : Message.formatPlayer(
+        : MsgUtil.formatPlayer(
             format,
             event.getPlayer()));
   }

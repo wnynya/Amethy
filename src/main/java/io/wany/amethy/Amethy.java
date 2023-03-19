@@ -3,6 +3,8 @@ package io.wany.amethy;
 import java.io.File;
 import java.util.UUID;
 
+import io.wany.amethy.modules.*;
+import io.wany.amethy.modules.sync.Sync;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,11 +15,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import io.wany.amethy.commands.*;
 import io.wany.amethy.listeners.*;
-import io.wany.amethy.modules.ServerPropertiesSorter;
-import io.wany.amethy.modules.YamlConfig;
 import io.wany.amethy.modules.database.Database;
 import io.wany.amethy.modules.itemonworld.ItemOnWorld;
-import io.wany.amethy.modules.sync.Sync;
 import io.wany.amethy.modules.wand.Wand;
 import io.wany.amethy.modules.wand.command.WandEditCommand;
 import io.wany.amethy.modules.wand.command.WandEditTabCompleter;
@@ -46,14 +45,15 @@ public class Amethy extends JavaPlugin {
   protected static final boolean ISRELOAD = Bukkit.getWorlds().size() != 0;
 
   public static String VERSION;
-  public static boolean PAPER_MODE;
   public static File FILE;
   public static File PLUGINS_DIR;
   public static File SERVER_DIR;
   public static Json CONFIG;
   public static boolean DEBUG = false;
-  protected static String UID = "";
-  protected static String KEY = "";
+  private static int JAVA_VERSION;
+  private static boolean DISABLED = false;
+  public static boolean PAPERAPI;
+  public static Message MESSAGE;
 
   public static final int YAMLCONFIG_VERSION = 100;
   public static FileConfiguration YAMLCONFIG;
@@ -61,6 +61,10 @@ public class Amethy extends JavaPlugin {
   @SuppressWarnings("deprecation")
   @Override
   public void onLoad() {
+
+    if (PLUGIN != null) {
+      return;
+    }
 
     PLUGIN = this;
 
@@ -80,13 +84,40 @@ public class Amethy extends JavaPlugin {
     System.out.println("loading yaml config");
     YAMLCONFIG = YamlConfig.onLoad();
 
-    assignServerType();
+    String javaVersion = System.getProperty("java.version");
+    if (javaVersion.startsWith("1.")) {
+      javaVersion = javaVersion.substring(2, 3);
+    }
+    else {
+      int dot = javaVersion.indexOf(".");
+      if (dot != -1) {
+        javaVersion = javaVersion.substring(0, dot);
+      }
+    }
+    JAVA_VERSION = Integer.parseInt(javaVersion);
+
+    if (JAVA_VERSION < 17) {
+      DISABLED = true;
+      return;
+    }
+
+    String version = Bukkit.getServer().getVersion().toLowerCase();
+    PAPERAPI = version.contains("paper") || version.contains("purpur") || version.contains("pufferfish");
+
+    MESSAGE = PAPERAPI ? new PaperMessage() : new SpigotMessage();
+
     Database.onLoad();
 
   }
 
   @Override
   public void onEnable() {
+
+    if (DISABLED) {
+      console.error("Plugin requires Java version >= 17 to run. Disable plugin.");
+      PluginLoader.unload(PLUGIN);
+      return;
+    }
 
     registerCommand("amethy", new AmethyCommand(), new AmethyTabCompleter());
     registerCommand("wandedit", new WandEditCommand(), new WandEditTabCompleter());
@@ -124,7 +155,7 @@ public class Amethy extends JavaPlugin {
     CoreProtectSupport.onEnable();
 
     Updater.onEnable();
-    //Sync.onEnable();
+    Sync.onEnable();
     Wand.onEnable();
     ItemOnWorld.onEnable();
 
@@ -142,7 +173,7 @@ public class Amethy extends JavaPlugin {
   public void onDisable() {
 
     Updater.onDisable();
-    //Sync.onDisable();
+    Sync.onDisable();
     Wand.onDisable();
 
     CoreProtectSupport.onDisable();
@@ -192,7 +223,7 @@ public class Amethy extends JavaPlugin {
 
   private void assignServerType() {
     String version = Bukkit.getServer().getVersion().toLowerCase();
-    PAPER_MODE = version.contains("paper") || version.contains("pufferfish");
+    PAPERAPI = version.contains("paper") || version.contains("pufferfish");
   }
 
 }

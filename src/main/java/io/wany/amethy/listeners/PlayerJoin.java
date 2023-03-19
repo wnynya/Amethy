@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import io.wany.amethy.Amethy;
 import io.wany.amethy.commands.BungeeTeleportCommand;
-import io.wany.amethy.modules.Message;
+import io.wany.amethy.modules.MsgUtil;
 import io.wany.amethy.modules.sync.Sync;
 import io.wany.amethy.modules.sync.SyncConnection;
 import io.wany.amethy.modules.wand.Wand;
@@ -39,7 +39,7 @@ public class PlayerJoin implements Listener {
     String format = Amethy.YAMLCONFIG.getString("event.join.msg.format");
 
     event.joinMessage((format.equals("null") || SyncConnection.ENABLED) ? null
-        : Message.formatPlayer(
+        : MsgUtil.formatPlayer(
             format,
             event.getPlayer()));
   }

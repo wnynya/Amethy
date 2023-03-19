@@ -1,4 +1,4 @@
-package io.wany.amethy;
+package io.wany.amethy.modules;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -12,6 +12,8 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import io.wany.amethy.Amethy;
+import io.wany.amethy.console;
 import org.bukkit.Bukkit;
 
 import io.wany.amethyst.Json;
@@ -161,8 +163,8 @@ public class Updater {
     try {
       String version = Updater.getLatest();
       if (!VERSION.equals(version)) {
-        Console.debug("Found newer version of plugin");
-        Console.debug("Updating plugin...");
+        console.debug("Found newer version of plugin");
+        console.debug("Updating plugin...");
         File file = Updater.download(version);
         Updater.update(file, version);
       }
