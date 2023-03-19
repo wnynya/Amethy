@@ -83,6 +83,7 @@ public class PluginLoader {
         }
       } catch (Exception e) {
         e.printStackTrace();
+        System.out.println("Failed to detach the plugin from internal plugin manager!");
       }
     }
 
@@ -136,11 +137,9 @@ public class PluginLoader {
       names.remove(name);
     }
 
-    //PaperClassLoaderStorage pcls = PaperClassLoaderStorage.instance();
+    // Closing the plugin classloader
     ClassLoader cl = plugin.getClass().getClassLoader();
-
-    /*if (cl instanceof ConfiguredPluginClassLoader ccl) {
-      // For Paper
+    if (cl instanceof URLClassLoader) {
       try {
         Field pluginField = cl.getClass().getDeclaredField("plugin");
         pluginField.setAccessible(true);
@@ -148,36 +147,16 @@ public class PluginLoader {
         Field pluginInitField = cl.getClass().getDeclaredField("pluginInit");
         pluginInitField.setAccessible(true);
         pluginInitField.set(cl, null);
-      } catch (Exception ex) {
-        ex.printStackTrace();
-      }
-
-      try {
         ((URLClassLoader) cl).close();
         System.gc();
       } catch (Exception ex) {
         ex.printStackTrace();
-      }
-
-    } else */if (cl instanceof URLClassLoader) {
-      try {
-        Field pluginField = cl.getClass().getDeclaredField("plugin");
-        pluginField.setAccessible(true);
-        pluginField.set(cl, null);
-        Field pluginInitField = cl.getClass().getDeclaredField("pluginInit");
-        pluginInitField.setAccessible(true);
-        pluginInitField.set(cl, null);
-      } catch (Exception ex) {
-        ex.printStackTrace();
-      }
-      try {
-        ((URLClassLoader) cl).close();
-      } catch (Exception ex) {
-        ex.printStackTrace();
+        System.out.println("Failed to close classloader!");
       }
     }
 
-    System.gc();
+    // Detach the plugin from internal provider storage
+
   }
 
   // For Paper, bootstrapper will inhibit plugin from loading
