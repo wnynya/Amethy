@@ -1,5 +1,6 @@
 package io.wany.amethy;
 
+import io.papermc.paper.plugin.configuration.PluginMeta;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
@@ -30,61 +31,82 @@ public class PluginLoader {
     Map<Event, SortedSet<RegisteredListener>> listeners = null;
     boolean reloadlisteners = true;
 
-    if (pluginManager != null) {
-      pluginManager.disablePlugin(plugin);
-      try {
-        if (Amethy.PAPER_MODE) {
-          // For Paper, PaperPluginManagerImpl implements PluginManager
-          // todo inject listeners (perhaps PaperEventManager does the thing)
-          Field paperPluginManagerField = Bukkit.getPluginManager().getClass().getDeclaredField("paperPluginManager");
-          // io.papermc.paper.plugin.manager.PaperPluginManagerImpl
-          Object pluginManagerImpl = paperPluginManagerField.get(Bukkit.getPluginManager());
-          Field instanceManagerField = pluginManagerImpl.getClass().getDeclaredField("instanceManager");
-          instanceManagerField.setAccessible(true);
+    pluginManager.disablePlugin(plugin);
 
-          Object instanceManager = instanceManagerField.get(pluginManagerImpl);
-          // io.papermc.paper.plugin.manager.PaperPluginInstanceManager
-          Class<?> instanceManagerClass = instanceManager.getClass();
-          Field pluginsField = instanceManagerClass.getDeclaredField("plugins");
-          Field lookupNamesField = instanceManagerClass.getDeclaredField("lookupNames");
-          Field commandMapField = instanceManagerClass.getDeclaredField("commandMap");
-          Field knownCommandsField = SimpleCommandMap.class.getDeclaredField("knownCommands");
-          paperPluginManagerField.setAccessible(true);
-          pluginsField.setAccessible(true);
-          lookupNamesField.setAccessible(true);
-          commandMapField.setAccessible(true);
-          knownCommandsField.setAccessible(true);
-          plugins = (List<Plugin>) pluginsField.get(instanceManager);
-          names = (Map<String, Plugin>) lookupNamesField.get(instanceManager);
-          commandMap = (SimpleCommandMap) commandMapField.get(instanceManager);
-          commands = (Map<String, Command>) knownCommandsField.get(commandMap);
-        } else {
-          // For Spigot, SimplePluginManager implements PluginManager
-          Field pluginsField = Bukkit.getPluginManager().getClass().getDeclaredField("plugins");
-          pluginsField.setAccessible(true);
-          plugins = (List<Plugin>) pluginsField.get(pluginManager);
+    try {
+      if (Amethy.PAPER_MODE) {
+        // For Paper, PaperPluginManagerImpl implements PluginManager
+        // todo inject listeners (perhaps PaperEventManager does the thing)
+        Field paperPluginManagerField = Bukkit.getPluginManager().getClass().getDeclaredField("paperPluginManager");
+        // io.papermc.paper.plugin.manager.PaperPluginManagerImpl
+        Object pluginManagerImpl = paperPluginManagerField.get(Bukkit.getPluginManager());
+        Field instanceManagerField = pluginManagerImpl.getClass().getDeclaredField("instanceManager");
+        instanceManagerField.setAccessible(true);
 
-          Field lookupNamesField = Bukkit.getPluginManager().getClass().getDeclaredField("lookupNames");
-          lookupNamesField.setAccessible(true);
-          names = (Map<String, Plugin>) lookupNamesField.get(pluginManager);
-          try {
-            Field listenersField = Bukkit.getPluginManager().getClass().getDeclaredField("listeners");
-            listenersField.setAccessible(true);
-            listeners = (Map<Event, SortedSet<RegisteredListener>>) listenersField.get(pluginManager);
-          } catch (Exception e) {
-            reloadlisteners = false;
+        Object instanceManager = instanceManagerField.get(pluginManagerImpl);
+        // io.papermc.paper.plugin.manager.PaperPluginInstanceManager
+        Class<?> instanceManagerClass = instanceManager.getClass();
+        Field pluginsField = instanceManagerClass.getDeclaredField("plugins");
+        Field lookupNamesField = instanceManagerClass.getDeclaredField("lookupNames");
+        Field commandMapField = instanceManagerClass.getDeclaredField("commandMap");
+        Field knownCommandsField = SimpleCommandMap.class.getDeclaredField("knownCommands");
+        paperPluginManagerField.setAccessible(true);
+        pluginsField.setAccessible(true);
+        lookupNamesField.setAccessible(true);
+        commandMapField.setAccessible(true);
+        knownCommandsField.setAccessible(true);
+        plugins = (List<Plugin>) pluginsField.get(instanceManager);
+        names = (Map<String, Plugin>) lookupNamesField.get(instanceManager);
+        commandMap = (SimpleCommandMap) commandMapField.get(instanceManager);
+        commands = (Map<String, Command>) knownCommandsField.get(commandMap);
+
+        // Detaching plugin from entrypoint storage
+        Class<?> handlerClass = Class.forName("io.papermc.paper.plugin.entrypoint.LaunchEntryPointHandler");
+        Class<?> entrypointClass = Class.forName("io.papermc.paper.plugin.entrypoint.Entrypoint");
+        Class<?> providerStorageClass = Class.forName("io.papermc.paper.plugin.storage.SimpleProviderStorage");
+        Class<?> pluginProviderClass = Class.forName("io.papermc.paper.plugin.provider.PluginProvider");
+        Object handler = handlerClass.getDeclaredField("INSTANCE").get(null);
+        Object entrypoint = entrypointClass.getDeclaredField("PLUGIN").get(null);
+        Object providerStorage = handlerClass.getMethod("get", entrypointClass).invoke(handler, entrypoint);
+        Iterable<?> iterable = (Iterable<?>) providerStorageClass.getMethod("getRegisteredProviders").invoke(providerStorage);
+        Iterator<?> iter = iterable.iterator();
+        String amethy = Amethy.PLUGIN.getPluginMeta().getName();
+
+        while (iter.hasNext()) {
+          Object pluginProvider = iter.next();
+          PluginMeta pluginMeta = (PluginMeta) pluginProviderClass.getMethod("getMeta").invoke(pluginProvider);
+
+          if (pluginMeta.getName().equals(amethy)) {
+            iter.remove();
+            break;
           }
-          Field commandMapField = Bukkit.getPluginManager().getClass().getDeclaredField("commandMap");
-          commandMapField.setAccessible(true);
-          commandMap = (SimpleCommandMap) commandMapField.get(pluginManager);
-          Field knownCommandsField = SimpleCommandMap.class.getDeclaredField("knownCommands");
-          knownCommandsField.setAccessible(true);
-          commands = (Map<String, Command>) knownCommandsField.get(commandMap);
         }
-      } catch (Exception e) {
-        e.printStackTrace();
-        System.out.println("Failed to detach the plugin from internal plugin manager!");
+      } else {
+        // For Spigot, SimplePluginManager implements PluginManager
+        Field pluginsField = Bukkit.getPluginManager().getClass().getDeclaredField("plugins");
+        pluginsField.setAccessible(true);
+        plugins = (List<Plugin>) pluginsField.get(pluginManager);
+
+        Field lookupNamesField = Bukkit.getPluginManager().getClass().getDeclaredField("lookupNames");
+        lookupNamesField.setAccessible(true);
+        names = (Map<String, Plugin>) lookupNamesField.get(pluginManager);
+        try {
+          Field listenersField = Bukkit.getPluginManager().getClass().getDeclaredField("listeners");
+          listenersField.setAccessible(true);
+          listeners = (Map<Event, SortedSet<RegisteredListener>>) listenersField.get(pluginManager);
+        } catch (Exception e) {
+          reloadlisteners = false;
+        }
+        Field commandMapField = Bukkit.getPluginManager().getClass().getDeclaredField("commandMap");
+        commandMapField.setAccessible(true);
+        commandMap = (SimpleCommandMap) commandMapField.get(pluginManager);
+        Field knownCommandsField = SimpleCommandMap.class.getDeclaredField("knownCommands");
+        knownCommandsField.setAccessible(true);
+        commands = (Map<String, Command>) knownCommandsField.get(commandMap);
       }
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.out.println("Failed to detach the plugin from internal plugin manager!");
     }
 
     if (listeners != null && reloadlisteners) {
@@ -154,9 +176,6 @@ public class PluginLoader {
         System.out.println("Failed to close classloader!");
       }
     }
-
-    // Detach the plugin from internal provider storage
-
   }
 
   // For Paper, bootstrapper will inhibit plugin from loading
@@ -169,15 +188,25 @@ public class PluginLoader {
 
     try {
       file.setReadable(true);
+      /* [Paper anatomy]
+       * PaperPluginManagerImpl.loadPlugin() processes 2 tasks consequently.
+       *
+       * Firstly, it invokes FileProviderSource.registerProviders()
+       * which in turn executes ProviderStorage.register() method,
+       * adding the plugin into entrypoint storage.
+       *
+       * Lastly, it invokes ServerPluginProviderStorage.processProvided()
+       * which in turn executes JavaPlugin.onLoad()
+       */
       plugin = Bukkit.getPluginManager().loadPlugin(file);
+
+      if (plugin != null) {
+        plugin.onLoad(); // this is likely a redundant call
+        Bukkit.getPluginManager().enablePlugin(plugin);
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }
-    if (plugin == null) {
-      return;
-    }
-    plugin.onLoad();
-    Bukkit.getPluginManager().enablePlugin(plugin);
   }
 
 }
