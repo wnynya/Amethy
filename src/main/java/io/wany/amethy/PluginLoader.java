@@ -201,7 +201,7 @@ public class PluginLoader {
       plugin = Bukkit.getPluginManager().loadPlugin(file);
 
       if (plugin != null) {
-        plugin.onLoad(); // this is likely a redundant call
+//        plugin.onLoad(); // this is likely a redundant call
         Bukkit.getPluginManager().enablePlugin(plugin);
       }
     } catch (Exception e) {
