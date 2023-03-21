@@ -1,5 +1,6 @@
 package io.wany.amethy.commands;
 
+import io.wany.amethy.modulesmc.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -11,8 +12,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import io.wany.amethy.modulesmc.Message;
 
 import java.util.List;
 
@@ -36,7 +35,8 @@ public class LidCommand implements CommandExecutor {
       double x, y, z;
       try {
         x = Double.parseDouble(args[1]);
-      } catch (Exception e) {
+      }
+      catch (Exception e) {
         sender.sendMessage(Message.commandErrorTranslatable("parsing.int.expected"));
         sender.sendMessage(Message.commandErrorArgsComponent(label, args, 1));
         return true;
@@ -48,7 +48,8 @@ public class LidCommand implements CommandExecutor {
       }
       try {
         y = Double.parseDouble(args[2]);
-      } catch (Exception e) {
+      }
+      catch (Exception e) {
         sender.sendMessage(Message.commandErrorTranslatable("parsing.int.expected"));
         sender.sendMessage(Message.commandErrorArgsComponent(label, args, 2));
         return true;
@@ -60,7 +61,8 @@ public class LidCommand implements CommandExecutor {
       }
       try {
         z = Double.parseDouble(args[3]);
-      } catch (Exception e) {
+      }
+      catch (Exception e) {
         sender.sendMessage(Message.commandErrorTranslatable("parsing.int.expected"));
         sender.sendMessage(Message.commandErrorArgsComponent(label, args, 3));
         return true;
@@ -76,11 +78,13 @@ public class LidCommand implements CommandExecutor {
         return true;
       }
       block = new Location(world, x, y, z).getBlock();
-    } else if (args.length == 4) {
+    }
+    else if (args.length == 4) {
       double x, y, z;
       try {
         x = Double.parseDouble(args[1]);
-      } catch (Exception e) {
+      }
+      catch (Exception e) {
         sender.sendMessage(Message.commandErrorTranslatable("parsing.int.expected"));
         sender.sendMessage(Message.commandErrorArgsComponent(label, args, 1));
         return true;
@@ -92,7 +96,8 @@ public class LidCommand implements CommandExecutor {
       }
       try {
         y = Double.parseDouble(args[2]);
-      } catch (Exception e) {
+      }
+      catch (Exception e) {
         sender.sendMessage(Message.commandErrorTranslatable("parsing.int.expected"));
         sender.sendMessage(Message.commandErrorArgsComponent(label, args, 2));
         return true;
@@ -104,7 +109,8 @@ public class LidCommand implements CommandExecutor {
       }
       try {
         z = Double.parseDouble(args[3]);
-      } catch (Exception e) {
+      }
+      catch (Exception e) {
         sender.sendMessage(Message.commandErrorTranslatable("parsing.int.expected"));
         sender.sendMessage(Message.commandErrorArgsComponent(label, args, 3));
         return true;
@@ -116,17 +122,21 @@ public class LidCommand implements CommandExecutor {
       }
       if (!(sender instanceof Player player)) {
         block = new Location(Bukkit.getWorlds().get(0), x, y, z).getBlock();
-      } else {
+      }
+      else {
         block = new Location(player.getWorld(), x, y, z).getBlock();
       }
-    } else if (args.length == 3 || args.length == 2) {
+    }
+    else if (args.length == 3 || args.length == 2) {
       sender.sendMessage(Message.commandErrorTranslatable("argument.pos3d.incomplete"));
       sender.sendMessage(Message.commandErrorArgsComponent(label, args, 1));
       return true;
-    } else {
+    }
+    else {
       if (!(sender instanceof Player player)) {
         block = Bukkit.getWorlds().get(0).getSpawnLocation().getBlock();
-      } else {
+      }
+      else {
         block = player.getTargetBlockExact(10);
       }
     }
@@ -147,7 +157,8 @@ public class LidCommand implements CommandExecutor {
       case "toggle" -> {
         if (lidded.isOpen()) {
           lidded.close();
-        } else {
+        }
+        else {
           lidded.open();
         }
       }

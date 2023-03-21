@@ -1,5 +1,12 @@
 package io.wany.amethy.listeners;
 
+import io.wany.amethy.Amethy;
+import io.wany.amethy.commands.BungeeTeleportCommand;
+import io.wany.amethy.modules.PaperMessage;
+import io.wany.amethy.modules.SpigotMessage;
+import io.wany.amethy.modules.sync.Sync;
+import io.wany.amethy.modules.sync.SyncConnection;
+import io.wany.amethy.modules.wand.Wand;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -9,18 +16,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import io.wany.amethy.Amethy;
-import io.wany.amethy.commands.BungeeTeleportCommand;
-import io.wany.amethy.modules.MsgUtil;
-import io.wany.amethy.modules.sync.Sync;
-import io.wany.amethy.modules.sync.SyncConnection;
-import io.wany.amethy.modules.wand.Wand;
-
-import java.util.HashMap;
-
+@SuppressWarnings("deprecation")
 public class PlayerJoin implements Listener {
-
-  public static HashMap<String, String> changeJoinPlayers = new HashMap<>();
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onPlayerJoin(PlayerJoinEvent event) {
@@ -38,10 +35,12 @@ public class PlayerJoin implements Listener {
 
     String format = Amethy.YAMLCONFIG.getString("event.join.msg.format");
 
-    event.joinMessage((format.equals("null") || SyncConnection.ENABLED) ? null
-        : MsgUtil.formatPlayer(
-            format,
-            event.getPlayer()));
+    if (Amethy.PAPERAPI) {
+      event.joinMessage(SyncConnection.ENABLED ? null : PaperMessage.Formatter.PLAYER.format(format, event.getPlayer()));
+    }
+    else {
+      event.setJoinMessage(SyncConnection.ENABLED ? null : SpigotMessage.Formatter.PLAYER.format(format, event.getPlayer()));
+    }
   }
 
   private void playPlayerJoinSound(PlayerJoinEvent event) {

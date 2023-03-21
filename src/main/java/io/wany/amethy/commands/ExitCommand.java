@@ -1,5 +1,6 @@
 package io.wany.amethy.commands;
 
+import io.wany.amethy.Amethy;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,7 +16,7 @@ public class ExitCommand implements CommandExecutor {
       return true;
     }
 
-    player.kick(Message.parse("Bye"));
+    Amethy.MESSAGE.kick(player, "Bye");
 
     return true;
 

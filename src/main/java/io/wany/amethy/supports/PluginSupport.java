@@ -2,6 +2,7 @@ package io.wany.amethy.supports;
 
 import java.util.HashMap;
 
+import io.wany.amethy.console;
 import org.bukkit.Bukkit;
 import org.bukkit.event.server.PluginEvent;
 import org.bukkit.plugin.Plugin;
@@ -40,6 +41,7 @@ public class PluginSupport extends EventEmitter {
     } else {
       if (this.enabled) {
         this.enabled = false;
+        this.loaded = false;
         this.emit("disable", this);
       }
     }
@@ -54,11 +56,12 @@ public class PluginSupport extends EventEmitter {
     if (!plugin.getName().equals(this.name)) {
       return;
     }
+    console.debug(plugin.getName() + " " + event.getEventName());
     this.check();
   }
 
   public boolean isEnabled() {
-    return this.enabled;
+    return this.loaded;
   }
 
   public Plugin getPlugin() {

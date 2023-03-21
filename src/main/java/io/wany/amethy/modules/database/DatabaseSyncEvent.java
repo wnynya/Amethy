@@ -182,7 +182,7 @@ public class DatabaseSyncEvent {
   public static void onDisable() {
     onLoadTimer100m.cancel();
     onLoadTimer1s.cancel();
-    onLoadExecutor.shutdown();
+    onLoadExecutor.shutdownNow();
   }
 
 }

@@ -1,36 +1,47 @@
 package io.wany.amethy.modules.sync;
 
+import io.wany.amethy.Amethy;
+import io.wany.amethy.console;
+import io.wany.amethy.modules.PaperMessage;
+import io.wany.amethy.modules.SpigotMessage;
+import io.wany.amethy.modules.database.DatabaseSyncEvent;
+import io.wany.amethyst.Json;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 
-import io.wany.amethy.Amethy;
-import io.wany.amethy.console;
-import io.wany.amethy.modules.MsgUtil;
-import io.wany.amethy.modules.database.DatabaseSyncEvent;
-import io.wany.amethyst.Json;
+import java.util.UUID;
 
 public class SyncConnection {
 
   public static boolean ENABLED = false;
 
   public static void databasePlayerJoin(DatabaseSyncEvent event) {
+    if (!ENABLED) {
+      return;
+    }
+
     Json data = event.getValue();
 
     // join 메시지
     if (Amethy.YAMLCONFIG.getBoolean("event.join.msg.enable")) {
-      Bukkit.broadcast(MsgUtil.formatDatabaseSyncPlayerConnection(
-          Amethy.YAMLCONFIG.getString("event.join.msg.format"),
-          event.getServer(),
-          MsgUtil.parse(data.getString("displayName"))));
+      String format = Amethy.YAMLCONFIG.getString("event.join.msg.format");
+      String server = event.getServer();
+      UUID uuid = UUID.fromString(data.getString("uuid"));
+
+      if (Amethy.PAPERAPI) {
+        Bukkit.broadcast(PaperMessage.Formatter.PLAYER_SERVER.format(format, server, uuid));
+      }
+      else {
+        Bukkit.broadcastMessage(SpigotMessage.Formatter.PLAYER_SERVER.format(format, server, uuid));
+      }
     }
 
     // join 사운드
     if (Amethy.YAMLCONFIG.getBoolean("event.join.sound.enable")) {
       Sound sound = Sound.valueOf(Amethy.YAMLCONFIG.getString("event.join.sound.sound"));
-      SoundCategory soundCategory = SoundCategory
-          .valueOf(Amethy.YAMLCONFIG.getString("event.join.sound.soundCategory"));
+      SoundCategory soundCategory = SoundCategory.valueOf(Amethy.YAMLCONFIG.getString("event.join.sound.soundCategory"));
       float volume = (float) Amethy.YAMLCONFIG.getDouble("event.join.sound.volume");
       float pitch = (float) Amethy.YAMLCONFIG.getDouble("event.join.sound.pitch");
 
@@ -41,21 +52,30 @@ public class SyncConnection {
   }
 
   public static void databasePlayerQuit(DatabaseSyncEvent event) {
+    if (!ENABLED) {
+      return;
+    }
+
     Json data = event.getValue();
 
     // quit 메시지
     if (Amethy.YAMLCONFIG.getBoolean("event.quit.msg.enable")) {
-      Bukkit.broadcast(MsgUtil.formatDatabaseSyncPlayerConnection(
-          Amethy.YAMLCONFIG.getString("event.quit.msg.format"),
-          event.getServer(),
-          MsgUtil.parse(data.getString("displayName"))));
+      String format = Amethy.YAMLCONFIG.getString("event.quit.msg.format");
+      String server = event.getServer();
+      UUID uuid = UUID.fromString(data.getString("uuid"));
+
+      if (Amethy.PAPERAPI) {
+        Bukkit.broadcast(PaperMessage.Formatter.PLAYER_SERVER.format(format, server, uuid));
+      }
+      else {
+        Bukkit.broadcastMessage(SpigotMessage.Formatter.PLAYER_SERVER.format(format, server, uuid));
+      }
     }
 
     // quit 사운드
     if (Amethy.YAMLCONFIG.getBoolean("event.quit.sound.enable")) {
       Sound sound = Sound.valueOf(Amethy.YAMLCONFIG.getString("event.quit.sound.sound"));
-      SoundCategory soundCategory = SoundCategory
-          .valueOf(Amethy.YAMLCONFIG.getString("event.quit.sound.soundCategory"));
+      SoundCategory soundCategory = SoundCategory.valueOf(Amethy.YAMLCONFIG.getString("event.quit.sound.soundCategory"));
       float volume = (float) Amethy.YAMLCONFIG.getDouble("event.quit.sound.volume");
       float pitch = (float) Amethy.YAMLCONFIG.getDouble("event.quit.sound.pitch");
 
@@ -87,6 +107,10 @@ public class SyncConnection {
       databasePlayerQuit((DatabaseSyncEvent) args[0]);
     });
 
+  }
+
+  protected static void onDisable() {
+    ENABLED = false;
   }
 
 }

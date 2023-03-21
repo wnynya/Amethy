@@ -66,7 +66,7 @@ public class MsgUtil {
 
     format = format.replace("&", "§");
 
-    String pendings = new String(format);
+    String pendings = format;
     StringBuilder part = new StringBuilder();
 
     for (int i = 0; i < format.length(); i++) {

@@ -34,15 +34,20 @@ public class Message {
     for (Object object : objects) {
       if (object instanceof Component) {
         component = component.append((Component) object);
-      } else if (object instanceof String) {
+      }
+      else if (object instanceof String) {
         component = component.append(parse(effect((String) object)));
-      } else if (object instanceof Number) {
+      }
+      else if (object instanceof Number) {
         component = component.append(parse(effect("§c" + object)));
-      } else if (object instanceof Boolean) {
+      }
+      else if (object instanceof Boolean) {
         component = component.append(parse(effect("§6" + object)));
-      } else if (object instanceof Entity) {
+      }
+      else if (object instanceof Entity) {
         component = component.append(parse((Entity) object));
-      } else if (object instanceof ItemStack) {
+      }
+      else if (object instanceof ItemStack) {
         component = component.append(parse((ItemStack) object));
       }
     }
@@ -56,7 +61,8 @@ public class Message {
   public static void send(CommandSender sender, Component message) {
     if (sender instanceof Player player) {
       send(player, message);
-    } else {
+    }
+    else {
       Console.log(message);
     }
   }
@@ -79,7 +85,8 @@ public class Message {
   public static void info(CommandSender sender, String message) {
     if (sender instanceof Player player) {
       info(player, message);
-    } else {
+    }
+    else {
       Console.log(message);
     }
   }
@@ -87,7 +94,8 @@ public class Message {
   public static void warn(CommandSender sender, String message) {
     if (sender instanceof Player player) {
       info(player, message);
-    } else {
+    }
+    else {
       Console.log(message);
     }
   }
@@ -95,7 +103,8 @@ public class Message {
   public static void error(CommandSender sender, String message) {
     if (sender instanceof Player player) {
       info(player, message);
-    } else {
+    }
+    else {
       Console.log(message);
     }
   }
@@ -103,7 +112,8 @@ public class Message {
   public static void info(CommandSender sender, String prefix, String message) {
     if (sender instanceof Player player) {
       info(player, prefix + message);
-    } else {
+    }
+    else {
       if (prefix.equals(Amethy.PREFIX)) {
         prefix = "";
       }
@@ -114,7 +124,8 @@ public class Message {
   public static void warn(CommandSender sender, String prefix, String message) {
     if (sender instanceof Player player) {
       info(player, prefix + message);
-    } else {
+    }
+    else {
       if (prefix.equals(Amethy.PREFIX)) {
         prefix = "";
       }
@@ -125,7 +136,8 @@ public class Message {
   public static void error(CommandSender sender, String prefix, String message) {
     if (sender instanceof Player player) {
       info(player, prefix + message);
-    } else {
+    }
+    else {
       if (prefix.equals(Amethy.PREFIX)) {
         prefix = "";
       }
@@ -154,17 +166,23 @@ public class Message {
 
         if (c.equals("l")) {
           decorations.put(TextDecoration.BOLD, TextDecoration.State.TRUE);
-        } else if (c.equals("m")) {
+        }
+        else if (c.equals("m")) {
           decorations.put(TextDecoration.STRIKETHROUGH, TextDecoration.State.TRUE);
-        } else if (c.equals("n")) {
+        }
+        else if (c.equals("n")) {
           decorations.put(TextDecoration.UNDERLINED, TextDecoration.State.TRUE);
-        } else if (c.equals("o")) {
+        }
+        else if (c.equals("o")) {
           decorations.put(TextDecoration.ITALIC, TextDecoration.State.TRUE);
-        } else if (c.equals("k")) {
+        }
+        else if (c.equals("k")) {
           decorations.put(TextDecoration.OBFUSCATED, TextDecoration.State.TRUE);
-        } else if (c.equals("r")) {
+        }
+        else if (c.equals("r")) {
           style = Component.empty().style();
-        } else if (c.equals("x")) {
+        }
+        else if (c.equals("x")) {
           if (i + 12 >= length) {
             break;
           }
@@ -175,7 +193,8 @@ public class Message {
           style = Component.empty().style();
           style.color(TextColor.fromHexString(color.toString()));
           i += 12;
-        } else if (c.matches("[0-9a-f]")) {
+        }
+        else if (c.matches("[0-9a-f]")) {
           style = Component.empty().style();
           style.color(TextColor.fromHexString(new Color(Color.Type.MFC, c).getHexString()));
         }
@@ -190,10 +209,7 @@ public class Message {
 
   public static Component prefix(String name, Color color) {
     Component component = Component.empty();
-    component = component.append(
-        Component.translatable("[%s]:")
-            .args(Component.text(name))
-            .color(color.getTextColor()));
+    component = component.append(Component.translatable("[%s]:").args(Component.text(name)).color(color.getTextColor()));
     component = component.append(Component.text(" "));
     return component;
   }
@@ -203,15 +219,20 @@ public class Message {
     for (Object object : objects) {
       if (object instanceof Component) {
         component = component.append((Component) object);
-      } else if (object instanceof String) {
+      }
+      else if (object instanceof String) {
         component = component.append(parse((String) object));
-      } else if (object instanceof Number) {
+      }
+      else if (object instanceof Number) {
         component = component.append(parse("§c" + object));
-      } else if (object instanceof Boolean) {
+      }
+      else if (object instanceof Boolean) {
         component = component.append(parse("§6" + object));
-      } else if (object instanceof Entity) {
+      }
+      else if (object instanceof Entity) {
         component = component.append(parse((Entity) object));
-      } else if (object instanceof ItemStack) {
+      }
+      else if (object instanceof ItemStack) {
         component = component.append(parse((ItemStack) object));
       }
     }
@@ -224,7 +245,8 @@ public class Message {
     for (TextComponent textComponent : components) {
       if (component == null) {
         component = components.get(0);
-      } else {
+      }
+      else {
         component = component.append(textComponent);
       }
     }
@@ -234,14 +256,16 @@ public class Message {
   public static Component parse(@NotNull Entity entity) {
     if (entity instanceof Player) {
       return parse((Player) entity);
-    } else if (entity instanceof Item item) {
+    }
+    else if (entity instanceof Item item) {
       ItemStack itemStack = item.getItemStack();
       return parse(itemStack);
     }
     Component component;
     if (entity.customName() != null) {
       component = entity.customName();
-    } else {
+    }
+    else {
       String key = "entity.minecraft." + entity.getType().getKey().value();
       component = translate(key);
     }
@@ -266,7 +290,8 @@ public class Message {
       if (component != null && component.decorations().get(TextDecoration.ITALIC) == TextDecoration.State.NOT_SET) {
         component = component.decoration(TextDecoration.ITALIC, TextDecoration.State.TRUE);
       }
-    } else {
+    }
+    else {
       String id = material.getKey().value();
       component = Component.translatable((material.isBlock() ? "block" : "item") + ".minecraft." + id);
       component = component.decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE);
@@ -278,8 +303,7 @@ public class Message {
           PotionMeta potionMeta = (PotionMeta) itemMeta;
           String potionId = potionMeta.getBasePotionData().getType().toString().toLowerCase();
           switch (potionMeta.getBasePotionData().getType()) {
-            case AWKWARD, FIRE_RESISTANCE, INVISIBILITY, LUCK, MUNDANE, NIGHT_VISION, POISON, SLOW_FALLING, SLOWNESS,
-                STRENGTH, THICK, TURTLE_MASTER, WATER, WATER_BREATHING, WEAKNESS ->
+            case AWKWARD, FIRE_RESISTANCE, INVISIBILITY, LUCK, MUNDANE, NIGHT_VISION, POISON, SLOW_FALLING, SLOWNESS, STRENGTH, THICK, TURTLE_MASTER, WATER, WATER_BREATHING, WEAKNESS ->
               component = Component.translatable("item.minecraft." + id + ".effect." + potionId);
             case UNCRAFTABLE -> component = Component.translatable("item.minecraft." + id + ".effect.empty");
             case JUMP -> component = Component.translatable("item.minecraft." + id + ".effect.leaping");
@@ -297,7 +321,8 @@ public class Message {
               if (textComponentTitle.content().equals("")) {
                 component = Component.translatable("item.minecraft." + id);
               }
-            } else {
+            }
+            else {
               component = Objects.requireNonNull(bookMeta.title());
             }
           }
@@ -326,14 +351,16 @@ public class Message {
         case UNCOMMON -> {
           if (itemMeta != null && itemMeta.hasEnchants()) {
             textColor = TextColor.fromHexString(new Color(Color.Type.MFC, "&b").getHexString());
-          } else {
+          }
+          else {
             textColor = TextColor.fromHexString(new Color(Color.Type.MFC, "&e").getHexString());
           }
         }
         case RARE -> {
           if (itemMeta != null && itemMeta.hasEnchants()) {
             textColor = TextColor.fromHexString(new Color(Color.Type.MFC, "&d").getHexString());
-          } else {
+          }
+          else {
             textColor = TextColor.fromHexString(new Color(Color.Type.MFC, "&b").getHexString());
           }
         }
@@ -343,7 +370,8 @@ public class Message {
         default -> {
           if (itemMeta != null && itemMeta.hasEnchants()) {
             textColor = TextColor.fromHexString(new Color(Color.Type.MFC, "&b").getHexString());
-          } else {
+          }
+          else {
             textColor = TextColor.fromHexString(new Color(Color.Type.MFC, "&f").getHexString());
           }
         }
@@ -380,15 +408,20 @@ public class Message {
 
         if (c.equals("l")) {
           component = component.decoration(TextDecoration.BOLD, true);
-        } else if (c.equals("m")) {
+        }
+        else if (c.equals("m")) {
           component = component.decoration(TextDecoration.STRIKETHROUGH, true);
-        } else if (c.equals("n")) {
+        }
+        else if (c.equals("n")) {
           component = component.decoration(TextDecoration.UNDERLINED, true);
-        } else if (c.equals("o")) {
+        }
+        else if (c.equals("o")) {
           component = component.decoration(TextDecoration.ITALIC, true);
-        } else if (c.equals("k")) {
+        }
+        else if (c.equals("k")) {
           component = component.decoration(TextDecoration.OBFUSCATED, true);
-        } else if (c.equals("r")) {
+        }
+        else if (c.equals("r")) {
           component = Component.empty();
           component = component.color(null);
           component = component.decoration(TextDecoration.BOLD, TextDecoration.State.NOT_SET);
@@ -396,7 +429,8 @@ public class Message {
           component = component.decoration(TextDecoration.UNDERLINED, TextDecoration.State.NOT_SET);
           component = component.decoration(TextDecoration.ITALIC, false);
           component = component.decoration(TextDecoration.OBFUSCATED, TextDecoration.State.NOT_SET);
-        } else if (c.equals("x")) {
+        }
+        else if (c.equals("x")) {
           if (i + 12 >= length) {
             break;
           }
@@ -412,7 +446,8 @@ public class Message {
           component = component.decoration(TextDecoration.ITALIC, false);
           component = component.decoration(TextDecoration.OBFUSCATED, TextDecoration.State.NOT_SET);
           i += 12;
-        } else if (c.matches("[0-9a-f]")) {
+        }
+        else if (c.matches("[0-9a-f]")) {
           component = Component.empty();
           component = component.color(TextColor.fromHexString(new Color(Color.Type.MFC, c).getHexString()));
           component = component.decoration(TextDecoration.BOLD, TextDecoration.State.NOT_SET);
@@ -421,7 +456,8 @@ public class Message {
           component = component.decoration(TextDecoration.ITALIC, false);
           component = component.decoration(TextDecoration.OBFUSCATED, TextDecoration.State.NOT_SET);
         }
-      } else {
+      }
+      else {
         int pos = string.indexOf(32, i);
         if (pos == -1) {
           pos = string.length();
@@ -438,12 +474,12 @@ public class Message {
           old = component;
           String urlString = string.substring(i, pos);
           component = component.content(urlString);
-          component = component
-              .clickEvent(ClickEvent.openUrl(urlString.startsWith("http") ? urlString : "http://" + urlString));
+          component = component.clickEvent(ClickEvent.openUrl(urlString.startsWith("http") ? urlString : "http://" + urlString));
           components.add(component);
           i += pos - i - 1;
           component = old;
-        } else {
+        }
+        else {
           builder.append(character);
         }
       }
@@ -508,7 +544,8 @@ public class Message {
 
     if (component instanceof TextComponent) {
       textComponent = textComponent.content(((TextComponent) component).content());
-    } else if (component instanceof TranslatableComponent) {
+    }
+    else if (component instanceof TranslatableComponent) {
       textComponent = textComponent.content(((TranslatableComponent) component).key());
     }
     textComponent = textComponent.color(component.color());
@@ -549,7 +586,7 @@ public class Message {
         component = component.append(Message.parse(stringBuilder.toString()));
         stringBuilder = new StringBuilder();
         if (formatPatternCompiler("prefix").matcher(processFormat).find()) {
-          Component part = Message.parse(Message.effect(VaultChat.getPrefix(player)));
+          Component part = Message.parse(Message.effect(VaultChat.prefix(player)));
           /*
            * if (CucumberySupport.LOADED) {
            * part =
@@ -565,7 +602,7 @@ public class Message {
           continue;
         }
         if (formatPatternCompiler("suffix").matcher(processFormat).find()) {
-          Component part = Message.parse(Message.effect(VaultChat.getSuffix(player)));
+          Component part = Message.parse(Message.effect(VaultChat.suffix(player)));
           /*
            * if (CucumberySupport.LOADED) {
            * part =
@@ -643,7 +680,8 @@ public class Message {
           i += 12;
           continue;
         }
-      } else {
+      }
+      else {
         stringBuilder.append(format.charAt(i));
         processFormat = processFormat.substring(1);
       }
@@ -663,7 +701,7 @@ public class Message {
         component = component.append(Message.parse(stringBuilder.toString()));
         stringBuilder = new StringBuilder();
         if (formatPatternCompiler("prefix").matcher(processFormat).find()) {
-          Component part = Message.parse(Message.effect(VaultChat.getPrefix(player)));
+          Component part = Message.parse(Message.effect(VaultChat.prefix(player)));
           /*
            * if (CucumberySupport.LOADED) {
            * part =
@@ -679,7 +717,7 @@ public class Message {
           continue;
         }
         if (formatPatternCompiler("suffix").matcher(processFormat).find()) {
-          Component part = Message.parse(Message.effect(VaultChat.getSuffix(player)));
+          Component part = Message.parse(Message.effect(VaultChat.suffix(player)));
           /*
            * if (CucumberySupport.LOADED) {
            * part =
@@ -763,7 +801,8 @@ public class Message {
           i += 8;
           continue;
         }
-      } else {
+      }
+      else {
         stringBuilder.append(format.charAt(i));
         processFormat = processFormat.substring(1);
       }
@@ -808,11 +847,7 @@ public class Message {
     stringBuilder.append(commandErrorArgs(args, i));
     String string = stringBuilder.toString();
     string = string.replaceAll("\s+$", "");
-    return Message.parse(
-        Message.effect(string),
-        Component.translatable("command.context.here")
-            .color(TextColor.fromHexString("#FF5555"))
-            .decoration(TextDecoration.ITALIC, TextDecoration.State.TRUE));
+    return Message.parse(Message.effect(string), Component.translatable("command.context.here").color(TextColor.fromHexString("#FF5555")).decoration(TextDecoration.ITALIC, TextDecoration.State.TRUE));
   }
 
   public static Component commandErrorTranslatable(String key, ComponentLike... args) {

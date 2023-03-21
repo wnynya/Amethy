@@ -1,9 +1,9 @@
 package io.wany.amethy.supports.vault;
 
+import io.wany.amethy.console;
 import org.bukkit.Bukkit;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.modulesmc.Console;
 import io.wany.amethy.supports.PluginSupport;
 import io.wany.amethy.supports.vault.listeners.ServiceRegister;
 import net.milkbowl.vault.chat.Chat;
@@ -13,6 +13,8 @@ import net.milkbowl.vault.permission.Permission;
 public class VaultSupport {
 
   public static PluginSupport SUPPORT;
+  public static String PREFIX = "§6§l[Vault 연동]:§r";
+
   public static Chat CHAT;
   public static Economy ECONOMY;
   public static Permission PERMISSION;
@@ -27,14 +29,14 @@ public class VaultSupport {
 
   public static void onEnable() {
     if (!Amethy.YAMLCONFIG.getBoolean("vault-support.enable")) {
-      Console.debug("Vault 지원 §c비활성화됨");
+      console.debug(PREFIX + "§c비활성화됨");
       return;
     }
-    Console.debug("Vault 지원 §a활성화됨");
+    console.debug(PREFIX + "§a활성화됨");
 
     SUPPORT = new PluginSupport("Vault");
     SUPPORT.on("enable", (args) -> {
-      Console.debug("왜");
+      console.debug(PREFIX + "로드됨");
       Amethy.PLUGIN.registerEvent(new ServiceRegister());
 
       if (Amethy.YAMLCONFIG.getBoolean("vault-support.chat.enable")) {
