@@ -1,5 +1,11 @@
 package io.wany.amethy.listeners;
 
+import io.wany.amethy.Amethy;
+import io.wany.amethy.modules.PaperMessage;
+import io.wany.amethy.modules.SpigotMessage;
+import io.wany.amethy.modules.sync.Sync;
+import io.wany.amethy.modules.sync.SyncConnection;
+import io.wany.amethy.modules.wand.Wand;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -9,17 +15,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import io.wany.amethy.Amethy;
-import io.wany.amethy.modules.sync.Sync;
-import io.wany.amethy.modules.sync.SyncConnection;
-import io.wany.amethy.modules.wand.Wand;
-import io.wany.amethy.modules.MsgUtil;
-
-import java.util.HashMap;
-
 public class PlayerQuit implements Listener {
-
-  public static HashMap<String, String> changeQuitPlayers = new HashMap<>();
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onPlayerQuit(PlayerQuitEvent event) {
@@ -36,10 +32,12 @@ public class PlayerQuit implements Listener {
 
     String format = Amethy.YAMLCONFIG.getString("event.quit.msg.format");
 
-    event.quitMessage((format.equals("null") || SyncConnection.ENABLED) ? null
-        : MsgUtil.formatPlayer(
-            format,
-            event.getPlayer()));
+    if (Amethy.PAPERAPI) {
+      event.quitMessage((format.equals("null") || SyncConnection.ENABLED) ? null : PaperMessage.Formatter.PLAYER.format(format, event.getPlayer()));
+    }
+    else {
+      event.setQuitMessage((format == null || format.equals("null") || SyncConnection.ENABLED) ? null : SpigotMessage.Formatter.PLAYER.format(format, event.getPlayer()));
+    }
   }
 
   private void playPlayerQuitSound(PlayerQuitEvent event) {

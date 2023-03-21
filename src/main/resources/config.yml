@@ -97,9 +97,9 @@ event:
     msg:
       normal: # 일반적인 채팅 시
         enable: true
-        format: '&r<{prefix}&r{displayname}&r{suffix}&r> &r{message}'
+        format: '&r{prefix}&r{displayname}&r{suffix}&r: &r{message}'
       sync: # 채널 연결 채팅 시 (채팅 동기화 설정 필요)
-        format: '&r[{server}] &r<{name}&r> &r{message}'
+        format: '&r[{server}] &r{name}&r: &r{message}'
 
     # 플레이어가 채팅할 때 텍스트 효과를 적용할 지 설정합니다. Permission: amethy.event.chat.effect
     effect:
@@ -351,13 +351,6 @@ itemonworld:
         - '822a48a5759eddef9e2918fc85996f8491cc92578d54dcd62e2b6d913bfb421e' # Bag of Gunpowder
 
 #==============================================================================#
-# 자동화 설정
-#==============================================================================#
-
-# [사용불가]
-automation:
-
-#==============================================================================#
 # 지원 및 연동 설정
 #==============================================================================#
 
@@ -368,7 +361,7 @@ bungeecord-support:
 
 #===== Vault 플러그인 연동 지원
 vault-support:
-  enable: false
+  enable: true
   # 채팅 모듈
   # 채팅 및 서버 입 퇴장 이벤트 시 플레이어 {prefix} 및 {suffix} 연동을 위해 필요합니다
   chat:
@@ -382,7 +375,7 @@ vault-support:
 
 #===== Cucumbery 플러그인 연동 지원
 cucumbery-support:
-  enable: false
+  enable: true
   override-menu:
     enable: true
   default-userdata:
@@ -468,17 +461,9 @@ cucumbery-support:
       아이템-재사용-대기-시간-무시(바닐라-아이템-전용): false
       무적-모드: false
 
-#===== CoreProtect 플러그인 지원
-coreprotect-support:
-  enable: false
-
-#===== NoteBlockAPI 플러그인 지원
-noteblockapi-support:
-  enable: false
-
 #===== Essentials 플러그인 연동 지원
 essentials-support:
-  enable: false
+  enable: true
 
 #==============================================================================#
 updater:

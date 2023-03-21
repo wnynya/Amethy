@@ -1,22 +1,11 @@
 package io.wany.amethy;
 
-import java.io.File;
-import java.util.UUID;
-
-import io.wany.amethy.modules.*;
-import io.wany.amethy.modules.sync.Sync;
-import org.bukkit.Bukkit;
-import org.bukkit.command.*;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import io.wany.amethy.commands.*;
 import io.wany.amethy.listeners.*;
+import io.wany.amethy.modules.*;
 import io.wany.amethy.modules.database.Database;
 import io.wany.amethy.modules.itemonworld.ItemOnWorld;
+import io.wany.amethy.modules.sync.Sync;
 import io.wany.amethy.modules.wand.Wand;
 import io.wany.amethy.modules.wand.command.WandEditCommand;
 import io.wany.amethy.modules.wand.command.WandEditTabCompleter;
@@ -25,14 +14,25 @@ import io.wany.amethy.supports.cucumbery.CucumberySupport;
 import io.wany.amethy.supports.essentials.EssentialsSupport;
 import io.wany.amethy.supports.vault.VaultSupport;
 import io.wany.amethyst.Json;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandMap;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.util.UUID;
 
 /**
- *
  * Amethy
  * https://amethy.wany.io
- * 
+ * <p></p>
  * ©2021 - 2023 Wany <sung@wany.io> (https://wany.io)
- *
  */
 public class Amethy extends JavaPlugin {
 
@@ -53,7 +53,7 @@ public class Amethy extends JavaPlugin {
   private static int JAVA_VERSION;
   private static boolean DISABLED = false;
   public static boolean PAPERAPI;
-  public static Message MESSAGE;
+  public static ServerMessage MESSAGE;
 
   public static final int YAMLCONFIG_VERSION = 100;
   public static FileConfiguration YAMLCONFIG;
@@ -77,11 +77,11 @@ public class Amethy extends JavaPlugin {
 
     if (CONFIG.has("debug")) {
       DEBUG = CONFIG.getBoolean("debug");
-    } else {
+    }
+    else {
       CONFIG.set("debug", false);
     }
 
-    System.out.println("loading yaml config");
     YAMLCONFIG = YamlConfig.onLoad();
 
     String javaVersion = System.getProperty("java.version");
@@ -132,7 +132,6 @@ public class Amethy extends JavaPlugin {
 
     registerEvent(new PlayerJoin());
     registerEvent(new PlayerQuit());
-    registerEvent(new PlayerChat());
     registerEvent(new PlayerDeath());
     registerEvent(new PlayerInteract());
     registerEvent(new PlayerMove());
@@ -148,11 +147,17 @@ public class Amethy extends JavaPlugin {
     registerEvent(new PluginEnable());
     registerEvent(new PluginDisable());
 
-    System.out.println("Loading cucumbery support");
+    if (PAPERAPI) {
+      registerEvent(new PaperPlayerChat());
+    }
+    else {
+      console.warn("서버에서 Paper API를 확인할 수 없습니다. 일부 기능이 비활성화됩니다.");
+      registerEvent(new SpigotPlayerChat());
+    }
+
     CucumberySupport.onEnable();
     VaultSupport.onEnable();
     EssentialsSupport.onEnable();
-    CoreProtectSupport.onEnable();
 
     Updater.onEnable();
     Sync.onEnable();
@@ -163,7 +168,8 @@ public class Amethy extends JavaPlugin {
 
     try {
       this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       e.printStackTrace();
     }
 
@@ -186,7 +192,8 @@ public class Amethy extends JavaPlugin {
 
     if (true) {
       pc = this.getCommand(cmd);
-    } else {
+    }
+    else {
       // This code is preserved to prepare future where paper-plugin.yml became mandatory
       CommandMap cmdMap = Bukkit.getCommandMap();
       String prefix = this.getName().toLowerCase();
@@ -196,7 +203,8 @@ public class Amethy extends JavaPlugin {
         var constr = clazz.getDeclaredConstructor(String.class, Plugin.class);
         constr.setAccessible(true);
         pc = (PluginCommand) constr.newInstance(cmd, this);
-      } catch (Exception e) {
+      }
+      catch (Exception e) {
         e.printStackTrace();
       }
       cmdMap.register(pc.getName(), prefix, pc);
@@ -211,7 +219,8 @@ public class Amethy extends JavaPlugin {
     if (pc != null) {
       pc.setExecutor(exc);
       pc.setTabCompleter(tab);
-    } else {
+    }
+    else {
       System.out.printf("Failed to load command: %s", cmd);
     }
   }

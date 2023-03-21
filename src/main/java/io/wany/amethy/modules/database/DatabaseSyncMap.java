@@ -66,7 +66,7 @@ public class DatabaseSyncMap {
           + " (`key`, `value`, `updated`) VALUES (?, ?, ?)", o);
     } catch (SQLException e) {
       e.printStackTrace();
-    } catch (Exception e) {
+    } catch (Exception ignored) {
     }
   }
 
@@ -77,7 +77,7 @@ public class DatabaseSyncMap {
           + " SET `value` = ?, `updated` = ? WHERE `key` = ?", o);
     } catch (SQLException e) {
       e.printStackTrace();
-    } catch (Exception e) {
+    } catch (Exception ignored) {
     }
   }
 
@@ -94,7 +94,7 @@ public class DatabaseSyncMap {
       }
     } catch (SQLException e) {
       e.printStackTrace();
-    } catch (Exception e) {
+    } catch (Exception ignored) {
     }
     return null;
   }

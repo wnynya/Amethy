@@ -1,5 +1,6 @@
 package io.wany.amethy.commands;
 
+import io.wany.amethy.Amethy;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -15,7 +16,7 @@ public class ToggledownfallCommand implements CommandExecutor {
       world = player.getWorld();
     }
     world.setStorm(!world.hasStorm());
-    sender.sendMessage("Toggled downfall");
+    Amethy.MESSAGE.info(sender, "Toggled downfall");
     return true;
   }
 

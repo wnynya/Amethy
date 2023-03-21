@@ -1,12 +1,13 @@
 package io.wany.amethy.modules.sync;
 
+import io.wany.amethy.console;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.database.Database;
-import io.wany.amethy.modulesmc.Console;
 
 public class Sync {
 
@@ -35,20 +36,27 @@ public class Sync {
     SyncChat.onPlayerChat(event);
   }
 
+  public static void onPlayerChat(AsyncPlayerChatEvent event) {
+    if (!ENABLED) {
+      return;
+    }
+    SyncChat.onPlayerChat(event);
+  }
+
   public static void onEnable() {
     if (!Amethy.YAMLCONFIG.getBoolean("sync.enable")) {
-      Console.debug(PREFIX + "동기화 &c비활성화됨");
+      console.debug(PREFIX + "동기화 &c비활성화됨");
       return;
     }
 
     if (!Database.ENABLED) {
-      Console.warn(PREFIX + "데이터베이스 연결을 확인할 수 없습니다. 기능이 비활성화됩니다.");
-      Console.debug(PREFIX + "동기화 &c비활성화됨");
+      console.warn(PREFIX + "데이터베이스 연결을 확인할 수 없습니다. 기능이 비활성화됩니다.");
+      console.debug(PREFIX + "동기화 &c비활성화됨");
       return;
     }
 
     ENABLED = true;
-    Console.debug(PREFIX + "동기화 &a활성화됨");
+    console.debug(PREFIX + "동기화 &a활성화됨");
 
     SyncPlayer.onEnable();
     SyncChat.onEnable();
