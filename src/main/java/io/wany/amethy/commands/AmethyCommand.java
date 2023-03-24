@@ -37,19 +37,16 @@ public class AmethyCommand implements CommandExecutor {
         try {
           if (Updater.isLatest()) {
             tail = "[최신 버전]";
-          }
-          else {
+          } else {
             tail = "[업데이트 가능]";
           }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
           tail = "[버전 확인 실패]";
         }
         // 정보: 플러그인 버전
         info(sender, Amethy.NAME + " v" + Amethy.VERSION + " §o" + tail);
         return true;
       }
-
 
       // 플러그인 리로드
       case "reload" -> {
@@ -69,7 +66,6 @@ public class AmethyCommand implements CommandExecutor {
         return true;
       }
 
-
       // 플러그인 디버그 메시지 설정
       case "debug" -> {
         if (!sender.hasPermission("amethy.terminal.debug")) {
@@ -81,11 +77,9 @@ public class AmethyCommand implements CommandExecutor {
         if (args.length >= 2) {
           if (args[1].equalsIgnoreCase("enable")) {
             next = true;
-          }
-          else if (args[1].equalsIgnoreCase("disable")) {
+          } else if (args[1].equalsIgnoreCase("disable")) {
             next = false;
-          }
-          else {
+          } else {
             // 오류: 알 수 없는 args[1]
             error(sender, Message.ERROR.UNKNOWN_ARG);
             info(sender, "사용법: /" + label + " " + args[0] + " (enable|disable)");
@@ -95,14 +89,12 @@ public class AmethyCommand implements CommandExecutor {
           Amethy.CONFIG.set("debug", Amethy.DEBUG);
           // 정보: 변경된 디버그 메시지 표시 여부
           info(sender, "디버그 메시지 출력이 " + (next ? "" : "비") + "활성화되었습니다.");
-        }
-        else {
+        } else {
           // 정보: 현재 디버그 메시지 표시 여부
           info(sender, "현재 디버그 메시지 출력은 " + (next ? "" : "비") + "활성화되어 있습니다.");
         }
         return true;
       }
-
 
       // 플러그인 업데이트
       case "update" -> {
@@ -116,8 +108,7 @@ public class AmethyCommand implements CommandExecutor {
           String version;
           try {
             version = Updater.getLatest();
-          }
-          catch (Exception e) {
+          } catch (Exception e) {
             // 오류: 버전 확인 실패
             error(sender, "버전 확인 실패. (" + e.getMessage() + ")");
             executor.shutdown();
@@ -141,8 +132,7 @@ public class AmethyCommand implements CommandExecutor {
           File file;
           try {
             file = Updater.download(version);
-          }
-          catch (Exception e) {
+          } catch (Exception e) {
             // 오류: 파일 다운로드 실패
             error(sender, "파일 다운로드 실패. (" + e.getMessage() + ")");
             executor.shutdown();
@@ -154,8 +144,7 @@ public class AmethyCommand implements CommandExecutor {
           info(sender, "플러그인 업데이트 중...");
           try {
             Updater.update(file, version);
-          }
-          catch (Exception e) {
+          } catch (Exception e) {
             // 오류: 업데이트 실패
             error(sender, "플러그인 업데이트 실패. (" + e.getMessage() + ")");
             executor.shutdown();
@@ -171,7 +160,6 @@ public class AmethyCommand implements CommandExecutor {
         return true;
       }
 
-
       // 플러그인 업데이터 설정
       case "updater" -> {
         if (!sender.hasPermission("amethy.terminal.updater")) {
@@ -186,11 +174,9 @@ public class AmethyCommand implements CommandExecutor {
             if (args.length >= 3) {
               if (args[2].equalsIgnoreCase("enable")) {
                 next = true;
-              }
-              else if (args[2].equalsIgnoreCase("disable")) {
+              } else if (args[2].equalsIgnoreCase("disable")) {
                 next = false;
-              }
-              else {
+              } else {
                 // 오류: 알 수 없는 args[2]
                 error(sender, Message.ERROR.UNKNOWN_ARG);
                 info(sender, "사용법: /" + label + " " + args[0] + " " + args[1] + " [enable|disable]");
@@ -200,23 +186,19 @@ public class AmethyCommand implements CommandExecutor {
               Amethy.CONFIG.set("updater.automation", Updater.AUTOMATION);
               // 정보: 변경된 업데이터 자동화 여부
               info(sender, "업데이터 자동화가 " + (next ? "" : "비") + "활성화되었습니다.");
-            }
-            else {
+            } else {
               // 정보: 현재 업데이터 자동화 여부
               info(sender, "현재 업데이트 자동화가 " + (next ? "" : "비") + "활성화되어 있습니다.");
             }
             return true;
-          }
-          else if (args[1].equalsIgnoreCase("channel")) {
+          } else if (args[1].equalsIgnoreCase("channel")) {
             String next;
             if (args.length >= 3) {
               if (args[2].equalsIgnoreCase("release")) {
                 next = "release";
-              }
-              else if (args[2].equalsIgnoreCase("dev")) {
+              } else if (args[2].equalsIgnoreCase("dev")) {
                 next = "dev";
-              }
-              else {
+              } else {
                 // 오류: 알 수 없는 args[2]
                 error(sender, Message.ERROR.UNKNOWN_ARG);
                 info(sender, "사용법: /" + label + " " + args[0] + " " + args[1] + " [release|dev]");
@@ -226,27 +208,54 @@ public class AmethyCommand implements CommandExecutor {
               Amethy.CONFIG.set("updater.channel", Updater.CHANNEL);
               // 정보: 변경된 업데이터 채널
               info(sender, "업데이터 채널이 " + next + " 채널로 변경되었습니다.");
-            }
-            else {
+            } else {
               // 정보: 현재 업데이터 채널
               info(sender, "현재 업데이터 채널은 " + Updater.CHANNEL + " 채널입니다.");
             }
             return true;
-          }
-          else {
+          } else {
             // 오류: 알 수 없는 args[1]
             error(sender, Message.ERROR.UNKNOWN_ARG);
             info(sender, "사용법: /" + label + " " + args[0] + " (channel|automation)");
             return true;
           }
-        }
-        else {
+        } else {
           // 오류: args[1] 필요
           error(sender, Message.ERROR.INSUFFICIENT_ARGS);
           info(sender, "사용법: /" + label + " " + args[0] + " (channel|automation)");
           return true;
         }
       }
+
+      case "unicode" -> {
+        if (!sender.hasPermission("amethy.terminal.unicode")) {
+          // 오류: 권한 없음
+          error(sender, "명령어를 사용할 수 있는 권한이 없습니다.");
+          return true;
+        }
+
+        int page = 0;
+
+        if (args.length > 1) {
+          page = Integer.parseInt(args[1]);
+        }
+
+        int columns = 16;
+        int rows = 4;
+        int index = page * rows;
+
+        for (int i = index; i < rows + index; i++) {
+          String line = "";
+          for (int j = 0; j < columns; j++) {
+            int n = i * columns + j;
+            line += " " + ((char) n);
+            info(sender, line);
+          }
+        }
+
+        return true;
+      }
+
       default -> {
         // 오류 알 수 없는 args[0]
         error(sender, Message.ERROR.UNKNOWN_ARG);
