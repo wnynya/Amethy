@@ -1,11 +1,10 @@
+.vscode
+/.vscode
+.idea
+/.idea
+*.iml
 /target
 /dependency-reduced-pom.xml
 /amerep-bot/node_modules
 /amerep-bot/config/config.json
-
-# IntelliJ
-/.idea
-*.iml
-
-# Internal libraries
-/lib
+/amerep-bot/data
