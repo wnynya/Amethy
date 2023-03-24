@@ -3,6 +3,9 @@ package io.wany.amethy.commands;
 import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.PluginLoader;
 import io.wany.amethy.modules.Updater;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import io.wany.amethy.modules.Message;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -234,24 +237,61 @@ public class AmethyCommand implements CommandExecutor {
           return true;
         }
 
-        int page = 0;
+        int page = 1;
 
         if (args.length > 1) {
           page = Integer.parseInt(args[1]);
         }
 
+        page = Math.max(page, 1);
+
         int columns = 16;
-        int rows = 4;
-        int index = page * rows;
+        int rows = 16;
+        int index = (page - 1) * rows;
+        String start = "U+" + String.format("%04X", index * columns);
+        String end = "U+" + String.format("%04X", index * columns + (rows * columns - 1));
+
+        Component div = Component.empty();
+        div = div.append(Component.text("§7------- "));
+        Component prev;
+        if (page - 1 >= 1) {
+          prev = Component.text("§e◀")
+              .clickEvent(ClickEvent.runCommand("/amethy unicode " + (page - 1)));
+        } else {
+          prev = Component.text("§7◀");
+        }
+        div = div.append(prev);
+        div = div.append(Component.text("§e [ " + start + " - " + end + " ] "));
+        Component next = Component.text("§e▶")
+            .clickEvent(ClickEvent.runCommand("/amethy unicode " + (page + 1)));
+        div = div.append(next);
+        div = div.append(Component.text("§7 -------"));
+        div = div.append(Component.text("§7 (Page " + page + ")"));
+
+        info(sender, "");
+        info(sender, "");
+        info(sender, "");
+        info(sender, "");
+        info(sender, "");
+
+        info(sender, div);
 
         for (int i = index; i < rows + index; i++) {
-          String line = "";
+          Component line = Component.empty();
+          line = line.append(Component.text("§eU+" + String.format("%04X", i * columns).substring(0, 3) + "?"));
           for (int j = 0; j < columns; j++) {
             int n = i * columns + j;
-            line += " " + ((char) n);
-            info(sender, line);
+            String ch = ((char) n) + "";
+            line = line.append(Component.text(" "));
+            Component c = Component.text(ch)
+                .hoverEvent(HoverEvent.showText(Component.text("Click to copy §e" + ch)))
+                .clickEvent(ClickEvent.copyToClipboard(ch));
+            line = line.append(c);
           }
+          info(sender, line);
         }
+
+        info(sender, div);
 
         return true;
       }
