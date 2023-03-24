@@ -230,7 +230,7 @@ public class PluginLoader {
       plugin = Bukkit.getPluginManager().loadPlugin(file);
 
       if (plugin != null) {
-//        plugin.onLoad(); // this call is redundant
+        // plugin.onLoad(); // this call is redundant
         Bukkit.getPluginManager().enablePlugin(plugin);
       }
     }
