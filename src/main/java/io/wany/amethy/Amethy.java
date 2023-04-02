@@ -113,11 +113,17 @@ public class Amethy extends JavaPlugin {
   @Override
   public void onEnable() {
 
+    if (PLUGIN == null) {
+      onLoad();
+    }
+
     if (DISABLED) {
       console.error("Plugin requires Java version >= 17 to run. Disable plugin.");
       PluginLoader.unload(PLUGIN);
       return;
     }
+
+    Updater.onEnable();
 
     registerCommand("amethy", new AmethyCommand(), new AmethyTabCompleter());
     registerCommand("wandedit", new WandEditCommand(), new WandEditTabCompleter());
@@ -159,7 +165,6 @@ public class Amethy extends JavaPlugin {
     VaultSupport.onEnable();
     EssentialsSupport.onEnable();
 
-    Updater.onEnable();
     Sync.onEnable();
     Wand.onEnable();
     ItemOnWorld.onEnable();
