@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("deprecation")
 public class SpigotMessage implements ServerMessage {
 
   private static SpigotMessage THIS;
