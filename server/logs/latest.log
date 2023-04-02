@@ -1,0 +1,95 @@
+[16:05:25] [ServerMain/INFO]: Building unoptimized datafixer
+[16:05:25] [ServerMain/INFO]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', servicesHost='https://api.minecraftservices.com', name='PROD'
+[16:05:27] [ServerMain/INFO]: Loaded 7 recipes
+[16:05:27] [Server thread/INFO]: Starting minecraft server version 1.19.3
+[16:05:27] [Server thread/WARN]: To start the server with more ram, launch it as "java -Xmx1024M -Xms1024M -jar minecraft_server.jar"
+[16:05:27] [Server thread/INFO]: Loading properties
+[16:05:27] [Server thread/INFO]: This server is running Paper version git-Paper-448 (MC: 1.19.3) (Implementing API version 1.19.3-R0.1-SNAPSHOT) (Git: 155aa36)
+[16:05:27] [Server thread/INFO]: Server Ping Player Sample Count: 12
+[16:05:27] [Server thread/INFO]: Using 4 threads for Netty based IO
+[16:05:27] [Server thread/INFO]: [ChunkTaskScheduler] Chunk system is using 1 I/O threads, 1 worker threads, and gen parallelism of 1 threads
+[16:05:27] [Server thread/INFO]: Default game type: SURVIVAL
+[16:05:27] [Server thread/INFO]: Generating keypair
+[16:05:27] [Server thread/INFO]: Starting Minecraft server on *:25565
+[16:05:27] [Server thread/INFO]: Using epoll channel type
+[16:05:27] [Server thread/INFO]: Paper: Using libdeflate (Linux x86_64) compression from Velocity.
+[16:05:27] [Server thread/INFO]: Paper: Using OpenSSL 3.0.x (Linux x86_64) cipher from Velocity.
+[16:05:27] [Server thread/INFO]: [STDOUT] [io.wany.amethy.AmethyBootstrap] ################################ createPlugin ################################
+[16:05:27] [Server thread/INFO]: [Amethy] Loading server plugin Amethy
+[16:05:27] [Server thread/INFO]: Server permissions file permissions.yml is empty, ignoring it
+[16:05:27] [Server thread/INFO]: Preparing level "world"
+[16:05:28] [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
+[16:05:28] [Server thread/INFO]: Time elapsed: 110 ms
+[16:05:28] [Server thread/INFO]: Preparing start region for dimension minecraft:the_nether
+[16:05:28] [Server thread/INFO]: Time elapsed: 33 ms
+[16:05:28] [Server thread/INFO]: Preparing start region for dimension minecraft:the_end
+[16:05:28] [Server thread/INFO]: Time elapsed: 42 ms
+[16:05:28] [Server thread/INFO]: [Amethy] Enabling Amethy
+[16:05:28] [Server thread/INFO]: [Amethy] [STDOUT] amethy 명령어 등록에 실패했다
+[16:05:28] [Server thread/WARN]: Nag author(s): '[]' of 'Amethy' about their usage of System.out/err.print. Please use your plugin's logger instead (JavaPlugin#getLogger).
+[16:05:28] [Server thread/INFO]: [Amethy] [STDOUT] wandedit 명령어 등록에 실패했다
+[16:05:28] [Server thread/INFO]: [Amethy] [STDOUT] bungeeteleport 명령어 등록에 실패했다
+[16:05:28] [Server thread/INFO]: [Amethy] [STDOUT] closeinvenrory 명령어 등록에 실패했다
+[16:05:28] [Server thread/INFO]: [Amethy] [STDOUT] drop 명령어 등록에 실패했다
+[16:05:28] [Server thread/INFO]: [Amethy] [STDOUT] exit 명령어 등록에 실패했다
+[16:05:28] [Server thread/INFO]: [Amethy] [STDOUT] drop 명령어 등록에 실패했다
+[16:05:28] [Server thread/INFO]: [Amethy] [STDOUT] lid 명령어 등록에 실패했다
+[16:05:28] [Server thread/INFO]: [Amethy] [STDOUT] list 명령어 등록에 실패했다
+[16:05:28] [Server thread/INFO]: [Amethy] [STDOUT] toggledownfall 명령어 등록에 실패했다
+[16:05:28] [Server thread/INFO]: [아메시] 에센셜을 지지하지 않습니다. [0m
+[16:05:28] [Server thread/INFO]: [아메시] 에센셜을 지지하지 않습니다.[0m
+[16:05:28] [Server thread/INFO]: [Amethy] [STDOUT] wandedit 명령어 등록에 실패했다
+[16:05:28] [Server thread/INFO]: [Amethy] [STDOUT] wandbrush 명령어 등록에 실패했다
+[16:05:28] [Server thread/INFO]: Running delayed init tasks
+[16:05:28] [Server thread/INFO]: Done (1.316s)! For help, type "help"
+[16:05:28] [Server thread/INFO]: Timings Reset
+[16:05:31] [Server thread/INFO]: [Amethy] Disabling Amethy
+[16:05:31] [Server thread/INFO]: [Amethy] [STDOUT] getGroup().remove()
+[16:05:31] [Server thread/INFO]: [Amethy] [STDOUT] unregisterClassloader
+[16:05:31] [Server thread/INFO]: [Amethy] [STDOUT] registerUnsafePlugin: true
+[16:05:31] [Server thread/WARN]: java.lang.NoSuchFieldException: plugin
+[16:05:31] [Server thread/WARN]: 	at java.base/java.lang.Class.getDeclaredField(Class.java:2610)
+[16:05:31] [Server thread/WARN]: 	at Amethy-1.0.0.jar//io.wany.amethy.BukkitPluginLoader.unload(BukkitPluginLoader.java:130)
+[16:05:31] [Server thread/WARN]: 	at Amethy-1.0.0.jar//io.wany.amethy.listeners.PlayerChat.onEvent(PlayerChat.java:33)
+[16:05:31] [Server thread/WARN]: 	at com.destroystokyo.paper.event.executor.asm.generated.GeneratedEventExecutor3.execute(Unknown Source)
+[16:05:31] [Server thread/WARN]: 	at org.bukkit.plugin.EventExecutor$2.execute(EventExecutor.java:77)
+[16:05:31] [Server thread/WARN]: 	at co.aikar.timings.TimedEventExecutor.execute(TimedEventExecutor.java:80)
+[16:05:31] [Server thread/WARN]: 	at org.bukkit.plugin.RegisteredListener.callEvent(RegisteredListener.java:70)
+[16:05:31] [Server thread/WARN]: 	at io.papermc.paper.plugin.manager.PaperEventManager.callEvent(PaperEventManager.java:54)
+[16:05:31] [Server thread/WARN]: 	at io.papermc.paper.plugin.manager.PaperPluginManagerImpl.callEvent(PaperPluginManagerImpl.java:126)
+[16:05:31] [Server thread/WARN]: 	at org.bukkit.plugin.SimplePluginManager.callEvent(SimplePluginManager.java:615)
+[16:05:31] [Server thread/WARN]: 	at net.minecraft.server.dedicated.DedicatedServer.bg(DedicatedServer.java:496)
+[16:05:31] [Server thread/WARN]: 	at net.minecraft.server.dedicated.DedicatedServer.b(DedicatedServer.java:448)
+[16:05:31] [Server thread/WARN]: 	at net.minecraft.server.MinecraftServer.a(MinecraftServer.java:1397)
+[16:05:31] [Server thread/WARN]: 	at net.minecraft.server.MinecraftServer.w(MinecraftServer.java:1173)
+[16:05:31] [Server thread/WARN]: 	at net.minecraft.server.MinecraftServer.lambda$spin$0(MinecraftServer.java:316)
+[16:05:31] [Server thread/WARN]: 	at java.base/java.lang.Thread.run(Thread.java:833)
+[16:05:31] [Server thread/INFO]: Unknown command. Type "/help" for help.
+[16:06:09] [Server thread/INFO]: Server Plugins (1):
+[16:06:09] [Server thread/INFO]: Paper Plugins:
+[16:06:09] [Server thread/INFO]:  - Amethy
+[16:34:40] [Server thread/INFO]: Stopping server
+[16:34:40] [Server thread/INFO]: Saving players
+[16:34:40] [Server thread/INFO]: Saving worlds
+[16:34:40] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[16:34:40] [Server thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world'
+[16:34:40] [Server thread/INFO]: [ChunkHolderManager] Halted chunk system for world 'world'
+[16:34:40] [Server thread/INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world'
+[16:34:40] [Server thread/INFO]: [ChunkHolderManager] Saved 0 block chunks, 59 entity chunks, 0 poi chunks in world 'world' in 0.01s
+[16:34:40] [Server thread/INFO]: ThreadedAnvilChunkStorage (world): All chunks are saved
+[16:34:40] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world_nether]'/minecraft:the_nether
+[16:34:40] [Server thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_nether'
+[16:34:40] [Server thread/INFO]: [ChunkHolderManager] Halted chunk system for world 'world_nether'
+[16:34:40] [Server thread/INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world_nether'
+[16:34:40] [Server thread/INFO]: [ChunkHolderManager] Saved 0 block chunks, 10 entity chunks, 0 poi chunks in world 'world_nether' in 0.00s
+[16:34:40] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[16:34:40] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world_the_end]'/minecraft:the_end
+[16:34:40] [Server thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_the_end'
+[16:34:40] [Server thread/INFO]: [ChunkHolderManager] Halted chunk system for world 'world_the_end'
+[16:34:40] [Server thread/INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world_the_end'
+[16:34:40] [Server thread/INFO]: [ChunkHolderManager] Saved 10 block chunks, 10 entity chunks, 0 poi chunks in world 'world_the_end' in 0.00s
+[16:34:40] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[16:34:40] [Server thread/INFO]: ThreadedAnvilChunkStorage: All dimensions are saved
+[16:34:40] [Server thread/INFO]: Flushing Chunk IO
+[16:34:40] [Server thread/INFO]: Closing Thread Pool
+[16:34:40] [Server thread/INFO]: Closing Server
