@@ -58,15 +58,17 @@ public class SyncChat {
     String message = data.getString("message");
 
     if (Amethy.PAPERAPI) {
-      Bukkit.broadcast(PaperMessage.Formatter.PLAYER_CHAT_SERVER.format(format, server, uuid, message));
-    }
-    else {
-      Bukkit.broadcastMessage(SpigotMessage.Formatter.PLAYER_CHAT_SERVER.format(format, server, uuid, Amethy.MESSAGE.stringify(message)));
+      Bukkit.broadcast(
+          PaperMessage.Formatter.PLAYER_CHAT_SERVER.format(format, server, uuid, Amethy.MESSAGE.parse(message)));
+    } else {
+      Bukkit.broadcastMessage(
+          SpigotMessage.Formatter.PLAYER_CHAT_SERVER.format(format, server, uuid, Amethy.MESSAGE.parse(message)));
     }
 
     if (Amethy.YAMLCONFIG.getBoolean("event.chat.sound.enable")) {
       Sound sound = Sound.valueOf(Amethy.YAMLCONFIG.getString("event.chat.sound.sound"));
-      SoundCategory soundCategory = SoundCategory.valueOf(Amethy.YAMLCONFIG.getString("event.chat.sound.soundCategory"));
+      SoundCategory soundCategory = SoundCategory
+          .valueOf(Amethy.YAMLCONFIG.getString("event.chat.sound.soundCategory"));
       float volume = (float) Amethy.YAMLCONFIG.getDouble("event.chat.sound.volume");
       float pitch = (float) Amethy.YAMLCONFIG.getDouble("event.chat.sound.pitch");
 

@@ -17,7 +17,7 @@ import io.wany.amethyst.network.MySQLResult;
 public class DatabaseSyncEvent {
 
   private static final EventEmitter eventEmitter = new EventEmitter();
-  private static final HashMap<Long, DatabaseSyncEvent> processedEvents = new HashMap<>();
+  private static final HashMap<Long, String> processedEvents = new HashMap<>();
 
   private static ExecutorService onLoadExecutor = Executors.newFixedThreadPool(1);
   private static Timer onLoadTimer100m = new Timer();
@@ -69,18 +69,16 @@ public class DatabaseSyncEvent {
     insert(new DatabaseSyncEvent(event, value));
   }
 
-  public static boolean isProcessed(DatabaseSyncEvent event) {
-    DatabaseSyncEvent processed = processedEvents.get(event.emitted);
-    if (processed == null) {
-      return false;
-    }
-    return processed.server.equals(event.server) && processed.event.equals(event.event);
+  public static boolean isProcessed(long emitted, String key) {
+    String keyg = processedEvents.get(emitted);
+    return key.equals(keyg);
   }
 
   private static void process(DatabaseSyncEvent event) {
-    if (!isProcessed(event)) {
+    String key = event.emitted + "$" + event.event + "$" + event.value;
+    if (!isProcessed(event.emitted, key)) {
+      processedEvents.put(event.emitted, key);
       eventEmitter.emit(event.event, event);
-      processedEvents.put(event.emitted, event);
     }
     processedEvents.keySet().removeIf((emitted) -> {
       return emitted < System.currentTimeMillis() - 5000;
