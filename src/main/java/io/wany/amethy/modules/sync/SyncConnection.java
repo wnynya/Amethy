@@ -32,8 +32,7 @@ public class SyncConnection {
 
       if (Amethy.PAPERAPI) {
         Bukkit.broadcast(PaperMessage.Formatter.PLAYER_SERVER.format(format, server, uuid));
-      }
-      else {
+      } else {
         Bukkit.broadcastMessage(SpigotMessage.Formatter.PLAYER_SERVER.format(format, server, uuid));
       }
     }
@@ -41,7 +40,8 @@ public class SyncConnection {
     // join 사운드
     if (Amethy.YAMLCONFIG.getBoolean("event.join.sound.enable")) {
       Sound sound = Sound.valueOf(Amethy.YAMLCONFIG.getString("event.join.sound.sound"));
-      SoundCategory soundCategory = SoundCategory.valueOf(Amethy.YAMLCONFIG.getString("event.join.sound.soundCategory"));
+      SoundCategory soundCategory = SoundCategory
+          .valueOf(Amethy.YAMLCONFIG.getString("event.join.sound.soundCategory"));
       float volume = (float) Amethy.YAMLCONFIG.getDouble("event.join.sound.volume");
       float pitch = (float) Amethy.YAMLCONFIG.getDouble("event.join.sound.pitch");
 
@@ -66,8 +66,7 @@ public class SyncConnection {
 
       if (Amethy.PAPERAPI) {
         Bukkit.broadcast(PaperMessage.Formatter.PLAYER_SERVER.format(format, server, uuid));
-      }
-      else {
+      } else {
         Bukkit.broadcastMessage(SpigotMessage.Formatter.PLAYER_SERVER.format(format, server, uuid));
       }
     }
@@ -75,7 +74,8 @@ public class SyncConnection {
     // quit 사운드
     if (Amethy.YAMLCONFIG.getBoolean("event.quit.sound.enable")) {
       Sound sound = Sound.valueOf(Amethy.YAMLCONFIG.getString("event.quit.sound.sound"));
-      SoundCategory soundCategory = SoundCategory.valueOf(Amethy.YAMLCONFIG.getString("event.quit.sound.soundCategory"));
+      SoundCategory soundCategory = SoundCategory
+          .valueOf(Amethy.YAMLCONFIG.getString("event.quit.sound.soundCategory"));
       float volume = (float) Amethy.YAMLCONFIG.getDouble("event.quit.sound.volume");
       float pitch = (float) Amethy.YAMLCONFIG.getDouble("event.quit.sound.pitch");
 
