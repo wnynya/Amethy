@@ -157,7 +157,7 @@ public class SyncPlayer {
       }
       UUID uuid = player.getUniqueId();
       JsonArray array = JsonInventory.jsonify(player.getInventory());
-      DatabaseSyncMap.set("sync." + NAMESPACE() + "." + uuid.toString(), array.toString());
+      DatabaseSyncMap.set("sync." + NAMESPACE() + "." + uuid, array.toString());
     }
 
     @Override
