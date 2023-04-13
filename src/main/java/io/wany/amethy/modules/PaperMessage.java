@@ -27,24 +27,23 @@ public class PaperMessage implements ServerMessage {
   @Override
   public Object of(Object... objects) {
     try {
-      /*if (CucumberySupport.isEnabled()) {
-        return CucumberyMessage.of(objects);
-      }*/
+      /*
+       * if (CucumberySupport.isEnabled()) {
+       * return CucumberyMessage.of(objects);
+       * }
+       */
       Component component = Component.empty();
       for (Object obj : objects) {
         if (obj instanceof Component) {
           component = component.append((Component) obj);
-        }
-        else if (obj instanceof String str) {
+        } else if (obj instanceof String str) {
           component = component.append(LegacyComponentSerializer.legacySection().deserialize(str));
-        }
-        else {
+        } else {
           component = component.append(Component.translatable(obj != null ? obj.toString() : "null"));
         }
       }
       return component;
-    }
-    catch (Throwable t) {
+    } catch (Throwable t) {
       t.printStackTrace();
       return Component.empty();
     }
@@ -76,8 +75,7 @@ public class PaperMessage implements ServerMessage {
     if (aud instanceof ConsoleCommandSender) {
       String message = LegacyComponentSerializer.legacySection().serialize(component);
       console.log(message);
-    }
-    else {
+    } else {
       aud.sendMessage(component);
     }
   }
@@ -96,8 +94,7 @@ public class PaperMessage implements ServerMessage {
     private static Pattern pattern(String pat) {
       if (patternPool.containsKey(pat)) {
         return patternPool.get(pat);
-      }
-      else {
+      } else {
         Pattern pattern = Pattern.compile("^\\{" + pat + "}");
         patternPool.put(pat, pattern);
         return pattern;
@@ -137,8 +134,7 @@ public class PaperMessage implements ServerMessage {
               i += size + 1;
             }
           }
-        }
-        else {
+        } else {
           part.append(format.charAt(i));
           pendings = pendings.substring(1);
         }
@@ -252,10 +248,19 @@ public class PaperMessage implements ServerMessage {
         public Component format(Object[] objects) {
           UUID uuid = (UUID) objects[1];
           OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-          return (Component) THIS.of(player.getName());
+          if (player == null || player.getName() == null) {
+            try {
+              return (Component) THIS.of(MojangAPI.username(uuid));
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+            return (Component) THIS.of("§cnull");
+          } else {
+            return (Component) THIS.of(player.getName());
+          }
         }
       };
-      // 플레이어 Vault 접두사  (args:UUID)
+      // 플레이어 Vault 접두사 (args:UUID)
       public static final FormattingModule $UUID_PLAYER_VAULT_PREFIX = new FormattingModule() {
         @Override
         public Component format(Object[] objects) {
@@ -264,7 +269,7 @@ public class PaperMessage implements ServerMessage {
           return (Component) THIS.of(VaultChat.prefix(player));
         }
       };
-      // 플레이어 Vault 접두사  (args:UUID)
+      // 플레이어 Vault 접두사 (args:UUID)
       public static final FormattingModule $UUID_PLAYER_VAULT_SUFFIX = new FormattingModule() {
         @Override
         public Component format(Object[] objects) {

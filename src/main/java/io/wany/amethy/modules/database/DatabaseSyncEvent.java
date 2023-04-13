@@ -102,6 +102,7 @@ public class DatabaseSyncEvent {
     } catch (SQLException e) {
       e.printStackTrace();
     } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 
@@ -122,6 +123,7 @@ public class DatabaseSyncEvent {
     } catch (SQLException e) {
       e.printStackTrace();
     } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 
@@ -133,6 +135,7 @@ public class DatabaseSyncEvent {
     } catch (SQLException e) {
       e.printStackTrace();
     } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 

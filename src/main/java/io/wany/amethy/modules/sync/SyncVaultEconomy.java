@@ -32,6 +32,8 @@ public class SyncVaultEconomy {
 
     DatabaseSyncMap.set("sync.vault.economy." + uuid.toString(), data);
     DatabaseSyncEvent.emit("sync/vault/economy", data);
+
+    console.debug("VaultECO: [OUT] " + uuid + " : " + balance);
   }
 
   public static void databaseUserBalanceUpdate(DatabaseSyncEvent event) {
@@ -39,6 +41,8 @@ public class SyncVaultEconomy {
 
     UUID uuid = UUID.fromString(data.getString("uuid"));
     double balance = data.getDouble("balance");
+
+    console.debug("VaultECO: [IN] " + uuid + " : " + balance);
 
     OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
 

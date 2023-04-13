@@ -2,17 +2,24 @@ package io.wany.amethy.commands;
 
 import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.PluginLoader;
+import io.wany.amethy.modules.ServerMessage;
 import io.wany.amethy.modules.Updater;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import io.wany.amethy.modules.Message;
+import io.wany.amethy.modules.MojangAPI;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -20,20 +27,23 @@ public class AmethyCommand implements CommandExecutor {
 
   public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
 
-    if (args.length == 0) {
-      // 오류: args[0] 필요
-      error(sender, Message.ERROR.INSUFFICIENT_ARGS);
-      info(sender, "사용법: /" + label + " (version|reload|debug|update|updater)");
+    String permPrefix = "amethy.command.";
+    int agi = 0;
+
+    if (args.length == agi) {
+      // 오류: args[agi] 필요
+      error(sender, ServerMessage.ERROR.INSUFFICIENT_ARGS);
+      info(sender, "사용법: /" + label + " (version|reload|debug|update|updater|unicode)");
       return true;
     }
 
-    switch (args[0].toLowerCase()) {
+    switch (args[agi].toLowerCase()) {
 
       // 플러그인 버전 확인
-      case "version" -> {
-        if (!sender.hasPermission("amethy.terminal.version")) {
+      case "version": {
+        if (!sender.hasPermission(permPrefix + ".version")) {
           // 오류: 권한 없음
-          error(sender, Message.ERROR.NO_PERM);
+          error(sender, ServerMessage.ERROR.NO_PERM);
           return true;
         }
         String tail;
@@ -52,10 +62,10 @@ public class AmethyCommand implements CommandExecutor {
       }
 
       // 플러그인 리로드
-      case "reload" -> {
-        if (!sender.hasPermission("amethy.terminal.reload")) {
+      case "reload": {
+        if (!sender.hasPermission(permPrefix + ".reload")) {
           // 오류: 권한 없음
-          error(sender, Message.ERROR.NO_PERM);
+          error(sender, ServerMessage.ERROR.NO_PERM);
           return true;
         }
         // 정보: 플러그인 리로드 시작
@@ -70,22 +80,22 @@ public class AmethyCommand implements CommandExecutor {
       }
 
       // 플러그인 디버그 메시지 설정
-      case "debug" -> {
-        if (!sender.hasPermission("amethy.terminal.debug")) {
+      case "debug": {
+        if (!sender.hasPermission(permPrefix + ".debug")) {
           // 오류: 권한 없음
-          error(sender, Message.ERROR.NO_PERM);
+          error(sender, ServerMessage.ERROR.NO_PERM);
           return true;
         }
         boolean next = Amethy.DEBUG;
-        if (args.length >= 2) {
-          if (args[1].equalsIgnoreCase("enable")) {
+        if (args.length >= agi + 2) {
+          if (args[agi + 1].equalsIgnoreCase("enable")) {
             next = true;
-          } else if (args[1].equalsIgnoreCase("disable")) {
+          } else if (args[agi + 1].equalsIgnoreCase("disable")) {
             next = false;
           } else {
-            // 오류: 알 수 없는 args[1]
-            error(sender, Message.ERROR.UNKNOWN_ARG);
-            info(sender, "사용법: /" + label + " " + args[0] + " (enable|disable)");
+            // 오류: 알 수 없는 args[agi + 1]
+            error(sender, ServerMessage.ERROR.UNKNOWN_ARG);
+            info(sender, "사용법: /" + label + " " + args[agi] + " (enable|disable)");
             return true;
           }
           Amethy.DEBUG = next;
@@ -100,10 +110,10 @@ public class AmethyCommand implements CommandExecutor {
       }
 
       // 플러그인 업데이트
-      case "update" -> {
-        if (!sender.hasPermission("amethy.terminal.updater.update")) {
+      case "update": {
+        if (!sender.hasPermission(permPrefix + ".updater.update")) {
           // 오류: 권한 없음
-          error(sender, Message.ERROR.NO_PERM);
+          error(sender, ServerMessage.ERROR.NO_PERM);
           return true;
         }
         ExecutorService executor = Executors.newFixedThreadPool(1);
@@ -118,7 +128,7 @@ public class AmethyCommand implements CommandExecutor {
             return true;
           }
           if (Amethy.VERSION.equals(version)) {
-            if (!(args.length >= 2 && args[1].equalsIgnoreCase("-force"))) {
+            if (!(args.length >= agi + 2 && args[agi + 1].equalsIgnoreCase("-force"))) {
               // 경고: 이미 최신 버전임
               warn(sender, "이미 플러그인이 최신 버전입니다.");
               warn(sender, "강제로 업데이트하려면 -force 플래그를 사용하십시오.");
@@ -164,24 +174,24 @@ public class AmethyCommand implements CommandExecutor {
       }
 
       // 플러그인 업데이터 설정
-      case "updater" -> {
-        if (!sender.hasPermission("amethy.terminal.updater")) {
+      case "updater": {
+        if (!sender.hasPermission(permPrefix + ".updater")) {
           // 오류: 권한 없음
-          error(sender, Message.ERROR.NO_PERM);
+          error(sender, ServerMessage.ERROR.NO_PERM);
           return true;
         }
 
-        if (args.length >= 2) {
-          if (args[1].equalsIgnoreCase("automation")) {
+        if (args.length >= agi + 2) {
+          if (args[agi + 1].equalsIgnoreCase("automation")) {
             boolean next = Updater.AUTOMATION;
-            if (args.length >= 3) {
-              if (args[2].equalsIgnoreCase("enable")) {
+            if (args.length >= agi + 3) {
+              if (args[agi + 2].equalsIgnoreCase("enable")) {
                 next = true;
-              } else if (args[2].equalsIgnoreCase("disable")) {
+              } else if (args[agi + 2].equalsIgnoreCase("disable")) {
                 next = false;
               } else {
-                // 오류: 알 수 없는 args[2]
-                error(sender, Message.ERROR.UNKNOWN_ARG);
+                // 오류: 알 수 없는 args[agi + 2]
+                error(sender, ServerMessage.ERROR.UNKNOWN_ARG);
                 info(sender, "사용법: /" + label + " " + args[0] + " " + args[1] + " [enable|disable]");
                 return true;
               }
@@ -194,16 +204,16 @@ public class AmethyCommand implements CommandExecutor {
               info(sender, "현재 업데이트 자동화가 " + (next ? "" : "비") + "활성화되어 있습니다.");
             }
             return true;
-          } else if (args[1].equalsIgnoreCase("channel")) {
+          } else if (args[agi + 1].equalsIgnoreCase("channel")) {
             String next;
-            if (args.length >= 3) {
-              if (args[2].equalsIgnoreCase("release")) {
+            if (args.length >= agi + 3) {
+              if (args[agi + 3].equalsIgnoreCase("release")) {
                 next = "release";
-              } else if (args[2].equalsIgnoreCase("dev")) {
+              } else if (args[agi + 2].equalsIgnoreCase("dev")) {
                 next = "dev";
               } else {
-                // 오류: 알 수 없는 args[2]
-                error(sender, Message.ERROR.UNKNOWN_ARG);
+                // 오류: 알 수 없는 args[agi + 2]
+                error(sender, ServerMessage.ERROR.UNKNOWN_ARG);
                 info(sender, "사용법: /" + label + " " + args[0] + " " + args[1] + " [release|dev]");
                 return true;
               }
@@ -217,23 +227,24 @@ public class AmethyCommand implements CommandExecutor {
             }
             return true;
           } else {
-            // 오류: 알 수 없는 args[1]
-            error(sender, Message.ERROR.UNKNOWN_ARG);
-            info(sender, "사용법: /" + label + " " + args[0] + " (channel|automation)");
+            // 오류: 알 수 없는 args[agi + 1]
+            error(sender, ServerMessage.ERROR.UNKNOWN_ARG);
+            info(sender, "사용법: /" + label + " " + args[agi] + " (channel|automation)");
             return true;
           }
         } else {
           // 오류: args[1] 필요
-          error(sender, Message.ERROR.INSUFFICIENT_ARGS);
-          info(sender, "사용법: /" + label + " " + args[0] + " (channel|automation)");
+          error(sender, ServerMessage.ERROR.INSUFFICIENT_ARGS);
+          info(sender, "사용법: /" + label + " " + args[agi] + " (channel|automation)");
           return true;
         }
       }
 
-      case "unicode" -> {
-        if (!sender.hasPermission("amethy.terminal.unicode")) {
+      // 유니코드 테이블
+      case "unicode": {
+        if (!sender.hasPermission(permPrefix + ".unicode")) {
           // 오류: 권한 없음
-          error(sender, "명령어를 사용할 수 있는 권한이 없습니다.");
+          error(sender, ServerMessage.ERROR.NO_PERM);
           return true;
         }
 
@@ -296,12 +307,31 @@ public class AmethyCommand implements CommandExecutor {
         return true;
       }
 
-      default -> {
-        // 오류 알 수 없는 args[0]
-        error(sender, Message.ERROR.UNKNOWN_ARG);
-        info(sender, "사용법: /" + label + " (version|reload|debug|update|updater)");
+      case "test": {
+        if (!sender.hasPermission(permPrefix + ".test")) {
+          // 오류: 권한 없음
+          error(sender, ServerMessage.ERROR.NO_PERM);
+          return true;
+        }
+
+        if (sender instanceof Player player) {
+          try {
+            info(player, MojangAPI.username(player.getUniqueId()));
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
+
         return true;
       }
+
+      default: {
+        // 오류 알 수 없는 args[agi]
+        error(sender, ServerMessage.ERROR.UNKNOWN_ARG);
+        info(sender, "사용법: /" + label + " (version|reload|debug|update|updater|unicode)");
+        return true;
+      }
+
     }
 
   }

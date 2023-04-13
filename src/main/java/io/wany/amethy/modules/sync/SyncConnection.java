@@ -29,9 +29,10 @@ public class SyncConnection {
       String format = Amethy.YAMLCONFIG.getString("event.join.msg.format");
       String server = event.getServer();
       UUID uuid = UUID.fromString(data.getString("uuid"));
+      String displayName = data.getString("displayName");
 
       if (Amethy.PAPERAPI) {
-        Bukkit.broadcast(PaperMessage.Formatter.PLAYER_SERVER.format(format, server, uuid));
+        Bukkit.broadcast(PaperMessage.Formatter.PLAYER_SERVER.format(format, server, uuid, displayName));
       } else {
         Bukkit.broadcastMessage(SpigotMessage.Formatter.PLAYER_SERVER.format(format, server, uuid));
       }

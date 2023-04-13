@@ -97,9 +97,9 @@ event:
     msg:
       normal: # 일반적인 채팅 시
         enable: true
-        format: '&r{prefix}&r{displayname}&r{suffix}&r: &r{message}'
+        format: '&r<{prefix}&r{displayname}&r{suffix}&r> &r{message}'
       sync: # 채널 연결 채팅 시 (채팅 동기화 설정 필요)
-        format: '&r[{server}] &r{name}&r: &r{message}'
+        format: '&r[{server}] &r<{prefix}&r{name}&r{suffix}&r> &r{message}'
 
     # 플레이어가 채팅할 때 텍스트 효과를 적용할 지 설정합니다. Permission: amethy.event.chat.effect
     effect:

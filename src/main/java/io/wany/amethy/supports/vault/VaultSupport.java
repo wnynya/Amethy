@@ -13,7 +13,7 @@ import net.milkbowl.vault.permission.Permission;
 public class VaultSupport {
 
   public static PluginSupport SUPPORT;
-  public static String PREFIX = "§6§l[Vault 연동]:§r";
+  public static String PREFIX = "§6§l[Vault 연동]:§r ";
 
   public static Chat CHAT;
   public static Economy ECONOMY;

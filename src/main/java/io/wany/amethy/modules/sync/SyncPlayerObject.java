@@ -37,7 +37,7 @@ public interface SyncPlayerObject {
   }
 
   default void onEnable() {
-    console.debug(Sync.PREFIX + "플레이어 정보 동기화 - " + NAME() + " " + (ENABLED() ? "&a" : "&c비") + "활성화됨");
+    console.debug(Sync.PREFIX + "플레이어 정보 동기화 - " + NAME() + " " + (ENABLED() ? "§a" : "§c비") + "활성화됨");
   }
 
   default void onDisable() {

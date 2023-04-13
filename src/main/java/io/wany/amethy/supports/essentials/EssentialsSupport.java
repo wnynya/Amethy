@@ -8,7 +8,7 @@ import io.wany.amethy.supports.essentials.listeners.UserBalanceUpdate;
 public class EssentialsSupport {
 
   public static PluginSupport SUPPORT;
-  public static String PREFIX = "§6§l[Essentials 연동]:§r";
+  public static String PREFIX = "§6§l[Essentials 연동]:§r ";
 
   public static boolean isEnabled() {
     if (SUPPORT == null) {

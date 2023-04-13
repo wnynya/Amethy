@@ -7,13 +7,12 @@ import io.wany.amethy.supports.PluginSupport;
 public class CucumberySupport {
 
   public static PluginSupport SUPPORT;
-  public static String PREFIX = "§x§5§2§e§e§5§2§l[큐컴버리 연동]:§r";
+  public static String PREFIX = "§x§5§2§e§e§5§2§l[큐컴버리 연동]:§r ";
 
   public static boolean isEnabled() {
     if (SUPPORT == null) {
       return false;
-    }
-    else {
+    } else {
       return SUPPORT.isEnabled();
     }
   }
