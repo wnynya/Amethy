@@ -53,7 +53,8 @@ public class Database {
           Amethy.YAMLCONFIG.getInt("database.mysql.port"),
           Amethy.YAMLCONFIG.getString("database.mysql.username"),
           Amethy.YAMLCONFIG.getString("database.mysql.password"),
-          Amethy.YAMLCONFIG.getString("database.mysql.database"));
+          Amethy.YAMLCONFIG.getString("database.mysql.database"))
+          .autoReconnect();
       client = new MySQLClient("amethy", cfg);
       ENABLED = true;
       console.debug(PREFIX + "데이터베이스 연결됨");
