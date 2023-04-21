@@ -45,18 +45,18 @@ public class Sync {
 
   public static void onEnable() {
     if (!Amethy.YAMLCONFIG.getBoolean("sync.enable")) {
-      console.debug(PREFIX + "동기화 &c비활성화됨");
+      console.debug(PREFIX + "동기화 §c비활성화됨");
       return;
     }
 
     if (!Database.ENABLED) {
       console.warn(PREFIX + "데이터베이스 연결을 확인할 수 없습니다. 기능이 비활성화됩니다.");
-      console.debug(PREFIX + "동기화 &c비활성화됨");
+      console.debug(PREFIX + "동기화 §c비활성화됨");
       return;
     }
 
     ENABLED = true;
-    console.debug(PREFIX + "동기화 &a활성화됨");
+    console.debug(PREFIX + "동기화 §a활성화됨");
 
     SyncPlayer.onEnable();
     SyncChat.onEnable();

@@ -81,7 +81,7 @@ public class DatabaseSyncEvent {
       eventEmitter.emit(event.event, event);
     }
     processedEvents.keySet().removeIf((emitted) -> {
-      return emitted < System.currentTimeMillis() - 5000;
+      return emitted < System.currentTimeMillis() - 15000;
     });
   }
 
@@ -110,7 +110,7 @@ public class DatabaseSyncEvent {
     try {
       MySQLResult result = Database.query("SELECT * FROM " + TABLE
           + " WHERE `server` NOT LIKE '" + Database.SERVER + "'"
-          + " AND `emitted` > " + (System.currentTimeMillis() - 3000)
+          + " AND `emitted` > " + (System.currentTimeMillis() - 10000)
           + " ORDER BY `emitted` ASC");
 
       for (int i = 0; i < result.size(); i++) {
@@ -129,7 +129,7 @@ public class DatabaseSyncEvent {
 
   private static void delete() {
     try {
-      Object[] o = { System.currentTimeMillis() - 5000 };
+      Object[] o = { System.currentTimeMillis() - 20000 };
       Database.query("DELETE FROM " + TABLE
           + " WHERE `emitted` < ?", o);
     } catch (SQLException e) {

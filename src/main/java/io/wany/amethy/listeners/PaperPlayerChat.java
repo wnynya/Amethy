@@ -19,6 +19,10 @@ public class PaperPlayerChat implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onPlayerChat(AsyncChatEvent event) {
+    if (event.isCancelled()) {
+      return;
+    }
+
     setPlayerChatRenderer(event);
     playPlayerChatSound(event);
     Sync.onPlayerChat(event);
@@ -29,7 +33,8 @@ public class PaperPlayerChat implements Listener {
       return;
     }
 
-    Component component = PaperMessage.Formatter.PLAYER_CHAT.format(Amethy.YAMLCONFIG.getString("event.chat.msg.normal.format"), event.getPlayer(), event.message());
+    Component component = PaperMessage.Formatter.PLAYER_CHAT
+        .format(Amethy.YAMLCONFIG.getString("event.chat.msg.normal.format"), event.getPlayer(), event.message());
 
     ExecutorService e = Executors.newSingleThreadExecutor();
     e.submit(() -> {

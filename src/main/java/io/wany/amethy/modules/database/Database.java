@@ -79,14 +79,9 @@ public class Database {
 
     try {
       client.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-
-    try {
-      client.close();
       console.debug(PREFIX + "데이터베이스 연결 종료");
     } catch (SQLException e) {
+      e.printStackTrace();
     }
   }
 

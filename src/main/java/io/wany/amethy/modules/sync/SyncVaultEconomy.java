@@ -66,6 +66,7 @@ public class SyncVaultEconomy {
 
     Player player = event.getPlayer();
     UUID uuid = player.getUniqueId();
+
     Json data = DatabaseSyncMap.get("sync.vault.economy." + uuid.toString());
 
     if (data == null) {

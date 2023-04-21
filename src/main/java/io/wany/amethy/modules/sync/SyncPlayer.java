@@ -3,9 +3,14 @@ package io.wany.amethy.modules.sync;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.bukkit.Bukkit;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -49,10 +54,14 @@ public class SyncPlayer {
       if (data == null) {
         return;
       }
-      player.setHealth(data.getDouble("health"));
+      double health = Math.min(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue(),
+          Math.max(0, data.getDouble("health")));
+      int foodlevel = (int) Math.min(20, Math.max(0, data.getInt("foodlevel")));
+      float exhaution = (float) Math.min(20, Math.max(0, data.getFloat("exhaution")));
+      player.setHealth(health);
       player.setHealthScale(data.getDouble("healthscale"));
-      player.setFoodLevel(data.getInt("foodlevel"));
-      player.setExhaustion(data.getFloat("exhaution"));
+      player.setFoodLevel(foodlevel);
+      player.setExhaustion(exhaution);
     }
 
     @Override
@@ -173,6 +182,50 @@ public class SyncPlayer {
   };
   static {
     OBJECTS.add(syncPlayerInventory);
+  }
+
+  // 플레이어 인벤토리 포지션 동기화
+  private static SyncPlayerObject syncPlayerInventorySlot = new SyncPlayerObject() {
+
+    @Override
+    public String NAMESPACE() {
+      return "player.inventoryslot";
+    }
+
+    @Override
+    public String NAME() {
+      return "인벤토리 슬롯";
+    }
+
+    @Override
+    public void select(Player player) {
+      if (!ENABLED()) {
+        return;
+      }
+      UUID uuid = player.getUniqueId();
+      Json data = DatabaseSyncMap.get("sync." + NAMESPACE() + "." + uuid.toString());
+      if (data == null) {
+        return;
+      }
+      int slot = data.getInt("slot");
+      player.getInventory().setHeldItemSlot(slot);
+    }
+
+    @Override
+    public void update(Player player) {
+      if (!ENABLED()) {
+        return;
+      }
+      UUID uuid = player.getUniqueId();
+      int slot = player.getInventory().getHeldItemSlot();
+      Json data = new Json();
+      data.set("slot", slot);
+      DatabaseSyncMap.set("sync." + NAMESPACE() + "." + uuid, data);
+    }
+
+  };
+  static {
+    OBJECTS.add(syncPlayerInventorySlot);
   }
 
   // 플레이어 엔더 상자 동기화
@@ -332,6 +385,9 @@ public class SyncPlayer {
     DatabaseSyncMap.set("sync." + "player.isonline" + "." + uuid.toString(), isonline + "");
   }
 
+  private static ExecutorService onEnableExecutor = Executors.newFixedThreadPool(1);
+  private static Timer onEnableTimer = new Timer();
+
   protected static void onEnable() {
     if (!Amethy.YAMLCONFIG.getBoolean("sync.player.enable")) {
       console.debug(Sync.PREFIX + "플레이어 정보 동기화 §c비활성화됨");
@@ -354,9 +410,25 @@ public class SyncPlayer {
     for (SyncPlayerObject object : OBJECTS) {
       object.onEnable();
     }
+
+    onEnableExecutor.submit(() -> {
+      onEnableTimer.schedule(new TimerTask() {
+        @Override
+        public void run() {
+          for (Player player : Bukkit.getOnlinePlayers()) {
+            for (SyncPlayerObject object : OBJECTS) {
+              object.update(player);
+            }
+          }
+        }
+      }, 0, 1000 * 60);
+    });
   }
 
   protected static void onDisable() {
+    onEnableTimer.cancel();
+    onEnableExecutor.shutdown();
+
     for (Player player : Bukkit.getOnlinePlayers()) {
       updateOnline(player, false);
       for (SyncPlayerObject object : OBJECTS) {

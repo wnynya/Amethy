@@ -1,5 +1,6 @@
 package io.wany.amethy.modules.sync;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -9,6 +10,10 @@ import com.jho5245.cucumbery.util.no_groups.ItemSerializer;
 public class JsonItemStack {
 
   public static String stringify(ItemStack itemStack) {
+    if (itemStack == null) {
+      itemStack = new ItemStack(Material.AIR);
+    }
+    itemStack = itemStack.clone();
     itemStack = ItemLore.removeItemLore(itemStack);
     return ItemSerializer.serialize(itemStack);
   }

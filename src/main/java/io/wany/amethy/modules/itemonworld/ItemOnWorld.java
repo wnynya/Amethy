@@ -222,10 +222,10 @@ public class ItemOnWorld {
   public static void onEnable() {
 
     if (!Amethy.YAMLCONFIG.getBoolean("itemonworld.enable")) {
-      Console.debug(Message.effect(PREFIX + "아이템온월드 &c비활성화됨"));
+      Console.debug(Message.effect(PREFIX + "아이템온월드 §c비활성화됨"));
       return;
     }
-    Console.debug(Message.effect(PREFIX + "아이템온월드 &a활성화됨"));
+    Console.debug(Message.effect(PREFIX + "아이템온월드 §a활성화됨"));
     ENABLED = true;
 
     try {

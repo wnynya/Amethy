@@ -97,7 +97,7 @@
     <dependency>
       <groupId>io.wany.amethyst</groupId>
       <artifactId>Amethyst</artifactId>
-      <version>0.8.7</version>
+      <version>0.8.9</version>
     </dependency>
 
     <!-- paper (repo:papermc) -->
