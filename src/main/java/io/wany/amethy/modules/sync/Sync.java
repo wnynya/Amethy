@@ -27,6 +27,7 @@ public class Sync {
       return;
     }
     SyncPlayer.onPlayerQuit(event);
+    SyncVaultEconomy.onPlayerQuit(event);
   }
 
   public static void onPlayerChat(AsyncChatEvent event) {
@@ -67,6 +68,7 @@ public class Sync {
 
   public static void onDisable() {
     SyncPlayer.onDisable();
+    SyncVaultEconomy.onDisable();
   }
 
 }

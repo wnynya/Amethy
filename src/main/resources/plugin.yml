@@ -92,3 +92,23 @@ commands:
     usage: '/<command> [player]'
     permission: minecraft.command.closeinventory
     aliases: [cci]
+
+  home:
+    permission: amethy.command.transport.home
+    aliases: [홈, 집]
+
+  sethome:
+    permission: amethy.command.transport.home
+    aliases: [셋홈]
+
+  delhome:
+    permission: amethy.command.transport.home
+    aliases: [델홈]
+
+  visit:
+    permission: amethy.command.transport.home
+    aliases: [방문]
+
+  randomteleport:
+    permission: amethy.command.transport.randomteleport
+    aliases: [randomtp, rtp]

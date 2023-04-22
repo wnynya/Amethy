@@ -1,11 +1,16 @@
 package io.wany.amethy.modules.sync;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.database.DatabaseSyncEvent;
@@ -83,6 +88,25 @@ public class SyncVaultEconomy {
     }
   }
 
+  public static void onPlayerQuit(PlayerQuitEvent event) {
+    if (!ENABLED) {
+      return;
+    }
+
+    Player player = event.getPlayer();
+    UUID uuid = player.getUniqueId();
+    double balance = VaultSupport.ECONOMY.getBalance(player);
+
+    Json data = new Json();
+    data.set("uuid", uuid.toString());
+    data.set("balance", balance);
+
+    DatabaseSyncMap.set("sync.vault.economy." + uuid.toString(), data);
+  }
+
+  private static ExecutorService onEnableExecutor = Executors.newFixedThreadPool(1);
+  private static Timer onEnableTimer = new Timer();
+
   public static void onEnable() {
     if (!Amethy.YAMLCONFIG.getBoolean("sync.vault.economy.enable")) {
       console.debug(Sync.PREFIX + "Vault Economy 동기화 §c비활성화됨");
@@ -113,10 +137,22 @@ public class SyncVaultEconomy {
     DatabaseSyncEvent.on("sync/vault/economy", (args) -> {
       databaseUserBalanceUpdate((DatabaseSyncEvent) args[0]);
     });
+
+    onEnableExecutor.submit(() -> {
+      onEnableTimer.schedule(new TimerTask() {
+        @Override
+        public void run() {
+          for (Player player : Bukkit.getOnlinePlayers()) {
+
+          }
+        }
+      }, 0, 1000 * 60);
+    });
   }
 
   public static void onDisable() {
-
+    onEnableTimer.cancel();
+    onEnableExecutor.shutdown();
   }
 
 }

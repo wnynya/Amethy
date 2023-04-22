@@ -1,5 +1,5 @@
 #==============================================================================#
-# Amethy                                             ©2022 Wany (sung@wany.io) #
+# Amethy                                     © 2022 - 2023 Wany (sung@wany.io) #
 #                                                       https://amethy.wany.io #
 #==============================================================================#
 
@@ -196,6 +196,43 @@ sync:
       location: 'Seoul,KR'
       worlds: # 적용될 월드 목록
         - 'world'
+
+#==============================================================================#
+# 이동 설정
+#==============================================================================#
+
+transport:
+  spawn:
+    enable: false
+
+  home:
+    enable: false
+
+  randomteleport:
+    enable: false
+    presets:
+      world:
+        radius:
+          min: 20000
+          max: 100000
+        hates:
+          - OCEAN
+          - COLD_OCEAN
+          - DEEP_OCEAN
+          - WARM_OCEAN
+          - FROZEN_OCEAN
+          - LUKEWARM_OCEAN
+          - DEEP_COLD_OCEAN
+          - DEEP_FROZEN_OCEAN
+          - DEEP_LUKEWARM_OCEAN
+          - RIVER
+          - FROZEN_RIVER
+          - ICE_SPIKES
+          - FROZEN_PEAKS
+          - MUSHROOM_FIELDS
+
+  bungeecord:
+    enable: false
 
 #==============================================================================#
 # 완드 설정
