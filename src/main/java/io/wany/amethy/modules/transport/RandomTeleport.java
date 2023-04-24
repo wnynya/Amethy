@@ -17,10 +17,12 @@ import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
 
 import io.wany.amethy.Amethy;
+import io.wany.amethy.console;
 
 public class RandomTeleport {
 
   protected static boolean ENABLED = false;
+  protected static final String PREFIX = Amethy.COLOR + "§l[랜덤 텔레포트]: §r";
 
   public static class Preset {
 
@@ -80,7 +82,7 @@ public class RandomTeleport {
     public void gen(World world, Consumer<Location> consumer) {
       double x = randomIn(this.minX, this.maxX);
       double y = randomIn(this.minY, this.maxY);
-      double z = randomIn(this.minX, this.maxX);
+      double z = randomIn(this.minZ, this.maxZ);
 
       int cx = (int) Math.floor(x / 16);
       int cz = (int) Math.floor(z / 16);
@@ -106,6 +108,7 @@ public class RandomTeleport {
 
   private static HashMap<World, Preset> presets = new HashMap<>();
   private static HashMap<World, List<Location>> locations = new HashMap<>();
+  private static HashMap<World, Integer> poolsizes = new HashMap<>();
 
   private static final ExecutorService onEnableExecutor = Executors.newFixedThreadPool(1);
   private static final Timer onEnableTimer = new Timer();
@@ -115,9 +118,11 @@ public class RandomTeleport {
       Amethy.PLUGIN.registerCommand("randomteleport", new HomeCommand());
 
       if (!Amethy.YAMLCONFIG.getBoolean("transport.randomteleport.enable")) {
+        console.debug(PREFIX + "랜덤 텔레포트 §c비활성화됨");
         return;
       }
 
+      console.debug(PREFIX + "랜덤 텔레포트 §a활성화됨");
       ENABLED = true;
 
       ConfigurationSection presetsSection = Amethy.YAMLCONFIG
@@ -133,14 +138,9 @@ public class RandomTeleport {
               worldPreset.getDouble("radius.min"),
               worldPreset.getDouble("radius.max"),
               hates));
-        } else {
-          List<Biome> hates = new ArrayList<>();
-          presets.put(world, new Preset(
-              0d,
-              world.getWorldBorder().getSize(),
-              hates));
+          locations.put(world, new ArrayList<>());
+          poolsizes.put(world, worldPreset.getInt("pool"));
         }
-        locations.put(world, new ArrayList<>());
       }
 
       Amethy.PLUGIN.registerCommand("randomteleport", new RandomTeleportCommand());
@@ -150,14 +150,19 @@ public class RandomTeleport {
           @Override
           public void run() {
             for (World world : Bukkit.getWorlds()) {
-              if (locations.get(world).size() < 10) {
+              if (locations.get(world) == null) {
+                continue;
+              }
+              if (locations.get(world).size() < poolsizes.get(world)) {
                 presets.get(world).gen(world, (location) -> {
                   locations.get(world).add(location);
+                  console.debug(PREFIX + "좌표 풀 로드됨 " + world.getName() + ", " + location.getBlockX() + ", "
+                      + location.getBlockY() + ", " + location.getBlockZ());
                 });
               }
             }
           }
-        }, 1000 * 10, 1000 * 30);
+        }, 1000 * 10, 1000 * 10);
       });
     } catch (Throwable t) {
       t.printStackTrace();
@@ -174,6 +179,10 @@ public class RandomTeleport {
   }
 
   public static void get(World world, Consumer<Location> consumer) {
+    if (locations.get(world) == null) {
+      new Preset(0, 1000000, new ArrayList<>())
+          .gen(world, (location) -> consumer.accept(location));
+    }
     if (locations.get(world).size() > 0) {
       consumer.accept(locations.get(world).get(0));
       locations.get(world).remove(0);

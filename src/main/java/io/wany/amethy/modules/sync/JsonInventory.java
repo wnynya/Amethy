@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.google.gson.JsonArray;
+import io.wany.relocated.com.google.gson.JsonArray;
 
 public class JsonInventory {
 
@@ -18,6 +18,16 @@ public class JsonInventory {
       contents.add(itemString);
     }
     return contents;
+  }
+
+  public static List<ItemStack> parse(JsonArray contents) {
+    List<ItemStack> itemStacks = new ArrayList<>();
+    contents.forEach(element -> {
+      String itemString = element.getAsString();
+      ItemStack itemStack = JsonItemStack.parse(itemString);
+      itemStacks.add(itemStack);
+    });
+    return itemStacks;
   }
 
   public static void apply(JsonArray contents, Inventory inventory) {

@@ -11,12 +11,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.modulesmc.Console;
+import io.wany.amethy.console;
 import io.wany.amethyst.Json;
 
 public class Portal {
 
   private static boolean ENABLED = false;
+  protected static final String PREFIX = Amethy.COLOR + "§l[포탈]: §r";
 
   private String id;
   private List<Location> area;
@@ -71,6 +72,13 @@ public class Portal {
   private static HashMap<String, Portal> portals = new HashMap<>();
 
   public static void onEnable() {
+    if (!ENABLED) {
+      console.debug(PREFIX + "포탈 §c비활성화됨");
+      return;
+    }
+
+    console.debug(PREFIX + "포탈 §a활성화됨");
+
     ENABLED = true;
 
     try {
@@ -80,32 +88,36 @@ public class Portal {
       t.printStackTrace();
     }
 
-    File[] files = storage.listFiles();
-    for (File file : files) {
-      String id = file.getName();
-      if (id.startsWith("-")) {
-        continue;
-      }
-      try {
-        Json data = new Json(file);
-        List<Json> jsonArea = data.getJsonList("area");
-        List<Location> area = new ArrayList<>();
-        for (Json jsonLoc : jsonArea) {
-          area.add(new Location(
-              Bukkit.getWorld(jsonLoc.getString("world")),
-              jsonLoc.getDouble("x"),
-              jsonLoc.getDouble("y"),
-              jsonLoc.getDouble("z")));
+    try {
+      File[] files = storage.listFiles();
+      for (File file : files) {
+        String id = file.getName();
+        if (id.startsWith("-")) {
+          continue;
         }
-        List<String> commands = data.getStringList("commands");
-        Portal portal = new Portal(id);
-        portal.setArea(area);
-        portal.setCommands(commands);
-        portals.put(id, portal);
-        Console.debug("포탈 로드됨: " + id);
-      } catch (Throwable t) {
-        t.printStackTrace();
+        try {
+          Json data = new Json(file);
+          List<Json> jsonArea = data.getJsonList("area");
+          List<Location> area = new ArrayList<>();
+          for (Json jsonLoc : jsonArea) {
+            area.add(new Location(
+                Bukkit.getWorld(jsonLoc.getString("world")),
+                jsonLoc.getDouble("x"),
+                jsonLoc.getDouble("y"),
+                jsonLoc.getDouble("z")));
+          }
+          List<String> commands = data.getStringList("commands");
+          Portal portal = new Portal(id);
+          portal.setArea(area);
+          portal.setCommands(commands);
+          portals.put(id, portal);
+          console.debug(PREFIX + "포탈 로드됨: " + id);
+        } catch (Throwable t) {
+          t.printStackTrace();
+        }
       }
+    } catch (Throwable t) {
+      t.printStackTrace();
     }
   }
 
@@ -117,10 +129,6 @@ public class Portal {
   }
 
   public static void onEvent(PlayerMoveEvent event) {
-    if (!ENABLED) {
-      return;
-    }
-
     Location from = event.getFrom().getBlock().getLocation();
     for (Portal portal : portals.values()) {
       if (portal.trigger(from)) {

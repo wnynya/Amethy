@@ -12,12 +12,10 @@ import java.util.concurrent.Executors;
 import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonParser;
 
 import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.database.DatabaseSyncMap;
@@ -26,6 +24,8 @@ import io.wany.amethy.modulesmc.Message;
 import io.wany.amethy.supports.cucumbery.CucumberySupport;
 import io.wany.amethy.supports.cucumbery.sync.SyncCucumberyPlayer;
 import io.wany.amethyst.Json;
+import io.wany.relocated.com.google.gson.JsonArray;
+import io.wany.relocated.com.google.gson.JsonParser;
 
 public class SyncPlayer {
 
@@ -127,6 +127,8 @@ public class SyncPlayer {
     OBJECTS.add(syncPlayerExperience);
   }
 
+  public static HashMap<UUID, JsonArray> inventories = new HashMap<>();
+
   // 플레이어 인벤토리 동기화
   private static SyncPlayerObject syncPlayerInventory = new SyncPlayerObject() {
 
@@ -139,8 +141,6 @@ public class SyncPlayer {
     public String NAME() {
       return "인벤토리";
     }
-
-    public HashMap<UUID, JsonArray> inventories = new HashMap<>();
 
     @Override
     public void select(Player player) {
@@ -156,6 +156,7 @@ public class SyncPlayer {
         array = JsonParser.parseString(value).getAsJsonArray();
       }
       inventories.remove(uuid);
+      player.getInventory().setContents(new ItemStack[0]);
       JsonInventory.apply(array, player.getInventory(), player);
     }
 
@@ -176,7 +177,6 @@ public class SyncPlayer {
       }
       Player player = event.getPlayer();
       inventories.put(player.getUniqueId(), JsonInventory.jsonify(player.getInventory()));
-      player.getInventory().setContents(new ItemStack[0]);
     }
 
   };
@@ -373,6 +373,16 @@ public class SyncPlayer {
 
     for (SyncPlayerObject object : OBJECTS) {
       object.onPlayerQuit(event);
+    }
+  }
+
+  public static void onEvent(PlayerDropItemEvent event) {
+    if (!ENABLED) {
+      return;
+    }
+
+    if (inventories.containsKey(event.getPlayer().getUniqueId())) {
+      event.setCancelled(true);
     }
   }
 

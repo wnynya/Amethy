@@ -5,8 +5,10 @@ import io.wany.amethy.listeners.*;
 import io.wany.amethy.modules.*;
 import io.wany.amethy.modules.database.Database;
 import io.wany.amethy.modules.itemonworld.ItemOnWorld;
+import io.wany.amethy.modules.portal.Portal;
 import io.wany.amethy.modules.sync.Sync;
 import io.wany.amethy.modules.transport.Home;
+import io.wany.amethy.modules.transport.RandomTeleport;
 import io.wany.amethy.modules.wand.Wand;
 import io.wany.amethy.modules.wand.command.WandEditCommand;
 import io.wany.amethy.modules.wand.command.WandEditTabCompleter;
@@ -170,10 +172,11 @@ public class Amethy extends JavaPlugin {
     Sync.onEnable();
     Wand.onEnable();
     ItemOnWorld.onEnable();
+    Portal.onEnable();
+    Home.onEnable();
+    RandomTeleport.onEnable();
 
     ServerPropertiesSorter.onEnable();
-
-    Home.onEnable();
 
     try {
       this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -187,10 +190,11 @@ public class Amethy extends JavaPlugin {
   public void onDisable() {
 
     Updater.onDisable();
+
     Sync.onDisable();
     Wand.onDisable();
-
-    CoreProtectSupport.onDisable();
+    Portal.onDisable();
+    RandomTeleport.onDisable();
 
     Database.onDisable();
   }

@@ -212,6 +212,7 @@ transport:
     enable: false
     presets:
       world:
+        pool: 10
         radius:
           min: 20000
           max: 100000

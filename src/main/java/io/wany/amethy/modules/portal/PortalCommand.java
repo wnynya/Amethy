@@ -11,7 +11,7 @@ public class PortalCommand implements TabExecutor {
 
   @Override
   public String prefix() {
-    return "§d§l[포탈]: §r";
+    return Portal.PREFIX;
   }
 
   @Override

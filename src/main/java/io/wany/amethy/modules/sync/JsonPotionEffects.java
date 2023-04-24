@@ -8,8 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import io.wany.relocated.com.google.gson.JsonArray;
+import io.wany.relocated.com.google.gson.JsonObject;
 
 public class JsonPotionEffects {
 

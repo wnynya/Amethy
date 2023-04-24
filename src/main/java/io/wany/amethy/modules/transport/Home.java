@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import io.wany.amethy.Amethy;
+import io.wany.amethy.console;
 import io.wany.amethyst.Json;
 
 public class Home {
@@ -68,11 +69,16 @@ public class Home {
       storage.save();
 
       Amethy.PLUGIN.registerCommand("home", new HomeCommand());
+      Amethy.PLUGIN.registerCommand("sethome", new HomeCommand());
+      Amethy.PLUGIN.registerCommand("delhome", new HomeCommand());
+      Amethy.PLUGIN.registerCommand("visit", new HomeCommand());
 
       if (!Amethy.YAMLCONFIG.getBoolean("transport.home.enable")) {
+        console.debug(PREFIX + "홈 §c비활성화됨");
         return;
       }
 
+      console.debug(PREFIX + "홈 §a활성화됨");
       ENABLED = true;
     } catch (Throwable t) {
       t.printStackTrace();
