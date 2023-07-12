@@ -1,5 +1,6 @@
 package io.wany.amethy.listeners;
 
+import io.wany.amethy.modules.sync.Sync;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -14,8 +15,11 @@ public class PlayerInteract implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public static void onPlayerInteract(PlayerInteractEvent event) {
 
+    Sync.onPlayerInteract(event);
+
     WandEdit.onPlayerInteract(event);
     WandBrush.onPlayerInteract(event);
+
     ItemOnWorld.onPlayerInteract(event);
 
   }

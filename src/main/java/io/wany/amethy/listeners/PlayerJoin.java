@@ -5,7 +5,6 @@ import io.wany.amethy.commands.BungeeTeleportCommand;
 import io.wany.amethy.modules.PaperMessage;
 import io.wany.amethy.modules.SpigotMessage;
 import io.wany.amethy.modules.sync.Sync;
-import io.wany.amethy.modules.sync.SyncConnection;
 import io.wany.amethy.modules.wand.Wand;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -36,15 +35,15 @@ public class PlayerJoin implements Listener {
     String format = Amethy.YAMLCONFIG.getString("event.join.msg.format");
 
     if (Amethy.PAPERAPI) {
-      event.joinMessage(SyncConnection.ENABLED ? null : PaperMessage.Formatter.PLAYER.format(format, event.getPlayer()));
+      event.joinMessage(Sync.getChat().isEnabled() ? null : PaperMessage.Formatter.PLAYER.format(format, event.getPlayer()));
     }
     else {
-      event.setJoinMessage(SyncConnection.ENABLED ? null : SpigotMessage.Formatter.PLAYER.format(format, event.getPlayer()));
+      event.setJoinMessage(Sync.getChat().isEnabled() ? null : SpigotMessage.Formatter.PLAYER.format(format, event.getPlayer()));
     }
   }
 
   private void playPlayerJoinSound(PlayerJoinEvent event) {
-    if (!Amethy.YAMLCONFIG.getBoolean("event.join.sound.enable") || SyncConnection.ENABLED) {
+    if (!Amethy.YAMLCONFIG.getBoolean("event.join.sound.enable") || Sync.getChat().isEnabled()) {
       return;
     }
 

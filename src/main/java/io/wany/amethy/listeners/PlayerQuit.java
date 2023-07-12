@@ -33,15 +33,15 @@ public class PlayerQuit implements Listener {
     String format = Amethy.YAMLCONFIG.getString("event.quit.msg.format");
 
     if (Amethy.PAPERAPI) {
-      event.quitMessage((format.equals("null") || SyncConnection.ENABLED) ? null : PaperMessage.Formatter.PLAYER.format(format, event.getPlayer()));
+      event.quitMessage((format.equals("null") || Sync.getChat().isEnabled()) ? null : PaperMessage.Formatter.PLAYER.format(format, event.getPlayer()));
     }
     else {
-      event.setQuitMessage((format == null || format.equals("null") || SyncConnection.ENABLED) ? null : SpigotMessage.Formatter.PLAYER.format(format, event.getPlayer()));
+      event.setQuitMessage((format == null || format.equals("null") || Sync.getChat().isEnabled()) ? null : SpigotMessage.Formatter.PLAYER.format(format, event.getPlayer()));
     }
   }
 
   private void playPlayerQuitSound(PlayerQuitEvent event) {
-    if (!Amethy.YAMLCONFIG.getBoolean("event.quit.sound.enable") || SyncConnection.ENABLED) {
+    if (!Amethy.YAMLCONFIG.getBoolean("event.quit.sound.enable") || Sync.getChat().isEnabled()) {
       return;
     }
 

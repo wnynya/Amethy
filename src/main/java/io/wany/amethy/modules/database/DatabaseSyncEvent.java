@@ -19,17 +19,17 @@ public class DatabaseSyncEvent {
   private static final EventEmitter eventEmitter = new EventEmitter();
   private static final HashMap<Long, String> processedEvents = new HashMap<>();
 
-  private static ExecutorService onLoadExecutor = Executors.newFixedThreadPool(1);
-  private static Timer onLoadTimer100m = new Timer();
-  private static Timer onLoadTimer1s = new Timer();
+  private static final ExecutorService onLoadExecutor = Executors.newFixedThreadPool(1);
+  private static final Timer onLoadTimer100m = new Timer();
+  private static final Timer onLoadTimer1s = new Timer();
 
   public static boolean ENABLED = false;
   private static String TABLE;
 
-  private String server;
-  private String event;
-  private Json value;
-  private long emitted;
+  private final String server;
+  private final String event;
+  private final Json value;
+  private final long emitted;
 
   private DatabaseSyncEvent(String event, Json value) {
     this.server = Database.SERVER;
@@ -80,9 +80,7 @@ public class DatabaseSyncEvent {
       processedEvents.put(event.emitted, key);
       eventEmitter.emit(event.event, event);
     }
-    processedEvents.keySet().removeIf((emitted) -> {
-      return emitted < System.currentTimeMillis() - 15000;
-    });
+    processedEvents.keySet().removeIf((emitted) -> emitted < System.currentTimeMillis() - 15000);
   }
 
   private static void create() throws SQLException {
@@ -99,9 +97,8 @@ public class DatabaseSyncEvent {
       Object[] o = { event.server, event.event, event.value.toString(), event.emitted };
       Database.query("INSERT INTO " + TABLE
           + " (`server`, `event`, `value`, `emitted`) VALUES (?, ?, ?, ?)", o);
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       e.printStackTrace();
     }
   }
@@ -113,6 +110,10 @@ public class DatabaseSyncEvent {
           + " AND `emitted` > " + (System.currentTimeMillis() - 10000)
           + " ORDER BY `emitted` ASC");
 
+      if (result == null) {
+        return;
+      }
+
       for (int i = 0; i < result.size(); i++) {
         process(new DatabaseSyncEvent(
             result.getString(i, "server"),
@@ -120,9 +121,8 @@ public class DatabaseSyncEvent {
             new Json(result.getString(i, "value")),
             result.getLong(i, "emitted")));
       }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       e.printStackTrace();
     }
   }
@@ -132,9 +132,8 @@ public class DatabaseSyncEvent {
       Object[] o = { System.currentTimeMillis() - 20000 };
       Database.query("DELETE FROM " + TABLE
           + " WHERE `emitted` < ?", o);
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       e.printStackTrace();
     }
   }
@@ -149,7 +148,7 @@ public class DatabaseSyncEvent {
 
     try {
       MySQLResult result = Database.query("SHOW TABLES LIKE '" + TABLE + "'");
-      if (result.getString(0, "TABLE_NAME") == null) {
+      if (result == null || result.getString(0, "TABLE_NAME") == null) {
         console.log(Database.PREFIX + "데이터베이스에서 " + TABLE
             + " 테이블을 찾을 수 없습니다. 테이블을 생성합니다.");
         create();

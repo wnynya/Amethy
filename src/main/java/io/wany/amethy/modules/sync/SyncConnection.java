@@ -1,7 +1,6 @@
 package io.wany.amethy.modules.sync;
 
 import io.wany.amethy.Amethy;
-import io.wany.amethy.console;
 import io.wany.amethy.modules.PaperMessage;
 import io.wany.amethy.modules.SpigotMessage;
 import io.wany.amethy.modules.database.DatabaseSyncEvent;
@@ -15,10 +14,34 @@ import java.util.UUID;
 
 public class SyncConnection {
 
-  public static boolean ENABLED = false;
+  private boolean enabled = false;
 
-  public static void databasePlayerJoin(DatabaseSyncEvent event) {
-    if (!ENABLED) {
+  public boolean isEnabled() {
+    return this.enabled;
+  }
+
+  protected void onEnable() {
+    this.enabled = true;
+
+    DatabaseSyncEvent.on("sync/connection/join", (args) -> {
+      databasePlayerJoin((DatabaseSyncEvent) args[0]);
+    });
+    DatabaseSyncEvent.on("sync/connection/quit", (args) -> {
+      databasePlayerQuit((DatabaseSyncEvent) args[0]);
+    });
+  }
+
+  protected void onDisable() {
+    if (!this.enabled) {
+      return;
+    }
+
+    enabled = false;
+  }
+
+  @SuppressWarnings("deprecation")
+  private void databasePlayerJoin(DatabaseSyncEvent event) {
+    if (!this.enabled) {
       return;
     }
 
@@ -34,6 +57,7 @@ public class SyncConnection {
       if (Amethy.PAPERAPI) {
         Bukkit.broadcast(PaperMessage.Formatter.PLAYER_SERVER.format(format, server, uuid, displayName));
       } else {
+        // Spigot API
         Bukkit.broadcastMessage(SpigotMessage.Formatter.PLAYER_SERVER.format(format, server, uuid));
       }
     }
@@ -52,8 +76,9 @@ public class SyncConnection {
     }
   }
 
-  public static void databasePlayerQuit(DatabaseSyncEvent event) {
-    if (!ENABLED) {
+  @SuppressWarnings("deprecation")
+  private void databasePlayerQuit(DatabaseSyncEvent event) {
+    if (!this.enabled) {
       return;
     }
 
@@ -68,6 +93,7 @@ public class SyncConnection {
       if (Amethy.PAPERAPI) {
         Bukkit.broadcast(PaperMessage.Formatter.PLAYER_SERVER.format(format, server, uuid));
       } else {
+        // Spigot API
         Bukkit.broadcastMessage(SpigotMessage.Formatter.PLAYER_SERVER.format(format, server, uuid));
       }
     }
@@ -84,34 +110,6 @@ public class SyncConnection {
         p.playSound(p.getLocation(), sound, soundCategory, volume, pitch);
       }
     }
-  }
-
-  protected static void onEnable() {
-    if (!Amethy.YAMLCONFIG.getBoolean("sync.connection.enable")) {
-      console.debug(Sync.PREFIX + "연결 동기화 §c비활성화됨");
-      return;
-    }
-
-    if (!DatabaseSyncEvent.ENABLED) {
-      console.warn(Sync.PREFIX + "데이터베이스 연결을 확인할 수 없습니다. 기능이 비활성화됩니다.");
-      console.debug(Sync.PREFIX + "연결 동기화 §c비활성화됨");
-      return;
-    }
-
-    ENABLED = true;
-    console.debug(Sync.PREFIX + "연결 동기화 §a활성화됨");
-
-    DatabaseSyncEvent.on("sync/connection/join", (args) -> {
-      databasePlayerJoin((DatabaseSyncEvent) args[0]);
-    });
-    DatabaseSyncEvent.on("sync/connection/quit", (args) -> {
-      databasePlayerQuit((DatabaseSyncEvent) args[0]);
-    });
-
-  }
-
-  protected static void onDisable() {
-    ENABLED = false;
   }
 
 }

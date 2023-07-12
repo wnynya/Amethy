@@ -19,7 +19,7 @@ public class Portal {
   private static boolean ENABLED = false;
   protected static final String PREFIX = Amethy.COLOR + "§l[포탈]: §r";
 
-  private String id;
+  private final String id;
   private List<Location> area;
   private List<String> commands;
 
@@ -69,7 +69,7 @@ public class Portal {
   }
 
   private static File storage;
-  private static HashMap<String, Portal> portals = new HashMap<>();
+  private static final HashMap<String, Portal> portals = new HashMap<>();
 
   public static void onEnable() {
     if (!ENABLED) {

@@ -1,53 +1,49 @@
 package io.wany.amethy.modules.sync;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import io.wany.amethyst.Json;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import io.wany.relocated.com.google.gson.JsonArray;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class JsonInventory {
 
-  public static JsonArray jsonify(Inventory inventory) {
-    JsonArray contents = new JsonArray();
-    for (ItemStack itemStack : inventory.getContents()) {
-      String itemString = JsonItemStack.stringify(itemStack);
-      contents.add(itemString);
+  private final List<ItemStack> contents;
+
+  JsonInventory(Inventory inventory) {
+    this.contents = Arrays.asList(inventory.getContents());
+  }
+
+  JsonInventory(List<Json> jsonInventory) {
+    this.contents = new ArrayList<>();
+    for (Json jsonItemStack : jsonInventory) {
+      JsonItemStack syncItemStack = new JsonItemStack(jsonItemStack);
+      this.contents.add(syncItemStack.getItemStack());
     }
-    return contents;
   }
 
-  public static List<ItemStack> parse(JsonArray contents) {
-    List<ItemStack> itemStacks = new ArrayList<>();
-    contents.forEach(element -> {
-      String itemString = element.getAsString();
-      ItemStack itemStack = JsonItemStack.parse(itemString);
-      itemStacks.add(itemStack);
-    });
-    return itemStacks;
+  JsonInventory(List<Json> jsonInventory, Player player) {
+    this.contents = new ArrayList<>();
+    for (Json jsonItemStack : jsonInventory) {
+      JsonItemStack syncItemStack = new JsonItemStack(jsonItemStack, player);
+      this.contents.add(syncItemStack.getItemStack());
+    }
   }
 
-  public static void apply(JsonArray contents, Inventory inventory) {
-    List<ItemStack> itemStacks = new ArrayList<>();
-    contents.forEach(element -> {
-      String itemString = element.getAsString();
-      ItemStack itemStack = JsonItemStack.parse(itemString);
-      itemStacks.add(itemStack);
-    });
-    inventory.setContents(itemStacks.toArray(new ItemStack[itemStacks.size()]));
+  protected List<Json> jsonify() {
+    List<Json> jsonInventory = new ArrayList<>();
+    for (ItemStack itemStack : this.contents) {
+      JsonItemStack syncItemStack = new JsonItemStack(itemStack);
+      jsonInventory.add(syncItemStack.jsonify());
+    }
+    return jsonInventory;
   }
 
-  public static void apply(JsonArray contents, Inventory inventory, Player player) {
-    List<ItemStack> itemStacks = new ArrayList<>();
-    contents.forEach(element -> {
-      String itemString = element.getAsString();
-      ItemStack itemStack = JsonItemStack.parse(itemString, player);
-      itemStacks.add(itemStack);
-    });
-    inventory.setContents(itemStacks.toArray(new ItemStack[itemStacks.size()]));
+  protected void apply(Inventory inventory) {
+    inventory.setContents(this.contents.toArray(new ItemStack[this.contents.size()]));
   }
 
 }

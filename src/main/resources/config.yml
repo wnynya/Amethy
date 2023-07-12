@@ -157,14 +157,6 @@ sync:
   #===== 플레이어 정보 동기화 (데이터베이스 사용 설정 필요)
   player:
     enable: true
-    health: true # 플레이어 체력 (하트, 허기 등)
-    experience: true # 플레이어 경험치
-    inventory: true # 플레이어 인벤토리
-    inventoryslot: true # 플레이어 인벤토리 슬롯
-    enderchest: true # 플레이어 엔더 상자
-    potioneffects: true # 플레이어 포션 효과
-    cucumberycustomeffects: true # Cucumbery 플러그인 커스텀 이펙트
-    cucumberyuserdata: true # Cucumbery 플러그인 유저 데이터
 
   #===== Valut 플러그인 동기화 (데이터베이스 사용 설정 필요)
   vault:

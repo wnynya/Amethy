@@ -21,8 +21,12 @@ import io.wany.amethy.console;
 
 public class RandomTeleport {
 
-  protected static boolean ENABLED = false;
-  protected static final String PREFIX = Amethy.COLOR + "§l[랜덤 텔레포트]: §r";
+  private static final String prefix = Amethy.COLOR + "§l[랜덤 텔레포트]: §r";
+  private static boolean enabled = false;
+
+  public static boolean isEnabled() {
+    return enabled;
+  }
 
   public static class Preset {
 
@@ -32,8 +36,8 @@ public class RandomTeleport {
     private double maxY = 0;
     private double minZ = 0;
     private double maxZ = 0;
-    private Collection<Biome> hates = new ArrayList<>();
-    private boolean topY = false;
+    private final Collection<Biome> hates;
+    private final boolean topY;
 
     public Preset(
         double minX, double maxX,
@@ -97,7 +101,7 @@ public class RandomTeleport {
           loc = chunk.getBlock(lx, (int) y, lz).getLocation();
         }
         if (hates.contains(loc.getBlock().getBiome())) {
-          gen(world, (location) -> consumer.accept(location));
+          gen(world, consumer::accept);
         } else {
           consumer.accept(loc);
         }
@@ -106,9 +110,9 @@ public class RandomTeleport {
 
   }
 
-  private static HashMap<World, Preset> presets = new HashMap<>();
-  private static HashMap<World, List<Location>> locations = new HashMap<>();
-  private static HashMap<World, Integer> poolsizes = new HashMap<>();
+  private static final HashMap<World, Preset> presets = new HashMap<>();
+  private static final HashMap<World, List<Location>> locations = new HashMap<>();
+  private static final HashMap<World, Integer> poolsizes = new HashMap<>();
 
   private static final ExecutorService onEnableExecutor = Executors.newFixedThreadPool(1);
   private static final Timer onEnableTimer = new Timer();
@@ -118,12 +122,12 @@ public class RandomTeleport {
       Amethy.PLUGIN.registerCommand("randomteleport", new HomeCommand());
 
       if (!Amethy.YAMLCONFIG.getBoolean("transport.randomteleport.enable")) {
-        console.debug(PREFIX + "랜덤 텔레포트 §c비활성화됨");
+        console.debug(prefix + "랜덤 텔레포트 §c비활성화됨");
         return;
       }
 
-      console.debug(PREFIX + "랜덤 텔레포트 §a활성화됨");
-      ENABLED = true;
+      console.debug(prefix + "랜덤 텔레포트 §a활성화됨");
+      enabled = true;
 
       ConfigurationSection presetsSection = Amethy.YAMLCONFIG
           .getConfigurationSection("transport.randomteleport.presets");
@@ -156,7 +160,7 @@ public class RandomTeleport {
               if (locations.get(world).size() < poolsizes.get(world)) {
                 presets.get(world).gen(world, (location) -> {
                   locations.get(world).add(location);
-                  console.debug(PREFIX + "좌표 풀 로드됨 " + world.getName() + ", " + location.getBlockX() + ", "
+                  console.debug(prefix + "좌표 풀 로드됨 " + world.getName() + ", " + location.getBlockX() + ", "
                       + location.getBlockY() + ", " + location.getBlockZ());
                 });
               }
@@ -170,7 +174,7 @@ public class RandomTeleport {
   }
 
   public static void onDisable() {
-    if (!ENABLED) {
+    if (!enabled) {
       return;
     }
 
@@ -181,13 +185,13 @@ public class RandomTeleport {
   public static void get(World world, Consumer<Location> consumer) {
     if (locations.get(world) == null) {
       new Preset(0, 1000000, new ArrayList<>())
-          .gen(world, (location) -> consumer.accept(location));
+          .gen(world, consumer::accept);
     }
     if (locations.get(world).size() > 0) {
       consumer.accept(locations.get(world).get(0));
       locations.get(world).remove(0);
     } else {
-      presets.get(world).gen(world, (location) -> consumer.accept(location));
+      presets.get(world).gen(world, consumer::accept);
     }
   }
 

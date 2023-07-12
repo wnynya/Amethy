@@ -1,5 +1,6 @@
 package io.wany.amethy.listeners;
 
+import io.wany.amethy.modules.sync.Sync;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,7 +14,7 @@ public class PlayerMove implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public static void onPlayerMove(PlayerMoveEvent event) {
 
-    // speedometer(event);
+    Sync.onPlayerMove(event);
 
   }
 

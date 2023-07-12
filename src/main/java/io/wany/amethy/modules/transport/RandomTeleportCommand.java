@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import io.wany.amethy.Amethy;
 import io.wany.amethy.modules.ServerMessage;
 import io.wany.amethy.modules.TabExecutor;
+import org.jetbrains.annotations.NotNull;
 
 public class RandomTeleportCommand implements TabExecutor {
 
@@ -21,9 +22,9 @@ public class RandomTeleportCommand implements TabExecutor {
   }
 
   @Override
-  public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+  public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 
-    if (!RandomTeleport.ENABLED) {
+    if (!RandomTeleport.isEnabled()) {
       error(sender, "랜덤 텔레포트가 활성화되지 않았습니다.");
       return true;
     }
@@ -44,17 +45,15 @@ public class RandomTeleportCommand implements TabExecutor {
     }
 
     info(sender, "이동 중입니다. 잠시만 기다려주세요.");
-    RandomTeleport.get(world, (location) -> {
-      player.teleportAsync(location);
-    });
+    RandomTeleport.get(world, player::teleportAsync);
 
     return true;
   }
 
   @Override
-  public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+  public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 
-    if (!RandomTeleport.ENABLED) {
+    if (!RandomTeleport.isEnabled()) {
       return Collections.emptyList();
     }
 

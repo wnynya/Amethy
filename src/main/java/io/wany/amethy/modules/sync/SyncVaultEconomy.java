@@ -1,33 +1,123 @@
 package io.wany.amethy.modules.sync;
 
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
+import io.wany.amethy.console;
+import io.wany.amethy.modules.database.DatabaseSyncEvent;
+import io.wany.amethy.modules.database.DatabaseSyncMap;
+import io.wany.amethy.supports.vault.VaultSupport;
+import io.wany.amethyst.Json;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import io.wany.amethy.Amethy;
-import io.wany.amethy.modules.database.DatabaseSyncEvent;
-import io.wany.amethy.modules.database.DatabaseSyncMap;
-import io.wany.amethy.console;
-import io.wany.amethy.supports.essentials.EssentialsSupport;
-import io.wany.amethy.supports.vault.VaultSupport;
-import io.wany.amethyst.Json;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SyncVaultEconomy {
 
-  public static boolean ENABLED = false;
+  private boolean enabled = false;
+  private final ExecutorService onEnableService = Executors.newFixedThreadPool(1);
+  private final Timer onEnableTimer = new Timer();
 
-  public static void onUserBalanceUpdte(Player player, double balance) {
-    if (!ENABLED) {
+  public boolean isEnabled() {
+    return this.enabled;
+  }
+
+  private Double select(Player player) {
+    UUID uuid = player.getUniqueId();
+    Json data = DatabaseSyncMap.get("sync/vault/economy$" + uuid);
+    return data != null ? data.getDouble("balance") : null;
+  }
+
+  private void update(Player player) {
+    UUID uuid = player.getUniqueId();
+    Json data = new Json();
+    data.set("balance", VaultSupport.ECONOMY.getBalance(player));
+    DatabaseSyncMap.set("ssync/vault/economy$" + uuid, data);
+  }
+
+  private void setBalance(OfflinePlayer player, double balance) {
+    double current = VaultSupport.ECONOMY.getBalance(player);
+
+    if (current < balance) {
+      VaultSupport.ECONOMY.depositPlayer(player, balance - current);
+    } else {
+      VaultSupport.ECONOMY.withdrawPlayer(player, current - balance);
+    }
+  }
+
+  protected void onEnable() {
+    this.enabled = true;
+
+    DatabaseSyncEvent.on("sync/vault/economy", (args) -> {
+      onDatabaseBalanceUpdate((DatabaseSyncEvent) args[0]);
+    });
+
+    onEnableService.submit(() -> {
+      onEnableTimer.schedule(new TimerTask() {
+        @Override
+        public void run() {
+          for (Player player : Bukkit.getOnlinePlayers()) {
+            update(player);
+          }
+        }
+      }, 0, 1000 * 2);
+    });
+  }
+
+  protected void onDisable() {
+    if (!this.enabled) {
       return;
     }
+
+    enabled = false;
+
+    onEnableTimer.cancel();
+    onEnableService.shutdown();
+
+    for (Player player : Bukkit.getOnlinePlayers()) {
+      update(player);
+    }
+  }
+
+  protected void onPlayerJoin(PlayerJoinEvent event) {
+    if (!this.enabled) {
+      return;
+    }
+
+    Player player = event.getPlayer();
+
+    Double balance = select(player);
+
+    if (balance != null) {
+      setBalance(player, balance);
+    }
+  }
+
+  protected void onPlayerQuit(PlayerQuitEvent event) {
+    if (!this.enabled) {
+      return;
+    }
+
+    Player player = event.getPlayer();
+
+    update(player);
+  }
+
+  protected void onUserBalanceUpdate(Player player, double balance) {
+    if (!this.enabled) {
+      return;
+    }
+
+    if (VaultSupport.ECONOMY.getBalance(player) == balance) {
+      return;
+    }
+
+    update(player);
 
     UUID uuid = player.getUniqueId();
 
@@ -35,124 +125,26 @@ public class SyncVaultEconomy {
     data.set("uuid", uuid.toString());
     data.set("balance", balance);
 
-    DatabaseSyncMap.set("sync.vault.economy." + uuid.toString(), data);
     DatabaseSyncEvent.emit("sync/vault/economy", data);
 
     console.debug("VaultECO: [OUT] " + uuid + " : " + balance);
   }
 
-  public static void databaseUserBalanceUpdate(DatabaseSyncEvent event) {
+  private void onDatabaseBalanceUpdate(DatabaseSyncEvent event) {
+    if (!this.enabled) {
+      return;
+    }
+
     Json data = event.getValue();
 
     UUID uuid = UUID.fromString(data.getString("uuid"));
     double balance = data.getDouble("balance");
 
-    console.debug("VaultECO: [IN] " + uuid + " : " + balance);
-
     OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
 
-    double current = VaultSupport.ECONOMY.getBalance(player);
+    setBalance(player, balance);
 
-    if (current == balance) {
-      return;
-    }
-
-    if (current < balance) {
-      VaultSupport.ECONOMY.depositPlayer(player, balance - current);
-    } else {
-      VaultSupport.ECONOMY.withdrawPlayer(player, current - balance);
-    }
-  }
-
-  public static void onPlayerJoin(PlayerJoinEvent event) {
-    if (!ENABLED) {
-      return;
-    }
-
-    Player player = event.getPlayer();
-    UUID uuid = player.getUniqueId();
-
-    Json data = DatabaseSyncMap.get("sync.vault.economy." + uuid.toString());
-
-    if (data == null) {
-      return;
-    }
-
-    double balance = data.getDouble("balance");
-    double current = VaultSupport.ECONOMY.getBalance(player);
-
-    if (current < balance) {
-      VaultSupport.ECONOMY.depositPlayer(player, balance - current);
-    } else {
-      VaultSupport.ECONOMY.withdrawPlayer(player, current - balance);
-    }
-  }
-
-  public static void onPlayerQuit(PlayerQuitEvent event) {
-    if (!ENABLED) {
-      return;
-    }
-
-    Player player = event.getPlayer();
-    UUID uuid = player.getUniqueId();
-    double balance = VaultSupport.ECONOMY.getBalance(player);
-
-    Json data = new Json();
-    data.set("uuid", uuid.toString());
-    data.set("balance", balance);
-
-    DatabaseSyncMap.set("sync.vault.economy." + uuid.toString(), data);
-  }
-
-  private static ExecutorService onEnableExecutor = Executors.newFixedThreadPool(1);
-  private static Timer onEnableTimer = new Timer();
-
-  public static void onEnable() {
-    if (!Amethy.YAMLCONFIG.getBoolean("sync.vault.economy.enable")) {
-      console.debug(Sync.PREFIX + "Vault Economy 동기화 §c비활성화됨");
-      return;
-    }
-
-    if (!VaultSupport.isEnabled()) {
-      console.warn(Sync.PREFIX + "Vault 플러그인 연동을 확인할 수 없습니다. 기능이 비활성화됩니다.");
-      console.debug(Sync.PREFIX + "Vault Economy 동기화 §c비활성화됨");
-      return;
-    }
-
-    if (!EssentialsSupport.isEnabled()) {
-      console.warn(Sync.PREFIX + "Essentials 플러그인 연동을 확인할 수 없습니다. 기능이 비활성화됩니다.");
-      console.debug(Sync.PREFIX + "Vault Economy 동기화 §c비활성화됨");
-      return;
-    }
-
-    if (!DatabaseSyncMap.ENABLED || !DatabaseSyncEvent.ENABLED) {
-      console.warn(Sync.PREFIX + "데이터베이스 연결을 확인할 수 없습니다. 기능이 비활성화됩니다.");
-      console.debug(Sync.PREFIX + "Vault Economy 동기화 §c비활성화됨");
-      return;
-    }
-
-    ENABLED = true;
-    console.debug(Sync.PREFIX + "Vault Economy 동기화 §a활성화됨");
-
-    DatabaseSyncEvent.on("sync/vault/economy", (args) -> {
-      databaseUserBalanceUpdate((DatabaseSyncEvent) args[0]);
-    });
-
-    onEnableExecutor.submit(() -> {
-      onEnableTimer.schedule(new TimerTask() {
-        @Override
-        public void run() {
-          for (Player player : Bukkit.getOnlinePlayers()) {
-
-          }
-        }
-      }, 0, 1000 * 60);
-    });
-  }
-
-  public static void onDisable() {
-    onEnableTimer.cancel();
-    onEnableExecutor.shutdown();
+    console.debug("VaultECO: [IN] " + uuid + " : " + balance);
   }
 
 }
